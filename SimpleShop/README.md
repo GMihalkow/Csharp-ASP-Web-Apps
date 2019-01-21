@@ -1,0 +1,1 @@
+This is a C# ASP.Net Core 2.2 simple web shop application.
