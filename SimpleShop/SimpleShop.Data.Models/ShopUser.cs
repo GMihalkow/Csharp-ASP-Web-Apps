@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SimpleShop.Data.Models
 {
-    public class ShopUser : IdentityUser<string>
+    public class ShopUser : IdentityUser
     {
         public string Firstname { get; set; }
 
@@ -12,16 +12,18 @@ namespace SimpleShop.Data.Models
 
         public string Address { get; set; }
 
+        public string ProfilePicUrl { get; set; }
+
         public DateTime BirthDate { get; set; }
 
         public IEnumerable<Order> Orders { get; set; }
 
-        public IEnumerable<Conversation> Conversations { get; set; }
+        public IEnumerable<Conversation> StartedConversations { get; set; }
+
+        public IEnumerable<Conversation> RecievedConversations { get; set; }
 
         public DateTime RegisteredOn { get; set; }
-
-        public decimal Wallet { get; set; }
-
+        
         public IEnumerable<Category> Categories { get; set; }
     }
 }

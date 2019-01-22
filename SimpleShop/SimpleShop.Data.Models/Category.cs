@@ -9,5 +9,9 @@ namespace SimpleShop.Data.Models
         public string Descritpion { get; set; }
 
         public IEnumerable<Product> Products { get; set; }
+
+        public ShopUser User { get; set; }
+
+        public string UserId { get; set; }
     }
 }
