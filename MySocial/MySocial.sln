@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySocial.Api", "MySocial.Api\MySocial.Api.csproj", "{62B2AA47-F134-4B66-996B-6E20D18A0247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySocial.Data", "MySocial.Data\MySocial.Data.csproj", "{6F0A8DBE-D3D3-4C26-AB44-AD4BE226DE82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{A00E833C-573D-43C2-ACBD-C080B16D333E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySocial.Data.Models", "MySocial.Data.Models\MySocial.Data.Models.csproj", "{099E2952-9D7F-4157-A12E-9D161887F71C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62B2AA47-F134-4B66-996B-6E20D18A0247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B2AA47-F134-4B66-996B-6E20D18A0247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B2AA47-F134-4B66-996B-6E20D18A0247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B2AA47-F134-4B66-996B-6E20D18A0247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F0A8DBE-D3D3-4C26-AB44-AD4BE226DE82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F0A8DBE-D3D3-4C26-AB44-AD4BE226DE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F0A8DBE-D3D3-4C26-AB44-AD4BE226DE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F0A8DBE-D3D3-4C26-AB44-AD4BE226DE82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{099E2952-9D7F-4157-A12E-9D161887F71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{099E2952-9D7F-4157-A12E-9D161887F71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{099E2952-9D7F-4157-A12E-9D161887F71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{099E2952-9D7F-4157-A12E-9D161887F71C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6F0A8DBE-D3D3-4C26-AB44-AD4BE226DE82} = {A00E833C-573D-43C2-ACBD-C080B16D333E}
+		{099E2952-9D7F-4157-A12E-9D161887F71C} = {A00E833C-573D-43C2-ACBD-C080B16D333E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36B1224B-4F70-491B-B592-E1864BC0179B}
+	EndGlobalSection
+EndGlobal
