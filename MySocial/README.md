@@ -1,1 +1,1 @@
-This is a Web Api service with communicates with a front end React application.
+This is a Web Api service which communicates with a front end React application.
