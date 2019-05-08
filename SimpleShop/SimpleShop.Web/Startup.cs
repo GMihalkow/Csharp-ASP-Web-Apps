@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SimpleShop.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleShop.Data.Models;
+using SimpleShop.Web.Middlewares;
+using DataServices.Common;
+using Data.SimpleShop.Data;
+using SimpleShop.DataServices.Interfaces.Db;
+using SimpleShop.DataServices.Db;
 
 namespace SimpleShop.Web
 {
@@ -39,9 +37,40 @@ namespace SimpleShop.Web
             services.AddDbContext<SimpleShopDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ShopUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<SimpleShopDbContext>();
+
+            services.AddIdentity<ShopUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 0;
+            })
+            .AddRoleManager<RoleManager<IdentityRole>>()
+            .AddEntityFrameworkStores<SimpleShopDbContext>();
+
+            // Dependency injecting the services
+            services.AddScoped<IDbService, DbService>();
+
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Role.Administrator,
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole(Role.Administrator);
+                    });
+
+                options.AddPolicy(Role.Owner,
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole(Role.Owner);
+                    });
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -61,11 +90,15 @@ namespace SimpleShop.Web
                 app.UseHsts();
             }
 
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            //Custom middlewares
+            app.UseMiddleware(typeof(RolesSeederMiddleware));
 
             app.UseMvc(routes =>
             {

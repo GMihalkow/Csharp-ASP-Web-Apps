@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SimpleShop.Data.EntityConfiguration;
 using SimpleShop.Data.Models;
 
-namespace SimpleShop.Web.Data
+namespace Data.SimpleShop.Data
 {
     public class SimpleShopDbContext : IdentityDbContext
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShop.Web", "SimpleShop.Web\SimpleShop.Web.csproj", "{F059014E-F0C1-4E2E-8582-B20262D87C43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShop.Web", "SimpleShop.Web\SimpleShop.Web.csproj", "{F059014E-F0C1-4E2E-8582-B20262D87C43}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{F58A3D6D-97B5-4275-936A-A702C481B332}"
 EndProject
@@ -11,13 +11,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataServices", "DataService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{63C9A215-1395-42E4-A831-346F086EE3FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShop.Data.Models", "SimpleShop.Data.Models\SimpleShop.Data.Models.csproj", "{99163C4F-A393-420B-9225-C534CCDCB1D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShop.Data.Models", "SimpleShop.Data.Models\SimpleShop.Data.Models.csproj", "{99163C4F-A393-420B-9225-C534CCDCB1D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShop.Data", "SimpleShop.Data\SimpleShop.Data.csproj", "{BC79A3C2-A7BC-42B0-9AD8-7DC9A876B772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShop.Data", "SimpleShop.Data\SimpleShop.Data.csproj", "{BC79A3C2-A7BC-42B0-9AD8-7DC9A876B772}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShop.DataServices", "SimpleShop.DataServices\SimpleShop.DataServices.csproj", "{D7EBC9DF-5673-4183-9BBD-2BBC059E90AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShop.DataServices", "SimpleShop.DataServices\SimpleShop.DataServices.csproj", "{D7EBC9DF-5673-4183-9BBD-2BBC059E90AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{741040B6-A3A2-46F2-977B-D9D2E011C3B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServices.Common", "DataServices.Common\DataServices.Common.csproj", "{A69D44E3-9FEB-49E1-A9A2-85DD20290E73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShop.DataServices.Interfaces", "SimpleShop.DataServices.Interfaces\SimpleShop.DataServices.Interfaces.csproj", "{68C55B12-5AD6-41FF-9138-7BE4C639B893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShop.DataServices.Models.Interfaces", "SimpleShop.DataServices.Models.Interfaces\SimpleShop.DataServices.Models.Interfaces.csproj", "{1D8C1047-00A6-4EC5-AA38-92827F979269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +47,18 @@ Global
 		{D7EBC9DF-5673-4183-9BBD-2BBC059E90AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7EBC9DF-5673-4183-9BBD-2BBC059E90AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7EBC9DF-5673-4183-9BBD-2BBC059E90AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69D44E3-9FEB-49E1-A9A2-85DD20290E73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69D44E3-9FEB-49E1-A9A2-85DD20290E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69D44E3-9FEB-49E1-A9A2-85DD20290E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69D44E3-9FEB-49E1-A9A2-85DD20290E73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C55B12-5AD6-41FF-9138-7BE4C639B893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C55B12-5AD6-41FF-9138-7BE4C639B893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C55B12-5AD6-41FF-9138-7BE4C639B893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C55B12-5AD6-41FF-9138-7BE4C639B893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D8C1047-00A6-4EC5-AA38-92827F979269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D8C1047-00A6-4EC5-AA38-92827F979269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D8C1047-00A6-4EC5-AA38-92827F979269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D8C1047-00A6-4EC5-AA38-92827F979269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +68,9 @@ Global
 		{BC79A3C2-A7BC-42B0-9AD8-7DC9A876B772} = {F58A3D6D-97B5-4275-936A-A702C481B332}
 		{D7EBC9DF-5673-4183-9BBD-2BBC059E90AA} = {1AD878E7-F601-43DA-B7A7-7696BCAF1382}
 		{741040B6-A3A2-46F2-977B-D9D2E011C3B5} = {1AD878E7-F601-43DA-B7A7-7696BCAF1382}
+		{A69D44E3-9FEB-49E1-A9A2-85DD20290E73} = {1AD878E7-F601-43DA-B7A7-7696BCAF1382}
+		{68C55B12-5AD6-41FF-9138-7BE4C639B893} = {1AD878E7-F601-43DA-B7A7-7696BCAF1382}
+		{1D8C1047-00A6-4EC5-AA38-92827F979269} = {741040B6-A3A2-46F2-977B-D9D2E011C3B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5ECB221-45D3-4A4A-968C-931FA609A5EE}
