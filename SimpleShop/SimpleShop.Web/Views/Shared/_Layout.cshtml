@@ -14,19 +14,22 @@
             <p class="m-0" ><i class="fas fa-phone"></i> Call us at 089xxxxxxx </p> 
             <p class="m-0" ><i class="fas fa-times fa-lg"></i></p>
         </section>
-        <section class="bg-nav text-white p-20 w-70 mx-auto text-start">
-            <h1 class="font-35 m-0 p-0 display-inline"><i class="fab fa-shopware fa-lg"></i> SimpleShop</h1>
-            @*<nav id="navigation" class="text-white text-end display-inline">
-                    <ul class="list-style-none display-inline">
-                        <li class="display-inline">Register</li>
-                    </ul>
-                </nav>*@
+        <section class="bg-nav text-white p-20 w-70 mx-auto text-start third-shared-container">
+            <h1 class="font-35 m-0 p-0 display-inline"><i class="fab fa-shopware"></i> SimpleShop</h1>
+            <div class="font-35 m-0 p-0 text-end">
+                <button class="dropbtn"><i class="fas fa-user fa-lg"></i></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="/Account/Register">Register</a>
+                    <a href="/Account/Login">Login</a>
+                </div>
+            </div>
+            <section class="font-35 m-0 p-0 display-inline text-end"><i class="fas fa-shopping-cart"></i> 0.00$</section>
         </section>
 
     </header>
 
     <section>
-        <main id="main" role="main" class="m-0">
+        <main id="main" role="main" class="w-70 mx-5percent-auto ">
             @RenderBody()
         </main>
     </section>
@@ -46,7 +49,7 @@
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
         </script>
     </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

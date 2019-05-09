@@ -14,11 +14,13 @@ namespace SimpleShop.DataServices.Models.Account
         [Required]
         [StringLength(ViewModelsConstants.MaxUsernameLength, ErrorMessage = ViewModelsConstants.SharedLengthErrorMessage, MinimumLength = ViewModelsConstants.MinUsernameLength)]
         [DataType(DataType.Password)]
+        [Compare(otherProperty: "ConfirmPassword", ErrorMessage = ViewModelsConstants.PasswordsEqualityErrorMessage)]
         public string Password { get; set; }
 
         [Required]
         [StringLength(ViewModelsConstants.MaxUsernameLength, ErrorMessage = ViewModelsConstants.SharedLengthErrorMessage, MinimumLength = ViewModelsConstants.MinUsernameLength)]
         [DataType(DataType.Password)]
+        [Compare(otherProperty: "Password", ErrorMessage = ViewModelsConstants.PasswordsEqualityErrorMessage)]
         public string ConfirmPassword { get; set; }
 
         [Required]
