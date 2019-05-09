@@ -4,4 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleShop.DataServices.Models.Interfaces\SimpleShop.DataServices.Models.Interfaces.csproj" />
+    <ProjectReference Include="..\SimpleShop.Data\SimpleShop.Data.csproj" />
+  </ItemGroup>
+
 </Project>

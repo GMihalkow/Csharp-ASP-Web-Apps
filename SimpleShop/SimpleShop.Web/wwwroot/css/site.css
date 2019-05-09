@@ -14,8 +14,12 @@ body {
     line-height: 1.69;
 }
 
-a{
-    text-decoration:none;
+ul{
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
 }
 
 form input[type=text] {
@@ -34,7 +38,18 @@ form input[type=password] {
     border: #a6a6a6 solid 1px;
 }
 
-.font-35{
+form input[type=email] {
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    outline: none;
+    border: #a6a6a6 solid 1px;
+}
+
+#main{
+}
+
+.font-35 {
     font-size: 35px;
 }
 
@@ -42,60 +57,68 @@ form input[type=password] {
     background-color: #001a00;
 }
 
-.text-white{
-    color:white;
+.bg-nav-lighter {
+    background-color: #004d00;
 }
 
-#navigation{
-    width:100%;
+.text-white {
+    color: white;
 }
 
-.list-style-none{
+.text-danger {
+    color: red;
+}
+
+#navigation {
+    width: 100%;
+}
+
+.list-style-none {
     list-style: none;
 }
 
-.display-block{
-    display:block;
+.display-block {
+    display: block;
 }
 
-.display-inline{
-    display:inline;
+.display-inline {
+    display: inline;
 }
 
-.text-center{
+.text-center {
     text-align: center;
 }
 
-.text-start{
+.text-start {
     text-align: start;
 }
 
-.text-end{
+.text-end {
     text-align: end;
 }
 
-.mx-auto{
+.mx-auto {
     margin: 0px auto;
 }
 
-.mx-10-auto{
+.mx-10-auto {
     margin: 10px auto;
 }
 
-.m-0{
-    margin:0px;
+.m-0 {
+    margin: 0px;
 }
 
-.m-10{
+.m-10 {
     margin: 10px;
 }
 
-.m-20{
+.m-20 {
     margin: 20px;
 }
 
-.p-0{
-    padding:0px;
+.p-0 {
+    padding: 0px;
 }
 
 .p-10 {
@@ -106,21 +129,26 @@ form input[type=password] {
     padding: 20px;
 }
 
-.w-70{
+.w-70 {
     width: 70%;
 }
 
-.w-100{
+.w-100 {
     width: 100%;
 }
 
-.w-50{
+.w-50 {
     width: 50%;
 }
 
-.equal-shared-container{
+.equal-shared-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.third-shared-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 

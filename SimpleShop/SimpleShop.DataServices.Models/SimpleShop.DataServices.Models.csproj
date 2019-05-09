@@ -6,9 +6,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataServices.Common\DataServices.Common.csproj" />
-    <ProjectReference Include="..\SimpleShop.DataServices.Interfaces\SimpleShop.DataServices.Interfaces.csproj" />
     <ProjectReference Include="..\SimpleShop.DataServices.Models.Interfaces\SimpleShop.DataServices.Models.Interfaces.csproj" />
-    <ProjectReference Include="..\SimpleShop.Data\SimpleShop.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.2.0\ref\netcoreapp2.2\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

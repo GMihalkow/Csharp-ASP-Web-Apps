@@ -16,8 +16,14 @@
   <ItemGroup>
     <ProjectReference Include="..\DataServices.Common\DataServices.Common.csproj" />
     <ProjectReference Include="..\SimpleShop.DataServices.Interfaces\SimpleShop.DataServices.Interfaces.csproj" />
+    <ProjectReference Include="..\SimpleShop.DataServices.Models\SimpleShop.DataServices.Models.csproj" />
     <ProjectReference Include="..\SimpleShop.DataServices\SimpleShop.DataServices.csproj" />
     <ProjectReference Include="..\SimpleShop.Data\SimpleShop.Data.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

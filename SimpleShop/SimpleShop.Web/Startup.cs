@@ -12,6 +12,8 @@ using DataServices.Common;
 using Data.SimpleShop.Data;
 using SimpleShop.DataServices.Interfaces.Db;
 using SimpleShop.DataServices.Db;
+using SimpleShop.DataServices.Interfaces.Account;
+using SimpleShop.DataServices.Account;
 
 namespace SimpleShop.Web
 {
@@ -51,6 +53,7 @@ namespace SimpleShop.Web
 
             // Dependency injecting the services
             services.AddScoped<IDbService, DbService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddResponseCompression(options =>
             {
