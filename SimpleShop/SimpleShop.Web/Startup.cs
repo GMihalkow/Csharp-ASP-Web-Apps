@@ -14,6 +14,9 @@ using SimpleShop.DataServices.Interfaces.Db;
 using SimpleShop.DataServices.Db;
 using SimpleShop.DataServices.Interfaces.Account;
 using SimpleShop.DataServices.Account;
+using Microsoft.AspNetCore.Diagnostics;
+using SimpleShop.Web.Models;
+using System.Text;
 
 namespace SimpleShop.Web
 {
@@ -83,6 +86,27 @@ namespace SimpleShop.Web
         {
             if (env.IsDevelopment())
             {
+                //app.UseExceptionHandler(errorApp =>
+                //{
+                //    errorApp.Run(async context =>
+                //    {
+                //        context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
+                //        context.Response.ContentType = "application/json";
+
+                //        var error = context.Features.Get<IExceptionHandlerFeature>();
+                //        if (error != null)
+                //        {
+                //            //context.Request.
+                //            var ex = error.Error;
+
+                //            await context.Response.WriteAsync(ex.Message, Encoding.UTF8);
+
+                //            context.Response.Redirect("/Home/Error");
+                //        }
+                //    });
+                //});
+
+                //app.UseExceptionHandler("/Home/Error");
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }

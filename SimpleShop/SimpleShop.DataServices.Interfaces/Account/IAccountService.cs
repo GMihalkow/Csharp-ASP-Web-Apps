@@ -7,6 +7,7 @@ namespace SimpleShop.DataServices.Interfaces.Account
         void RegisterUser(IRegisterInputModel model);
 
         void LoginUser(ILoginInputModel model);
-        
+
+        void LogoutUser();
     }
 }

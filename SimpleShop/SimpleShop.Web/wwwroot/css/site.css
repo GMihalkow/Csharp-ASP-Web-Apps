@@ -22,6 +22,10 @@ a {
     text-decoration: none;
 }
 
+input[type=submit]:hover {
+    cursor: pointer;
+}
+
 form input[type=text] {
     padding: 10px;
     font-size: 18px;
