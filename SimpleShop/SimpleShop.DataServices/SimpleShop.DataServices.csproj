@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataServices.Common\DataServices.Common.csproj" />
+    <ProjectReference Include="..\SimpleShop.Data.Models\SimpleShop.Data.Models.csproj" />
     <ProjectReference Include="..\SimpleShop.DataServices.Interfaces\SimpleShop.DataServices.Interfaces.csproj" />
     <ProjectReference Include="..\SimpleShop.DataServices.Models.Interfaces\SimpleShop.DataServices.Models.Interfaces.csproj" />
     <ProjectReference Include="..\SimpleShop.Data\SimpleShop.Data.csproj" />

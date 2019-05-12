@@ -17,6 +17,8 @@ using SimpleShop.DataServices.Account;
 using Microsoft.AspNetCore.Diagnostics;
 using SimpleShop.Web.Models;
 using System.Text;
+using SimpleShop.DataServices.Interfaces.Category;
+using SimpleShop.DataServices.Category;
 
 namespace SimpleShop.Web
 {
@@ -57,6 +59,7 @@ namespace SimpleShop.Web
             // Dependency injecting the services
             services.AddScoped<IDbService, DbService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddResponseCompression(options =>
             {
@@ -86,27 +89,6 @@ namespace SimpleShop.Web
         {
             if (env.IsDevelopment())
             {
-                //app.UseExceptionHandler(errorApp =>
-                //{
-                //    errorApp.Run(async context =>
-                //    {
-                //        context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
-                //        context.Response.ContentType = "application/json";
-
-                //        var error = context.Features.Get<IExceptionHandlerFeature>();
-                //        if (error != null)
-                //        {
-                //            //context.Request.
-                //            var ex = error.Error;
-
-                //            await context.Response.WriteAsync(ex.Message, Encoding.UTF8);
-
-                //            context.Response.Redirect("/Home/Error");
-                //        }
-                //    });
-                //});
-
-                //app.UseExceptionHandler("/Home/Error");
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -132,6 +114,11 @@ namespace SimpleShop.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                
+                routes.MapRoute(
+                      name: "areas",
+                      template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                  );
             });
         }
     }

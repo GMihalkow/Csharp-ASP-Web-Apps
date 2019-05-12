@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
+using SimpleShop.Web.Models;
+using System;
 
 namespace SimpleShop.Web.Filters.Exception
 {
@@ -10,10 +13,15 @@ namespace SimpleShop.Web.Filters.Exception
     {
         public override void OnException(ExceptionContext context)
         {
-            //TODO: Finish the exception filter
-            var result = new ViewResult { ViewName = "Error" };
-            result.ViewData = new ViewDataDictionary(null, context.ModelState);
-            result.ViewData.Add("Message", context.Exception);
+            var model = new ErrorViewModel { Message = "TEST" };
+
+            var result = new RedirectToRouteResult(new RouteValueDictionary
+                       {
+                           { "action", "Error" },
+                           { "controller", "Home" },
+                           { "message", context.Exception.Message }
+                       });
+            
 
             context.Result = result;
         }

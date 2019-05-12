@@ -1,4 +1,6 @@
-﻿using SimpleShop.DataServices.Models.Interfaces.Account;
+﻿using SimpleShop.Data.Models;
+using SimpleShop.DataServices.Models.Interfaces.Account;
+using System.Security.Claims;
 
 namespace SimpleShop.DataServices.Interfaces.Account
 {
@@ -9,5 +11,7 @@ namespace SimpleShop.DataServices.Interfaces.Account
         void LoginUser(ILoginInputModel model);
 
         void LogoutUser();
+
+        ShopUser GetUser(ClaimsPrincipal principal);
     }
 }

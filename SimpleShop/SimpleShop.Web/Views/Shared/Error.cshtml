@@ -1,3 +1,6 @@
 ﻿@model ErrorViewModel
 
-<h2>@Model.Message</h2>
+<section class="text-center p-20">
+    <h2 class="text-danger">@Model.Message</h2>
+    <button onclick="window.history.back();" type="button" class="btn bg-nav">Back</button>
+</section>

@@ -4,6 +4,7 @@
 }
 
 body {
+    background-color: #ccc;
     overflow-x: hidden;
     min-height: 100%;
     margin: 0;
@@ -14,7 +15,7 @@ body {
     line-height: 1.69;
 }
 
-ul{
+ul {
     list-style: none;
 }
 
@@ -48,11 +49,6 @@ form input[type=email] {
     border-radius: 5px;
     outline: none;
     border: #a6a6a6 solid 1px;
-}
-
-#main{
-    border: black solid 1px;
-    border-radius: 5px;
 }
 
 .font-35 {
@@ -236,4 +232,28 @@ body::after {
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {
     display: block;
+}
+
+.menu-btn {
+    font-size: 20px;
+    background-color: #004d00;
+    border: none;
+    outline: none;
+    color:white;
+}
+
+.menu-btn:hover{
+    cursor: pointer;
+}
+
+.active-menu-btn {
+    background-color: #001a00;
+}
+
+.btn:hover{
+    cursor: pointer;
+}
+
+.text-black{
+    color: black;
 }

@@ -9,14 +9,14 @@
 </head>
 <body>
     <header class="bg-nav">
-        <section class="third-shared-container bg-nav-lighter text-white w-100 text-center">
-            <p class="m-0"><i class="fas fa-truck"></i> Free worldwide shipping! </p> 
-            <p class="m-0" ><i class="fas fa-phone"></i> Call us at 089xxxxxxx </p> 
-            <p class="m-0" ><i class="fas fa-times fa-lg"></i></p>
+        <section class="third-shared-container bg-nav-lighter text-white w-70 mx-auto text-center">
+            <p class="m-0"><i class="fas fa-truck"></i> Free worldwide shipping! </p>
+            <p class="m-0"><i class="fas fa-phone"></i> Call us at 089xxxxxxx </p>
+            <p class="m-0"><i class="fas fa-times fa-lg"></i></p>
         </section>
         <section class="bg-nav text-white p-20 w-70 mx-auto text-start third-shared-container">
             <h1 class="font-35 m-0 p-0 display-inline"><i class="fab fa-shopware"></i> SimpleShop</h1>
-            <div class="font-35 m-0 p-0 text-end">
+            <section class="font-35 m-0 p-0 text-end">
                 <button class="dropbtn"><i class="fas fa-user fa-lg"></i></button>
                 <div id="myDropdown" class="dropdown-content">
                     @if (this.User.Identity.IsAuthenticated)
@@ -29,14 +29,21 @@
                         <a href="/Account/Login">Login</a>
                     }
                 </div>
-            </div>
+            </section>
             <section class="font-35 m-0 p-0 display-inline text-end"><i class="fas fa-shopping-cart"></i> 0.00$</section>
         </section>
-
+        <section class="third-shared-container bg-nav-lighter text-white w-70 mx-auto text-center">
+            <a href="/" class="menu-btn p-10">Home</a>
+            <a class="menu-btn p-10">Categories</a>
+            @if (this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
+            {
+                <a href="/Admin/Administration/CommandPanel" class="menu-btn p-10"><i class="fas fa-user-shield fa-lg"></i> Administration</a>
+            }
+        </section>
     </header>
 
     <section>
-        <main id="main" role="main" class="w-70 mx-5percent-auto ">
+        <main id="main" role="main" class="w-70 mx-5percent-auto">
             @RenderBody()
         </main>
     </section>
@@ -57,6 +64,7 @@
         </script>
     </environment>
     <script src="~/js/site.js"></script>
+    <script src="~/js/menu-buttons.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

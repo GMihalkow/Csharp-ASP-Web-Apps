@@ -1,0 +1,26 @@
+﻿@using SimpleShop.DataServices.Models.Category;
+@model CategoryInputModel;
+
+<section class="w-70 mx-auto text-center">
+    <h2 class="font-35">Create a category</h2>
+    <form action="/Admin/Category/Create" method="post">
+        <div class="m-10">
+            <label asp-for="Name" class="display-block"></label>
+            <input asp-for="Name" type="text" />
+            <span class="text-danger display-block" asp-validation-for="Name"></span>
+        </div>
+        <div class="m-10">
+            <label asp-for="Description" class="display-block"></label>
+            <input asp-for="Description" />
+            <span class="text-danger display-block" asp-validation-for="Description"></span>
+        </div>
+        <div class="text-center m-10">
+            <input class="btn bg-nav" type="submit" value="Create" />
+        </div>
+    </form>
+    <div class="text-center">@this.TempData["Message"]</div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
