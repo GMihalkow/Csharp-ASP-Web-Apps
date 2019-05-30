@@ -1,8 +1,10 @@
 ﻿using SimpleShop.DataServices.Interfaces.Account;
 using SimpleShop.DataServices.Interfaces.Category;
 using SimpleShop.DataServices.Interfaces.Db;
+using SimpleShop.DataServices.Models.Category;
 using SimpleShop.DataServices.Models.Interfaces.Category;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -39,6 +41,23 @@ namespace SimpleShop.DataServices.Category
 
             this.dbService.DbContext.Categories.Add(category);
             this.dbService.DbContext.SaveChanges();
+        }
+
+        public IEnumerable<ICategoryViewModel> GetCategories()
+        {
+            var categories = 
+                this.dbService
+                .DbContext
+                .Categories
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Description = c.Description,
+                    Name = c.Name
+                })
+                .ToArray();
+
+            return categories;
         }
     }
 }

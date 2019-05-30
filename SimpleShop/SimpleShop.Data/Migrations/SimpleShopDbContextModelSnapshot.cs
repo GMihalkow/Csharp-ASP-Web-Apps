@@ -190,6 +190,8 @@ namespace SimpleShop.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CoverUrl");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
@@ -272,6 +274,8 @@ namespace SimpleShop.Data.Migrations
 
                     b.Property<string>("CategoryId");
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("Quantity");
@@ -280,7 +284,7 @@ namespace SimpleShop.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SimpleShop.Data.Models.ShopUser", b =>

@@ -2,6 +2,8 @@
 {
     public class ViewModelsConstants
     {
+        public const int MaxDescriptionLength = 200;
+
         public const int MaxUsernameLength = 30;
 
         public const int MinUsernameLength = 5;

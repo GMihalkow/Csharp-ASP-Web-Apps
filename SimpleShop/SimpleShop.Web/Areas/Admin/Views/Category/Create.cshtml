@@ -14,6 +14,11 @@
             <input asp-for="Description" />
             <span class="text-danger display-block" asp-validation-for="Description"></span>
         </div>
+        <div class="m-10">
+            <label asp-for="CoverUrl" class="display-block"></label>
+            <input type="url" asp-for="CoverUrl" />
+            <span class="text-danger display-block" asp-validation-for="CoverUrl"></span>
+        </div>
         <div class="text-center m-10">
             <input class="btn bg-nav" type="submit" value="Create" />
         </div>

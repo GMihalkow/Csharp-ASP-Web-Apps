@@ -10,6 +10,8 @@ namespace SimpleShop.Data.Models
 
         public IEnumerable<Product> Products { get; set; }
 
+        public string CoverUrl { get; set; }
+
         public ShopUser User { get; set; }
 
         public string UserId { get; set; }

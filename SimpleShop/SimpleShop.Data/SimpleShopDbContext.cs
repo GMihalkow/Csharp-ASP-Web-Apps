@@ -15,7 +15,7 @@ namespace Data.SimpleShop.Data
         
         public DbSet<Message> Messages { get; set; }
 
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         public DbSet<Order> Orders { get; set; }
 

@@ -19,6 +19,8 @@ using SimpleShop.Web.Models;
 using System.Text;
 using SimpleShop.DataServices.Interfaces.Category;
 using SimpleShop.DataServices.Category;
+using SimpleShop.DataServices.Interfaces.Product;
+using SimpleShop.DataServices.Product;
 
 namespace SimpleShop.Web
 {
@@ -60,6 +62,7 @@ namespace SimpleShop.Web
             services.AddScoped<IDbService, DbService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddResponseCompression(options =>
             {
