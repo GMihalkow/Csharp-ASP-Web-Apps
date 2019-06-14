@@ -1,0 +1,37 @@
+﻿nav {
+    background-color: #000;
+    color:white;
+}
+
+.logo-wrapper {
+    padding: 1rem 2rem;
+    width: 5rem;
+}
+
+.nav {
+    display: flex;
+}
+
+.nav > ul {
+    list-style: none;
+    width: 30rem;
+    margin-left: auto;
+    display: flex;
+    padding: 1rem;
+    background-color: inherit;
+    justify-content: center;
+    align-items: flex-end;
+    flex: 0 1 auto;
+}
+
+.nav > ul > li {
+    font-size: 20px;
+    text-align: center;
+    width: 6rem;
+    color: #fff;
+}
+
+.nav > ul > li > a {
+    color: white;
+    text-decoration: none;
+}

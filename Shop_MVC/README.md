@@ -1,0 +1,1 @@
+This is a simple online shop application created using ASP MVC 5.2.7 and EntityFramework Core 2.2.4.
