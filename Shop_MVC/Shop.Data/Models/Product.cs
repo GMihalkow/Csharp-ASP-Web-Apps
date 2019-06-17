@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Shop.Data.Models
 {
@@ -15,5 +16,7 @@ namespace Shop.Data.Models
         public string CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        public IEnumerable<OrderProduct> OrderProducts { get; set; }
     }
 }

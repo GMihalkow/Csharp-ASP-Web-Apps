@@ -8,8 +8,40 @@
     width: 5rem;
 }
 
+.info-bar {
+    width: 100%;
+    display: flex;
+    background-color: #1f2328;
+    color: white;
+}
+
+.account-actions {
+    display: flex;
+    margin-left: auto;
+    margin-right: 5%;
+}
+
+.contact-info {
+    width: 50%;
+    margin-right: auto;
+    margin-left: 5%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .nav {
     display: flex;
+}
+
+.account-actions > a {
+    padding: 0.5rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.contact-info > p {
+    /*width: 22%;*/ 
+    padding: 0.5rem;
 }
 
 .nav > ul {

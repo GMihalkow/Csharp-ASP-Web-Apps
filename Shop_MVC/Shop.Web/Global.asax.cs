@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder.Internal;
+using Shop.Web.Middlewares;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 

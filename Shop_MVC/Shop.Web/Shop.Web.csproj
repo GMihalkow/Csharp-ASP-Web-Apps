@@ -458,17 +458,23 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Middlewares\SeedRolesMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestConfig.cs" />
+    <Compile Include="Utilities\RolesSeeder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\buttons.css" />
     <Content Include="Content\footer.css" />
+    <Content Include="Content\forms.css" />
     <Content Include="Content\navigation.css" />
+    <Content Include="Content\validation.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -502,6 +508,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Test\Route.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -520,6 +528,18 @@
     <ProjectReference Include="..\Shop.Data\Shop.Data.csproj">
       <Project>{68c45eb5-ec16-4d54-aff6-37c21b757c0a}</Project>
       <Name>Shop.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shop.Services\Shop.Services.csproj">
+      <Project>{6b331df0-91ea-4508-8fa4-cd35f19b29a5}</Project>
+      <Name>Shop.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shop.ViewModels.Interfaces\Shop.ViewModels.Interfaces.csproj">
+      <Project>{46757873-13DC-4B26-8CB6-166034590358}</Project>
+      <Name>Shop.ViewModels.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shop.ViewModels\Shop.ViewModels.csproj">
+      <Project>{de14499b-3339-4a8c-8fb0-afd11f77c675}</Project>
+      <Name>Shop.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
