@@ -1,0 +1,38 @@
+﻿body {
+	position: relative;
+	height: 100vh;
+}
+
+.shop-footer {
+	border-top: #ccc solid 1px;
+	position: absolute;
+	width:100%;
+	bottom: 0;
+	left: 0;
+	height: 50px;
+}
+
+.shop-footer > .footer-information {
+	display: flex;
+	width: 60rem;
+	margin: 0 auto;
+	padding: 1rem 0;
+}
+
+.shop-footer > .footer-information > section {
+	width: 20rem;
+	padding: 1em;
+}
+
+.shop-footer > .footer-information > section > h4 {
+	font-size: 22px;
+	margin: 1rem 0;
+}
+
+.footer-copyright-info {
+	font-size: 18px;
+	padding: 1rem;
+	width: 100%;
+	background-color: #000;
+	color: #fff;
+}

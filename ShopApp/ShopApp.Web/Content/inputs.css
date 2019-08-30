@@ -1,0 +1,6 @@
+﻿input[type='text'], input[type='password'], input[type='email'] {
+	border: none;
+	font-size: 20px;
+	padding: 0.5rem;
+	border-radius: 5px;
+}

@@ -1,0 +1,63 @@
+﻿@model RegisterInputModel
+
+<div class="w-60r mx-auto mt-5r empty-after">
+	<h2 class="form-title text-center">Register</h2>
+	<form class="shop-form text-center" action="@Url.Action("Register", "Account")" method="post">
+		@Html.ValidationSummary(true)
+
+		<div>
+			<label for="@nameof(this.Model.UserName)">Username</label>
+			@Html.EditorFor(u => u.UserName)
+			@Html.ValidationMessageFor(u => u.UserName)
+		</div>
+		<div>
+			<label for="@nameof(this.Model.FirstName)">First Name</label>
+			@Html.EditorFor(u => u.FirstName)
+			@Html.ValidationMessageFor(u => u.FirstName)
+		</div>
+		<div>
+			<label for="@nameof(this.Model.LastName)">Last Name</label>
+			@Html.EditorFor(u => u.LastName)
+			@Html.ValidationMessageFor(u => u.LastName)
+		</div>
+		<div>
+			<label for="@nameof(this.Model.Email)">Email Address</label>
+			@Html.EditorFor(u => u.Email)
+			@Html.ValidationMessageFor(u => u.Email)
+		</div>
+		<div>
+			<label for="@nameof(this.Model.Password)">Password</label>
+			@Html.EditorFor(u => u.Password)
+			@Html.ValidationMessageFor(u => u.Password)
+		</div>
+		<div>
+			<label for="@nameof(this.Model.ConfirmPassword)">Confirm Password</label>
+			@Html.EditorFor(u => u.ConfirmPassword)
+			@Html.ValidationMessageFor(u => u.ConfirmPassword)
+		</div>
+		<div>
+			<label for="@nameof(this.Model.BirthDate)">Birth Date</label>
+			@Html.TextBoxFor(u => u.BirthDate, new { id="datepicker" })
+		</div>
+		<div>
+			<input class="shop-btn w-50" type="submit" value="Register" />
+		</div>
+	</form>
+	<p class="text-center">Already have an account? You can sign in <a href="@Url.Action("Login", "Account")">here</a>.</p>
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+
+	<script type="text/javascript">
+		$(function () {
+			$("#datepicker").datepicker({
+				changeYear: true,
+				changeMonth: true,
+				duration: "fast",
+				showAnim: "slide", 
+				showOptions: {direction: "up"} 
+			});
+		});
+	</script>
+}

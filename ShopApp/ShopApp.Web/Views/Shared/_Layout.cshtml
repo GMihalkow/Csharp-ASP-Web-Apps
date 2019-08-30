@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>ShopApp</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	@Styles.Render("~/Content/style.css")
+	@Styles.Render("~/bundles/jquery-ui")
+</head>
+<body>
+	<section class="banner">
+		<section>
+			<div class="banner-icon">
+				<i class="fab fa-stripe-s fa-3x"></i>
+			</div>
+			<div class="banner-search-box">
+				<input type="text" />
+				<button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
+			</div>
+			<div class="banner-order-information">
+				@if (this.User.Identity.IsAuthenticated)
+				{
+					@Html.ActionLink("Logout", "Logout", "Account")
+				}
+				else
+				{
+					@Html.ActionLink("Login", "Login", "Account")
+					@Html.ActionLink("Register", "Register", "Account")
+				}
+			</div>
+		</section>
+	</section>
+
+	<nav class="shop-nav">
+		<ul>
+			<li>@Html.ActionLink("Index", "Index", "Home")</li>
+			<li>@Html.ActionLink("Page", "Page", "Home")</li>
+			<li>@Html.ActionLink("Blog", "Blog", "Home")</li>
+			<li>@Html.ActionLink("Shop", "Shop", "Home")</li>
+			<li>@Html.ActionLink("About us", "About", "Home")</li>
+			<li>@Html.ActionLink("Contact us", "Contact", "Home")</li>
+		</ul>
+	</nav>
+
+	@this.RenderBody()
+
+	<footer class="shop-footer">
+		<section class="footer-information">
+			<section>
+				<h4 class="text-center">Contact Info</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+			</section>
+			<section>
+				<h4 class="text-center">Contact Info</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+			</section>
+			<section>
+				<h4 class="text-center">Contact Info</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+			</section>
+		</section>
+		<section class="footer-copyright-info text-center">
+			<p>All Rights Reserved &copy; 2019</p>
+		</section>
+	</footer>
+
+	@RenderSection("scripts", required: false)
+</body>
+</html>

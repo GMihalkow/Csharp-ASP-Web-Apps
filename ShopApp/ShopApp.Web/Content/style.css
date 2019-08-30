@@ -1,0 +1,19 @@
+﻿@import url("./common.css");
+@import url("./errors.css");
+@import url("./navigation.css");
+@import url("./inputs.css");
+@import url("./footer.css");
+@import url("./form.css");
+@import url("./buttons.css");
+@import url("./banner.css");
+@import url("./typography.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css");
+
+/* RESET CSS */
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+/* RESET CSS */
+
