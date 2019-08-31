@@ -1,0 +1,69 @@
+﻿@model IEnumerable<CategoryViewModel>
+
+<section class="products-wrapper">
+	<section class="products-wrapper-admin-toolbar">
+		<button id="create-category" class="ui-button ui-widget ui-corner-all" type="button">Create</button>
+	</section>
+	<section class="product-categories">
+		<header>Category</header>
+		<section class="categories-list">
+			<ul>
+				@foreach (var category in this.Model)
+				{
+					<li>@Html.Partial("_CategoryPartial", category.Name)</li>
+				}
+			</ul>
+		</section>
+	</section>
+	<section class="product-items">
+		<header>Featured Items</header>
+		<section></section>
+	</section>
+</section>
+
+<div id="create-category-form-wrapper" title="Create Category">
+	@Html.Partial("_CreateCategoryFormPartial", new CategoryViewModel())
+</div>
+
+@section Scripts {
+
+
+	<script type="text/javascript">
+		$(function () {
+			var createCategryFormDialog = $("#create-category-form-wrapper");
+			
+			var $form = $("#create-category-form-wrapper .modal-form");
+
+			createCategryFormDialog.dialog({
+				autoOpen: false,
+				height: 250,
+				width: 350,
+				modal: true,
+				show: {
+					effect: "blind",
+					duration: 500
+				},
+				hide: {
+					effect: "explode",
+					duration: 500
+				},
+				buttons: {
+					Create: function(){
+						$form.submit();
+					},
+					Cancel: function () {
+						createCategryFormDialog.dialog("close");
+					}
+				},
+				close: function () {
+					//form[0].reset();
+					//allFields.removeClass("ui-state-error");
+				}
+			});
+
+			$("#create-category").button().on("click", function () {
+				createCategryFormDialog.dialog("open");
+			});
+		});
+	</script>
+}

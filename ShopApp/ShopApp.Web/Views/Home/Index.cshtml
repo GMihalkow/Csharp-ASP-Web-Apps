@@ -1,1 +1,10 @@
-﻿<h1>Hello World</h1>
+﻿<center>
+	@if (this.User.Identity.IsAuthenticated)
+	{
+		<h1>Welcome @this.User.Identity.Name!</h1>
+	}
+	else
+	{
+		<h1>Welcome Guest!</h1>
+	}
+</center>

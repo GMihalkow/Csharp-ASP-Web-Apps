@@ -15,19 +15,10 @@
 				<i class="fab fa-stripe-s fa-3x"></i>
 			</div>
 			<div class="banner-search-box">
-				<input type="text" />
+				<input type="text" class="text-center" placeholder="Search for a product..." />
 				<button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
 			</div>
 			<div class="banner-order-information">
-				@if (this.User.Identity.IsAuthenticated)
-				{
-					@Html.ActionLink("Logout", "Logout", "Account")
-				}
-				else
-				{
-					@Html.ActionLink("Login", "Login", "Account")
-					@Html.ActionLink("Register", "Register", "Account")
-				}
 			</div>
 		</section>
 	</section>
@@ -35,13 +26,32 @@
 	<nav class="shop-nav">
 		<ul>
 			<li>@Html.ActionLink("Index", "Index", "Home")</li>
-			<li>@Html.ActionLink("Page", "Page", "Home")</li>
+			<li>@Html.ActionLink("Products", "All", "Product")</li>
 			<li>@Html.ActionLink("Blog", "Blog", "Home")</li>
 			<li>@Html.ActionLink("Shop", "Shop", "Home")</li>
-			<li>@Html.ActionLink("About us", "About", "Home")</li>
-			<li>@Html.ActionLink("Contact us", "Contact", "Home")</li>
+			<li>@Html.ActionLink("About", "About", "Home")</li>
+			<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+			<li class="dropdown">
+				<a href="#" class="dropbtn">My Account</a>
+				<div class="dropdown-content">
+					@if (this.User.Identity.IsAuthenticated)
+					{
+						@Html.ActionLink("Profile", "Profle", "Account")
+						@Html.ActionLink("Logout", "Logout", "Account", null, new { shop_action = "logout" })
+					}
+					else
+					{
+						@Html.ActionLink("Login", "Login", "Account")
+						@Html.ActionLink("Register", "Register", "Account")
+					}
+				</div>
+			</li>
 		</ul>
 	</nav>
+
+	<div id="shared-modal" title="...">
+		<p>...</p>
+	</div>
 
 	@this.RenderBody()
 
@@ -66,5 +76,22 @@
 	</footer>
 
 	@RenderSection("scripts", required: false)
+	<script>
+		$(function () {
+			var modal = $("#shared-modal");
+
+			modal.dialog({
+				autoOpen: false,
+				show: {
+					effect: "blind",
+					duration: 1000
+				},
+				hide: {
+					effect: "explode",
+					duration: 1000
+				}
+			});
+		});
+	</script>
 </body>
 </html>

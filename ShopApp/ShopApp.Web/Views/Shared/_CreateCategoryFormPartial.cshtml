@@ -1,0 +1,18 @@
+﻿@model CategoryViewModel
+
+<form action="/" method="@FormMethod.Post" class="modal-form">
+	@Html.ValidationSummary(true)
+	<div>
+		<label for="@nameof(this.Model.Name)">Name</label>
+		<input type="text" name="@nameof(this.Model.Name)" id="@nameof(this.Model.Name)" class="text ui-widget-content ui-corner-all">
+		@Html.ValidationMessageFor(c => c.Name)
+	</div>
+</form>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+
+	<script type="text/javascript">
+		$.validator.unobtrusive.parse(".modal-form");
+	</script>
+}

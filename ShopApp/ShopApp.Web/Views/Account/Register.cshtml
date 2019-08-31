@@ -5,7 +5,7 @@
 	<form class="shop-form text-center" action="@Url.Action("Register", "Account")" method="post">
 		@Html.ValidationSummary(true)
 
-		<div>
+		<div class="">
 			<label for="@nameof(this.Model.UserName)">Username</label>
 			@Html.EditorFor(u => u.UserName)
 			@Html.ValidationMessageFor(u => u.UserName)
@@ -37,10 +37,10 @@
 		</div>
 		<div>
 			<label for="@nameof(this.Model.BirthDate)">Birth Date</label>
-			@Html.TextBoxFor(u => u.BirthDate, new { id="datepicker" })
+			@Html.TextBoxFor(u => u.BirthDate, new { id = "datepicker" })
 		</div>
 		<div>
-			<input class="shop-btn w-50" type="submit" value="Register" />
+			<input class="ui-button ui-widget ui-corner-all w-50" type="submit" value="Register" />
 		</div>
 	</form>
 	<p class="text-center">Already have an account? You can sign in <a href="@Url.Action("Login", "Account")">here</a>.</p>
@@ -55,8 +55,8 @@
 				changeYear: true,
 				changeMonth: true,
 				duration: "fast",
-				showAnim: "slide", 
-				showOptions: {direction: "up"} 
+				showAnim: "slide",
+				showOptions: { direction: "up" }
 			});
 		});
 	</script>

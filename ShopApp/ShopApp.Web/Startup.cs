@@ -24,7 +24,7 @@ namespace ShopApp.Web
 			app.CreatePerOwinContext<ShopUserManager>(ShopUserManager.Create);
 			app.CreatePerOwinContext<ShopSignInManager>(ShopSignInManager.Create);
 			app.CreatePerOwinContext<ShopRoleManager>(ShopRoleManager.Create);
-			
+
 			// Enable the application to use a cookie to store information for the signed in user
 			// and to use a cookie to temporarily store information about a user logging in with a third party login provider
 			// Configure the sign in cookie

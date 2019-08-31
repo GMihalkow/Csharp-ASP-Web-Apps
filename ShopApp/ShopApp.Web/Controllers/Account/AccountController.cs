@@ -25,10 +25,11 @@ namespace ShopApp.Web.Controllers.Account
 		}
 
 		[HttpPost]
-		public ActionResult Login(LoginInputModel model)
+		public async Task<ActionResult> Login(LoginInputModel model)
 		{
+			await this.accountService.Login(model);
 
-			return this.View();
+			return this.Redirect("/");
 		}
 
 		public ActionResult Register()
@@ -45,6 +46,14 @@ namespace ShopApp.Web.Controllers.Account
 			}
 
 			await this.accountService.Register(model);
+
+			return this.Redirect(Url.Action("Index", "Home"));
+		}
+
+		[Authorize]
+		public ActionResult Logout()
+		{
+			this.accountService.Logout();
 
 			return this.Redirect(Url.Action("Index", "Home"));
 		}

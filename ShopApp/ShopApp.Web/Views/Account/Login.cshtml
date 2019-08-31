@@ -3,6 +3,7 @@
 <div class="w-60r mx-auto mt-5r">
 	<h2 class="form-title text-center">Login</h2>
 	<form class="shop-form text-center" action="@Url.Action("Login", "Account")" method="post">
+		@Html.ValidationSummary(true)
 		<div>
 			<label for="@nameof(this.Model.UserName)">Username</label>
 			@Html.EditorFor(u => u.UserName)
@@ -14,8 +15,12 @@
 			@Html.ValidationMessageFor(u => u.Password)
 		</div>
 		<div>
-			<input class="shop-btn w-50" type="submit" value="Login"/>
+			<input class="ui-button ui-widget ui-corner-all w-50" type="submit" value="Login"/>
 		</div>
 		<p class="text-center">Don't have an account? You can create one <a href="@Url.Action("Register", "Account")">here</a>.</p>
 	</form>
 </div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")	
+}

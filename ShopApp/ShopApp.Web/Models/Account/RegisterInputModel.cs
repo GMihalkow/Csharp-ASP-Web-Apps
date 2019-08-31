@@ -32,6 +32,6 @@ namespace ShopApp.Web.Models
 		[Display(Name = "Email Address")]
 		public string Email { get; set; }
 
-		public DateTime BirthDate { get; set; }
+		public DateTime? BirthDate { get; set; }
 	}
 }
