@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ShopApp.Models
 {
@@ -6,8 +7,10 @@ namespace ShopApp.Models
 	{
 		public string Name { get; set; }
 		public decimal Price { get; set; }
+		public string CoverUrl { get; set; }
 		public string CategoryId { get; set; }
 		public Category Category { get; set; }
 		public ICollection<ShopUser> Owners { get; set; }
+		public DateTime? AddedOn { get; set; }
 	}
 }

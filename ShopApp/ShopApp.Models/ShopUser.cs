@@ -11,7 +11,7 @@ namespace ShopApp.Models
 		public override string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public DateTime BirthDate { get; set; }
+		public DateTime? BirthDate { get; set; }
 		public DateTime RegisteredOn { get; set; }
 		public ICollection<Category> Categories { get; set; }
 		public ICollection<Product> BoughtProducts { get; set; }
