@@ -18,8 +18,9 @@
 				<input type="text" class="text-center" placeholder="Search for a product..." />
 				<button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
 			</div>
-			<div class="banner-order-information">
-			</div>
+            <div class="banner-order-information">
+                <i class="fas fa-shopping-cart fa-2x"></i>
+            </div>
 		</section>
 	</section>
 
@@ -55,7 +56,7 @@
 
 	@this.RenderBody()
 
-	<footer class="shop-footer">
+	@*<footer class="shop-footer">
 		<section class="footer-information">
 			<section>
 				<h4 class="text-center">Contact Info</h4>
@@ -73,7 +74,7 @@
 		<section class="footer-copyright-info text-center">
 			<p>All Rights Reserved &copy; 2019</p>
 		</section>
-	</footer>
+	</footer>*@
 
 	@RenderSection("scripts", required: false)
 	<script>

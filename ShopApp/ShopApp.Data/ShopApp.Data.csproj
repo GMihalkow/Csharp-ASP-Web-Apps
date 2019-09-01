@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201908311250478_Initial.Designer.cs">
       <DependentUpon>201908311250478_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909011028202_Product_Description.cs" />
+    <Compile Include="Migrations\201909011028202_Product_Description.Designer.cs">
+      <DependentUpon>201909011028202_Product_Description.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ShopAppDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +128,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201908311250478_Initial.resx">
       <DependentUpon>201908311250478_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909011028202_Product_Description.resx">
+      <DependentUpon>201909011028202_Product_Description.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

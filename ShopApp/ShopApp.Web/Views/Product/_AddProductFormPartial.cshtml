@@ -1,0 +1,25 @@
+﻿@model ProductInputModel
+
+<form class="modal-form" action="@Url.Action("Create","Product")" method="@FormMethod.Post.ToString()">
+    @Html.ValidationSummary(true)
+    <div>
+        <label for="@nameof(this.Model.Name)">Name</label>
+        @Html.EditorFor(c => c.Name)
+        @Html.ValidationMessageFor(c => c.Name)
+    </div>
+    <div>
+        <label for="@nameof(this.Model.Description)">Description</label>
+        @Html.TextAreaFor(c => c.Description, new { rows = 5, resize = "none" })
+        @Html.ValidationMessageFor(c => c.Description)
+    </div>
+    <div>
+        <label for="@nameof(this.Model.Price)">Price</label>
+        @Html.EditorFor(c => c.Price)
+        @Html.ValidationMessageFor(c => c.Price)
+    </div>
+    <div>
+        <label for="@nameof(this.Model.CoverUrl)">CoverUrl</label>
+        @Html.EditorFor(c => c.CoverUrl)
+        @Html.ValidationMessageFor(c => c.CoverUrl)
+    </div>
+</form>

@@ -114,5 +114,12 @@ namespace ShopApp.Web.Services.Account
 		{
 			this.signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 		}
-	}
+
+        public ShopUser GetUser(string username)
+        {
+            ShopUser user = this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
+
+            return user;
+        }
+    }
 }

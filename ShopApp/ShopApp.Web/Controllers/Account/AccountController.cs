@@ -27,6 +27,11 @@ namespace ShopApp.Web.Controllers.Account
 		[HttpPost]
 		public async Task<ActionResult> Login(LoginInputModel model)
 		{
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
 			await this.accountService.Login(model);
 
 			return this.Redirect("/");

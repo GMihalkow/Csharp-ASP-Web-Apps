@@ -1,69 +1,137 @@
 ﻿@model IEnumerable<CategoryViewModel>
 
 <section class="products-wrapper">
-	<section class="products-wrapper-admin-toolbar">
-		<button id="create-category" class="ui-button ui-widget ui-corner-all" type="button">Create</button>
-	</section>
-	<section class="product-categories">
-		<header>Category</header>
-		<section class="categories-list">
-			<ul>
-				@foreach (var category in this.Model)
-				{
-					<li>@Html.Partial("_CategoryPartial", category.Name)</li>
-				}
-			</ul>
-		</section>
-	</section>
-	<section class="product-items">
-		<header>Featured Items</header>
-		<section></section>
-	</section>
+    <section class="products-wrapper-admin-toolbar">
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            if (this.User.IsInRole("Administrator"))
+            {
+                <button id="create-category" class="ui-button ui-widget ui-corner-all" type="button">Create</button>
+            }
+        }
+    </section>
+    <section class="product-categories">
+        <header>Category</header>
+        <section class="categories-list">
+            <ul>
+                @foreach (var category in this.Model)
+                {
+                    <li>@Html.Partial("_CategoryPartial", category)</li>
+                }
+            </ul>
+        </section>
+    </section>
+    <section class="product-items">
+        <header>Featured Items</header>
+        <section></section>
+    </section>
 </section>
 
-<div id="create-category-form-wrapper" title="Create Category">
-	@Html.Partial("_CreateCategoryFormPartial", new CategoryViewModel())
-</div>
+@if (this.User.Identity.IsAuthenticated)
+{
+    if (this.User.IsInRole("Administrator"))
+    {
+        <div id="create-category-form-wrapper" title="Create Category">
+            @Html.Partial("_CreateCategoryFormPartial", new CategoryViewModel())
+        </div>
+
+        <div id="add-product-form-wrapper" title="Add a Product">
+            @Html.Partial("_AddProductFormPartial", new ProductInputModel())
+        </div>
+    }
+}
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
+    <script type="text/javascript">
+        $(function () {
+            // add product form
+            var addProductFormDialog = $("#add-product-form-wrapper");
 
-	<script type="text/javascript">
-		$(function () {
-			var createCategryFormDialog = $("#create-category-form-wrapper");
-			
-			var $form = $("#create-category-form-wrapper .modal-form");
+            addProductFormDialog.dialog({
+                autoOpen: false,
+                height: 600,
+                width: 500,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    Create: function () {
+                        var $form = $("#add-product-form-wrapper .modal-form");
+                        $form.submit()
+                    },
+                    Cancel: function () {
+                        addProductFormDialog.dialog("close");
+                    }
+                },
+                close: function () {
+                    //form[0].reset();
+                    //allFields.removeClass("ui-state-error");
+                }
+            });
 
-			createCategryFormDialog.dialog({
-				autoOpen: false,
-				height: 250,
-				width: 350,
-				modal: true,
-				show: {
-					effect: "blind",
-					duration: 500
-				},
-				hide: {
-					effect: "explode",
-					duration: 500
-				},
-				buttons: {
-					Create: function(){
-						$form.submit();
-					},
-					Cancel: function () {
-						createCategryFormDialog.dialog("close");
-					}
-				},
-				close: function () {
-					//form[0].reset();
-					//allFields.removeClass("ui-state-error");
-				}
-			});
+            $("[shop-action='add-product']").button().on("click", function () {
+                addProductFormDialog.dialog("open");
+            });
 
-			$("#create-category").button().on("click", function () {
-				createCategryFormDialog.dialog("open");
-			});
-		});
-	</script>
+            // create category form
+            var createCategoryFormDialog = $("#create-category-form-wrapper");
+
+            createCategoryFormDialog.dialog({
+                autoOpen: false,
+                height: 250,
+                width: 350,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    Create: function () {
+                        var $form = $("#create-category-form-wrapper .modal-form");
+                        $form.submit()
+                    },
+                    Cancel: function () {
+                        createCategoryFormDialog.dialog("close");
+                    }
+                },
+                close: function () {
+                    //form[0].reset();
+                    //allFields.removeClass("ui-state-error");
+                }
+            });
+            
+            $("#create-category").button().on("click", function () {
+                createCategoryFormDialog.dialog("open");
+            });
+
+            // fetching the products per category
+            $(".category-partial > a").on("click", function (e) {
+                var categoryId = $(e.currentTarget).attr("shop-role-id");
+
+                $.ajax({
+                    url: "/Category/GetCategoryProducts/" + categoryId,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(function (res) {
+                    console.log(res);
+                });
+            });
+
+            var $form = $(".modal-form");
+            $.validator.unobtrusive.parse($form);
+        });
+    </script>
 }

@@ -1,5 +1,13 @@
-﻿@model string
+﻿@model CategoryViewModel
 
-<div class="category-partial">
-	<a href="#">@this.Model</a> <button class="ui-button ui-widget ui-corner-all">Edit</button>
-</div>
+    <div class="category-partial">
+        <a shop-role-id="@this.Model.Id" href="#">@this.Model.Name</a>
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            if (this.User.IsInRole("Administrator"))
+            {
+                <button shop-action="edit-category" class="ui-button ui-widget ui-corner-all"><i class="fas fa-edit"></i></button>
+                <button shop-action="add-product" class="ui-button ui-widget ui-corner-all"><i class="fas fa-plus"></i></button>
+            }
+        }
+    </div>

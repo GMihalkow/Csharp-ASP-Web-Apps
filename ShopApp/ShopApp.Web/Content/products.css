@@ -15,8 +15,9 @@
 }
 
 .category-partial {
-	display: flex;
-	width: 100%;
+    display: flex;
+    width: 100%;
+    padding: 0.5rem 0;
 }
 .category-partial > button {
 	margin-left: auto;
@@ -24,7 +25,11 @@
 
 .category-partial a {
 	text-decoration: none;
+    padding: 0.5rem 0;
 	color: #000;
+    width: 6rem;
+    text-align: start;
+    font-weight: bold;
 }
 
 .products-wrapper-admin-toolbar {
@@ -57,7 +62,7 @@
 
 .categories-list {
 	height: 100%;
-	padding: 1rem;
+	padding: 1rem 0.5rem;
 	display: block;
 }
 
@@ -69,7 +74,6 @@
 .categories-list > ul > li {
 	display: inline-block;
 	width: 100%;
-	padding: 0.2rem 1rem;
 }
 
 
