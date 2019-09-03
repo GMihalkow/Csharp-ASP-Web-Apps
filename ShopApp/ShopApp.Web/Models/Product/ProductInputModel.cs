@@ -12,5 +12,6 @@ namespace ShopApp.Web.Models
         public decimal Price { get; set; }
         [DataType(DataType.ImageUrl)]
         public string CoverUrl { get; set; }
+        public string CategoryId { get; set; }
     }
 }

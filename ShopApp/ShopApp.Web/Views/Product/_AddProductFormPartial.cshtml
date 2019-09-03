@@ -2,6 +2,7 @@
 
 <form class="modal-form" action="@Url.Action("Create","Product")" method="@FormMethod.Post.ToString()">
     @Html.ValidationSummary(true)
+    @Html.HiddenFor(c => c.CategoryId)
     <div>
         <label for="@nameof(this.Model.Name)">Name</label>
         @Html.EditorFor(c => c.Name)

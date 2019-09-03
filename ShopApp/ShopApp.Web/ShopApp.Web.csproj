@@ -245,6 +245,8 @@
     <Compile Include="Services\Account\Contracts\IAccountService.cs" />
     <Compile Include="Services\Category\CategoryService.cs" />
     <Compile Include="Services\Category\Contracts\ICategoryService.cs" />
+    <Compile Include="Services\Product\Contracts\IProductService.cs" />
+    <Compile Include="Services\Product\ProductService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ShopRoleManager.cs" />
     <Compile Include="Utilities\ShopSignInManager.cs" />

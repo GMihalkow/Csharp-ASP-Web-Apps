@@ -17,8 +17,10 @@ namespace ShopApp.Web.App_Start
 	using ShopApp.Models;
 	using Services.Category.Contracts;
 	using Services.Category;
+    using ShopApp.Web.Services.Product.Contracts;
+    using ShopApp.Web.Services.Product;
 
-	public static class NinjectWebCommon
+    public static class NinjectWebCommon
 	{
 		private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
@@ -70,6 +72,7 @@ namespace ShopApp.Web.App_Start
 		{
 			kernel.Bind<IAccountService>().To<AccountService>().InRequestScope();
 			kernel.Bind<ICategoryService>().To<CategoryService>().InRequestScope();
+            kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
 		}
 	}
 }

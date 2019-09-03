@@ -51,7 +51,7 @@
 
             addProductFormDialog.dialog({
                 autoOpen: false,
-                height: 600,
+                height: 650,
                 width: 500,
                 modal: true,
                 show: {
@@ -65,7 +65,7 @@
                 buttons: {
                     Create: function () {
                         var $form = $("#add-product-form-wrapper .modal-form");
-                        $form.submit()
+                        $form.submit();
                     },
                     Cancel: function () {
                         addProductFormDialog.dialog("close");
@@ -78,6 +78,17 @@
             });
 
             $("[shop-action='add-product']").button().on("click", function () {
+                // TODO [GM]: Resolve this problem
+                // emptying form input fields
+                //addProductFormDialog.find("input, textarea").val("");
+
+                var categoryId = $(this).parent().children("a[shop-role-id]");
+
+                var $categoryIdInput = $("#add-product-form-wrapper #CategoryId");
+                
+                $categoryIdInput.attr("value", $(categoryId).attr("shop-role-id"));
+
+                // showing the form
                 addProductFormDialog.dialog("open");
             });
 
@@ -117,6 +128,7 @@
             });
 
             // fetching the products per category
+            // TODO [GM]: Implement fully
             $(".category-partial > a").on("click", function (e) {
                 var categoryId = $(e.currentTarget).attr("shop-role-id");
 
