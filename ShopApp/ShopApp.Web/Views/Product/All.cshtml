@@ -23,7 +23,7 @@
     </section>
     <section class="product-items">
         <header>Featured Items</header>
-        <section></section>
+        <section class="featured-products"></section>
     </section>
 </section>
 
@@ -138,7 +138,19 @@
                         "Content-Type": "application/json"
                     }
                 }).then(function (res) {
-                    console.log(res);
+                    var productsHolderElement = $(".products-wrapper > .product-items > section");
+                    productsHolderElement.html("");
+
+                    Array.from(res).forEach(function (product) {
+                        // TODO [GM]: Use handlebars or moustache?
+                        var productContainer = $("<section class='product-container'></section>");
+                        productContainer.append("<header>" + product.Name + "</header>");
+                        productContainer.append("<img src='" + product.CoverUrl + "' />")
+                        productContainer.append("<section><button class='ui-button ui-widget ui-corner-all' type='button'>Order</button></section>");
+
+                        // fade in animation
+                        productsHolderElement.append(productContainer).hide().fadeIn("slow");
+                    });
                 });
             });
 

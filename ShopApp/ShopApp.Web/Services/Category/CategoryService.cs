@@ -67,6 +67,7 @@ namespace ShopApp.Web.Services.Category
 						Id = p.Id,
 						Name = p.Name,
 						AddedOn = p.AddedOn,
+                        CoverUrl = p.CoverUrl,
 						Price = p.Price
 					})
 				}).ToList();
