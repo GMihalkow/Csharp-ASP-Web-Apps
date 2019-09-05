@@ -27,6 +27,10 @@
     </section>
 </section>
 
+<div id="confirm-order" title="Confirm Order">
+    <p>Are you sure that u want to continue?</p>
+</div>
+
 @if (this.User.Identity.IsAuthenticated)
 {
     if (this.User.IsInRole("Administrator"))
@@ -43,6 +47,22 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script id="product-container-template" type="text/html">
+        <section class="product-container" shop-product-id="{{Id}}">
+            <header>{{Name}}</header>
+            <img src="{{CoverUrl}}" />
+            <section>
+                <div>
+                    <label for="product-quantity">Quantity</label>
+                </div>
+                <input shop-product-quantity type="number"/>
+            </section>
+            <section>
+                <button shop-action="order-product" class="ui-button ui-widget ui-corner-all" type="button">Order</button>
+            </section>
+        </section>
+    </script>
 
     <script type="text/javascript">
         $(function () {
@@ -85,11 +105,44 @@
                 var categoryId = $(this).parent().children("a[shop-role-id]");
 
                 var $categoryIdInput = $("#add-product-form-wrapper #CategoryId");
-                
+
                 $categoryIdInput.attr("value", $(categoryId).attr("shop-role-id"));
 
                 // showing the form
                 addProductFormDialog.dialog("open");
+            });
+
+            // confirm order popup
+            var confirmOrderDialog = $("#confirm-order");
+
+            confirmOrderDialog.dialog({
+                autoOpen: false,
+                height: 200,
+                width: 400,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    Confirm: function () {
+                        // TODO [GM]: get the quantity with closest() or find()
+                        var productQuantity = $(this).attr("shop-product-quantity");
+                        var productId = $(this).attr("shop-product-id");
+
+                        window.sessionStorage.setItem(productId, productQuantity > 0 ? productQuantity : 0);
+                        $(".banner-order-information > i").text(window.sessionStorage.length);
+
+                        confirmOrderDialog.dialog("close"); 
+                    },
+                    Cancel: function () {
+                        confirmOrderDialog.dialog("close");
+                    }
+                }
             });
 
             // create category form
@@ -122,7 +175,7 @@
                     //allFields.removeClass("ui-state-error");
                 }
             });
-            
+
             $("#create-category").button().on("click", function () {
                 createCategoryFormDialog.dialog("open");
             });
@@ -142,14 +195,25 @@
                     productsHolderElement.html("");
 
                     Array.from(res).forEach(function (product) {
-                        // TODO [GM]: Use handlebars or moustache?
-                        var productContainer = $("<section class='product-container'></section>");
-                        productContainer.append("<header>" + product.Name + "</header>");
-                        productContainer.append("<img src='" + product.CoverUrl + "' />")
-                        productContainer.append("<section><button class='ui-button ui-widget ui-corner-all' type='button'>Order</button></section>");
-
+                        var template = $("#product-container-template").html();
+                        var rendered = Mustache.render(template, product);
+                        
                         // fade in animation
-                        productsHolderElement.append(productContainer).hide().fadeIn("slow");
+                        productsHolderElement.append(rendered).hide().fadeIn("slow");
+                    });
+
+                    var orderButtons = $("[shop-action='order-product']");
+                    orderButtons.on("click", function () {
+                        var productQuantity = $(this).parent().parent().find("[shop-product-quantity]");
+                        var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
+                        
+                        confirmOrderDialog.attr("shop-product-id", productId);
+                        confirmOrderDialog.attr("shop-product-quantity", productQuantity.val() > 0 ? productQuantity.val() : 0);
+
+                        confirmOrderDialog.dialog("open");
+
+                        // emptying the quantity input 
+                        productQuantity.val("");
                     });
                 });
             });

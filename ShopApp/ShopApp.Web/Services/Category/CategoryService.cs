@@ -71,7 +71,7 @@ namespace ShopApp.Web.Services.Category
 						Price = p.Price
 					})
 				}).ToList();
-
+            
 			return categories;
 		}
 

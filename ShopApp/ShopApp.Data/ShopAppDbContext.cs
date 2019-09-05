@@ -16,12 +16,11 @@ namespace ShopApp.Data
 		public DbSet<Category> Categories { get; set; }
 
 		public DbSet<Product> Products { get; set; }
-		
-		
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-
+            
 			modelBuilder.Configurations.Add(new ProductConfiguration());
 			modelBuilder.Configurations.Add(new ShopUserConfiguration());
 		}

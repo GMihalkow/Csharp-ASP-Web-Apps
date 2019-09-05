@@ -12,15 +12,6 @@ namespace ShopApp.Data.EntityConfiguration.Product
 				.WithMany(c => c.Products)
 				.HasForeignKey(p => p.CategoryId)
 				.WillCascadeOnDelete(false);
-
-			this.HasMany(p => p.Owners)
-				.WithMany(u => u.BoughtProducts)
-				.Map(up =>
-				{
-					up.MapLeftKey("ProductId");
-					up.MapRightKey("UserId");
-					up.ToTable("ShopUserProduct");
-				});
 		}
 	}
 }
