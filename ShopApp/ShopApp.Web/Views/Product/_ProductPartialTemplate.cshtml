@@ -1,0 +1,15 @@
+﻿<section class="product-container" shop-product-id="{{Id}}">
+    <header>
+        <a href="#" shop-action="product-details">{{Name}}</a>
+    </header>
+    <img shop-action="product-details" src="{{CoverUrl}}" />
+    <section>
+        <div>
+            <label for="product-quantity">Quantity</label>
+        </div>
+        <input shop-product-quantity type="number" />
+    </section>
+    <section>
+        <button shop-action="order-product" class="ui-button ui-widget ui-corner-all" type="button">Order</button>
+    </section>
+</section>

@@ -1,7 +1,6 @@
 ﻿using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -17,6 +16,13 @@ namespace ShopApp.Web.Controllers.Product
         {
             this.productService = productService;
             this.categoryService = categoryService;
+        }
+
+        public ActionResult GetProduct(string id)
+        {
+            ProductViewModel productModel = this.productService.RetrieveProduct(id);
+
+            return this.Json(productModel, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult All()

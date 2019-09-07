@@ -1,100 +1,147 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width" />
-	<title>ShopApp</title>
-    <!-- Extract to respective bundles -->
+    <meta name="viewport" content="width=device-width" />
+    <title>ShopApp</title>
+    <!-- Extract to rspective bundles -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.3/mustache.min.js"></script>
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	@Styles.Render("~/Content/style.css")
-	@Styles.Render("~/bundles/jquery-ui")
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @Styles.Render("~/Content/style.css")
+    @Styles.Render("~/bundles/jquery-ui")
 </head>
 <body>
-	<section class="banner">
-		<section>
-			<div class="banner-icon">
-				<i class="fab fa-stripe-s fa-3x"></i>
-			</div>
-			<div class="banner-search-box">
-				<input type="text" class="text-center" placeholder="Search for a product..." />
-				<button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
-			</div>
-            <div class="banner-order-information">
-                <i class="fas fa-shopping-cart fa-2x"></i>
+    <section class="banner">
+        <section>
+            <div class="banner-icon">
+                <i class="fab fa-stripe-s fa-3x"></i>
             </div>
-		</section>
-	</section>
+            <div class="banner-search-box">
+                <input type="text" class="text-center" placeholder="Search for a product..." />
+                <button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
+            </div>
+            <div class="banner-order-information">
+                <a href="@Url.Action("Checkout", "Order")">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </a>
+            </div>
+        </section>
+    </section>
 
-	<nav class="shop-nav">
-		<ul>
-			<li>@Html.ActionLink("Index", "Index", "Home")</li>
-			<li>@Html.ActionLink("Products", "All", "Product")</li>
-			<li>@Html.ActionLink("Blog", "Blog", "Home")</li>
-			<li>@Html.ActionLink("Shop", "Shop", "Home")</li>
-			<li>@Html.ActionLink("About", "About", "Home")</li>
-			<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-			<li class="dropdown">
-				<a href="#" class="dropbtn">My Account</a>
-				<div class="dropdown-content">
-					@if (this.User.Identity.IsAuthenticated)
-					{
-						@Html.ActionLink("Profile", "Profle", "Account")
-						@Html.ActionLink("Logout", "Logout", "Account", null, new { shop_action = "logout" })
-					}
-					else
-					{
-						@Html.ActionLink("Login", "Login", "Account")
-						@Html.ActionLink("Register", "Register", "Account")
-					}
-				</div>
-			</li>
-		</ul>
-	</nav>
+    <nav class="shop-nav">
+        <ul>
+            <li>@Html.ActionLink("Index", "Index", "Home")</li>
+            <li>@Html.ActionLink("Products", "All", "Product")</li>
+            <li>@Html.ActionLink("Blog", "Blog", "Home")</li>
+            <li>@Html.ActionLink("Shop", "Shop", "Home")</li>
+            <li>@Html.ActionLink("About", "About", "Home")</li>
+            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">My Account</a>
+                <div class="dropdown-content">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Profile", "Profle", "Account")
+                        @Html.ActionLink("Logout", "Logout", "Account", null, new { shop_action = "logout" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Login", "Login", "Account")
+                        @Html.ActionLink("Register", "Register", "Account")
+                    }
+                </div>
+            </li>
+        </ul>
+    </nav>
 
-	<div id="shared-modal" title="...">
-		<p>...</p>
-	</div>
+    @this.RenderBody()
 
-	@this.RenderBody()
+    <div id="error-dialog"></div>
 
-	@*<footer class="shop-footer">
-		<section class="footer-information">
-			<section>
-				<h4 class="text-center">Contact Info</h4>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
-			</section>
-			<section>
-				<h4 class="text-center">Contact Info</h4>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
-			</section>
-			<section>
-				<h4 class="text-center">Contact Info</h4>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
-			</section>
-		</section>
-		<section class="footer-copyright-info text-center">
-			<p>All Rights Reserved &copy; 2019</p>
-		</section>
-	</footer>*@
+    @*<footer class="shop-footer">
+            <section class="footer-information">
+                <section>
+                    <h4 class="text-center">Contact Info</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                </section>
+                <section>
+                    <h4 class="text-center">Contact Info</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                </section>
+                <section>
+                    <h4 class="text-center">Contact Info</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                </section>
+            </section>
+            <section class="footer-copyright-info text-center">
+                <p>All Rights Reserved &copy; 2019</p>
+            </section>
+        </footer>*@
 
-	@RenderSection("scripts", required: false)
-	<script>
-		$(function () {
-			var modal = $("#shared-modal");
+    @RenderSection("scripts", required: false)
 
-			modal.dialog({
-				autoOpen: false,
-				show: {
-					effect: "blind",
-					duration: 1000
-				},
-				hide: {
-					effect: "explode",
-					duration: 1000
-				}
-			});
-		});
-	</script>
+    <script id="error-partial-template" type="text/javascript">
+        @Html.Partial("_ErrorDialogTemplate")
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            // Visualising the ordered elements count
+            @if (this.User.Identity.IsAuthenticated)
+            {
+                 @: var cartElement = $(".banner .banner-order-information i");
+                 @: cartElement.text(window.sessionStorage.length);
+            }
+
+            // error dialog popup
+            var errorDialog = $("#error-dialog");
+
+            errorDialog.dialog({
+                autoOpen: false,
+                height: 200,
+                width: 400,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    OK: function () {
+                        errorDialog.dialog("close");
+                    }
+                }
+            });
+
+            var checkoutButton = $(".banner .banner-order-information > a");
+            checkoutButton.on("click", function (e) {
+                // TODO [GM]: Make the Checkout as a partial
+
+                e.preventDefault();
+
+                $.ajax({
+                    method: "POST",
+                    headers: {
+                    },
+                    url: "@Url.Action("Checkout", "Order")",
+                    data: {
+                        products: JSON.stringify(Object.keys(window.sessionStorage)
+                            .map(function (product) {
+                            if (product !== "length") {
+                                return { ProductId: product, Quantity: window.sessionStorage[product] };
+                                }
+                            }))
+                    }
+                })
+                .then(function (data) {
+                    
+                });
+
+            });
+        });
+    </script>
 </body>
 </html>
