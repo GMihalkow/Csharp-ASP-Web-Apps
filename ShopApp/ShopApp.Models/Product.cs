@@ -11,7 +11,7 @@ namespace ShopApp.Models
         public string CoverUrl { get; set; }
 		public string CategoryId { get; set; }
 		public Category Category { get; set; }
-		public virtual ICollection<ShopUser> Users { get; set; }
+		public virtual ICollection<Order> Orders { get; set; }
 		public DateTime? AddedOn { get; set; }
 	}
 }

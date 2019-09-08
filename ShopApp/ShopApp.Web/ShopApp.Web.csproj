@@ -211,6 +211,8 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Views\Product\_ProductDetailsPartialTemplate.cshtml" />
+    <None Include="Views\Product\_ProductPartialTemplate.cshtml" />
     <Content Include="Views\Shared\_CreateCategoryFormPartial.cshtml" />
     <None Include="scripts\jquery-1.8.0.intellisense.js" />
     <Content Include="scripts\jquery-1.8.0.js" />
@@ -230,6 +232,7 @@
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Category\CategoryController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
+    <Compile Include="Controllers\Order\OrderController.cs" />
     <Compile Include="Controllers\Product\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -267,6 +270,7 @@
     <Content Include="Views\Product\All.cshtml" />
     <Content Include="Views\Shared\_CategoryPartial.cshtml" />
     <Content Include="Views\Product\_AddProductFormPartial.cshtml" />
+    <Content Include="Views\Shared\_ErrorDialogTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using ShopApp.Data.EntityConfiguration.Order;
 using ShopApp.Data.EntityConfiguration.Product;
 using ShopApp.Data.EntityConfiguration.User;
 using ShopApp.Models;
@@ -20,7 +21,8 @@ namespace ShopApp.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-            
+
+            modelBuilder.Configurations.Add(new OrderConfiguration());
 			modelBuilder.Configurations.Add(new ProductConfiguration());
 			modelBuilder.Configurations.Add(new ShopUserConfiguration());
 		}

@@ -101,11 +101,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityConfiguration\Order\OrderConfiguration.cs" />
     <Compile Include="EntityConfiguration\Product\ProductConfiguration.cs" />
     <Compile Include="EntityConfiguration\User\ShopUserConfiguration.cs" />
-    <Compile Include="Migrations\201909051551459_Initial.cs" />
-    <Compile Include="Migrations\201909051551459_Initial.Designer.cs">
-      <DependentUpon>201909051551459_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201909060812098_Initial.cs" />
+    <Compile Include="Migrations\201909060812098_Initial.Designer.cs">
+      <DependentUpon>201909060812098_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ShopAppDbContext.cs" />
@@ -122,11 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EntityConfiguration\Order\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909051551459_Initial.resx">
-      <DependentUpon>201909051551459_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909060812098_Initial.resx">
+      <DependentUpon>201909060812098_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
