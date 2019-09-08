@@ -108,6 +108,10 @@
     <Compile Include="Migrations\201909060812098_Initial.Designer.cs">
       <DependentUpon>201909060812098_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909071149395_Order-Status.cs" />
+    <Compile Include="Migrations\201909071149395_Order-Status.Designer.cs">
+      <DependentUpon>201909071149395_Order-Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ShopAppDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,6 +129,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201909060812098_Initial.resx">
       <DependentUpon>201909060812098_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909071149395_Order-Status.resx">
+      <DependentUpon>201909071149395_Order-Status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

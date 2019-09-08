@@ -1,4 +1,5 @@
-﻿using ShopApp.Web.Models;
+﻿using ShopApp.Web.Constants;
+using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System.Collections.Generic;
@@ -32,8 +33,8 @@ namespace ShopApp.Web.Controllers.Product
             return this.View(categories);
         }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
+        [Authorize(Roles = RolesConstants.Administrator)]
         public ActionResult Create(ProductInputModel productModel)
         {
             if (!this.ModelState.IsValid)

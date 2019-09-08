@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Order
@@ -7,6 +6,7 @@ namespace ShopApp.Web.Controllers.Order
     public class OrderController : Controller
     {
         [HttpPost]
+        [Authorize]
         public ActionResult Checkout(string products)
         {
             // deserializing the json object to order entities

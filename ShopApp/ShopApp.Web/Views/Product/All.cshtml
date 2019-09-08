@@ -4,7 +4,7 @@
     <section class="products-wrapper-admin-toolbar">
         @if (this.User.Identity.IsAuthenticated)
         {
-            if (this.User.IsInRole("Administrator"))
+            if (this.User.IsInRole(RolesConstants.Administrator))
             {
                 <button id="create-category" class="ui-button ui-widget ui-corner-all" type="button">Create</button>
             }
@@ -37,7 +37,7 @@
 
 @if (this.User.Identity.IsAuthenticated)
 {
-    if (this.User.IsInRole("Administrator"))
+    if (this.User.IsInRole(RolesConstants.Administrator))
     {
         <div id="create-category-form-wrapper" title="Create Category">
             @Html.Partial("_CreateCategoryFormPartial", new CategoryViewModel())
@@ -88,6 +88,7 @@
                     }
                 },
                 close: function () {
+                    // TODO [GM]: Form reset? Research and use it.
                     //form[0].reset();
                     //allFields.removeClass("ui-state-error");
                 }
@@ -152,9 +153,10 @@
                         // TODO [GM]: get the quantity with closest() or find()
                         var productQuantity = $(this).attr("shop-product-quantity");
                         var productId = $(this).attr("shop-product-id");
+                        var productName = $(this).attr("shop-product-name");
 
                         if (productQuantity > 0) {
-                            window.sessionStorage.setItem(productId, productQuantity);
+                            window.sessionStorage.setItem(productName, JSON.stringify({ quantity: productQuantity, productId: productId }));
                         }
 
                         $(".banner-order-information i").text(window.sessionStorage.length);
@@ -230,20 +232,16 @@
                         // show error when not
                         @if (!this.User.Identity.IsAuthenticated)
                         {
-                            @: var errorDialog = $("#error-dialog");
-                            @: var template = $("#error-partial-template").html();
-                            @: var rendered = Mustache.render(template, { Message: "TEST MESSAGE" });
-
-                            @: $("#error-dialog").html(rendered);
-
-                            @: errorDialog.dialog("open");
+                            @: window.location.href = "@Url.Action("Login", "Account")"
                         }
                         else
                         {
                             @:var productQuantity = $(this).parent().parent().find("[shop-product-quantity]");
                             @:var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
+                            @:var productName = $(this).parent().parent().find("[shop-product-name]").attr("shop-product-name");
 
                             @:confirmOrderDialog.attr("shop-product-id", productId);
+                            @:confirmOrderDialog.attr("shop-product-name", productName);
                             @:confirmOrderDialog.attr("shop-product-quantity", productQuantity.val() > 0 ? productQuantity.val() : 0);
 
                             @:confirmOrderDialog.dialog("open");

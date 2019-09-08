@@ -1,4 +1,5 @@
-﻿using ShopApp.Web.Models;
+﻿using ShopApp.Web.Constants;
+using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using System;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace ShopApp.Web.Controllers.Category
         }
         
         [HttpPost]
+        [Authorize(Roles = RolesConstants.Administrator)]
         public ActionResult Create(CategoryInputModel model)
         {
             if (!this.ModelState.IsValid)

@@ -7,14 +7,14 @@ using ShopApp.Web.Models;
 using System;
 using ShopApp.Models;
 using Microsoft.AspNet.Identity;
-using ShopApp.Web.Constants;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ShopApp.Data;
 using System.Linq;
+using ShopApp.Web.Constants;
 
 namespace ShopApp.Web.Services.Account
 {
-	public class AccountService : IAccountService
+    public class AccountService : IAccountService
 	{
 		private ShopUserManager userManager
 		{
@@ -72,11 +72,11 @@ namespace ShopApp.Web.Services.Account
 			// the first registered user is the administrator
 			if (this.dbContext.Users.Count() == 1)
 			{
-				await this.userManager.AddToRoleAsync(this.dbContext.Users.FirstOrDefault().Id, Enum.GetName(typeof(RolesEnum), RolesEnum.Administrator));
+				await this.userManager.AddToRoleAsync(this.dbContext.Users.FirstOrDefault().Id, RolesConstants.Administrator);
 			}
 			else if (this.dbContext.Users.Count() > 1)
 			{
-				await this.userManager.AddToRoleAsync(this.dbContext.Users.LastOrDefault().Id, Enum.GetName(typeof(RolesEnum), RolesEnum.User));
+				await this.userManager.AddToRoleAsync(this.dbContext.Users.LastOrDefault().Id, RolesConstants.User);
 			}
 
 			await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
@@ -85,18 +85,16 @@ namespace ShopApp.Web.Services.Account
 
 		private async Task SeedRoles()
 		{
-			string userRoleString = Enum.GetName(typeof(RolesEnum), RolesEnum.User);
-			bool userRoleExists = await this.roleManager.RoleExistsAsync(userRoleString);
+			bool userRoleExists = await this.roleManager.RoleExistsAsync(RolesConstants.User);
 			if (!userRoleExists)
 			{
-				await this.roleManager.CreateAsync(new IdentityRole { Name = userRoleString });
+				await this.roleManager.CreateAsync(new IdentityRole { Name = RolesConstants.User });
 			}
-
-			string adminRoleString = Enum.GetName(typeof(RolesEnum), RolesEnum.Administrator);
-			bool adminRoleExists = await this.roleManager.RoleExistsAsync(adminRoleString);
+            
+			bool adminRoleExists = await this.roleManager.RoleExistsAsync(RolesConstants.Administrator);
 			if (!adminRoleExists)
 			{
-				await this.roleManager.CreateAsync(new IdentityRole { Name = adminRoleString });
+				await this.roleManager.CreateAsync(new IdentityRole { Name = RolesConstants.Administrator });
 			}
 		}
 

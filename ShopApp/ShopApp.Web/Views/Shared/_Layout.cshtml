@@ -21,7 +21,7 @@
                 <button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
             </div>
             <div class="banner-order-information">
-                <a href="@Url.Action("Checkout", "Order")">
+                <a href="#">
                     <i class="fas fa-shopping-cart fa-2x"></i>
                 </a>
             </div>
@@ -56,7 +56,7 @@
 
     @this.RenderBody()
 
-    <div id="error-dialog"></div>
+    <div id="checkout-dialog" title="Checkout"></div>
 
     @*<footer class="shop-footer">
             <section class="footer-information">
@@ -80,9 +80,9 @@
 
     @RenderSection("scripts", required: false)
 
-    <script id="error-partial-template" type="text/javascript">
-        @Html.Partial("_ErrorDialogTemplate")
-    </script>
+    <script id="checkout-partial-template" type="text/javascript">
+        @Html.Partial("_CheckoutPartialTemplate")
+    </script>   
 
     <script type="text/javascript">
         $(function () {
@@ -93,12 +93,11 @@
                  @: cartElement.text(window.sessionStorage.length);
             }
 
-            // error dialog popup
-            var errorDialog = $("#error-dialog");
-
-            errorDialog.dialog({
+            // checkout dialog popup
+            var checkoutDialog = $("#checkout-dialog");
+            checkoutDialog.dialog({
                 autoOpen: false,
-                height: 200,
+                height: 500,
                 width: 400,
                 modal: true,
                 show: {
@@ -110,35 +109,52 @@
                     duration: 500
                 },
                 buttons: {
-                    OK: function () {
-                        errorDialog.dialog("close");
+                    Confirm: function () {
+                        checkoutDialog.dialog("close");
+                    },
+                    Cancel: function () {
+                        checkoutDialog.dialog("close");
                     }
                 }
             });
+            
 
             var checkoutButton = $(".banner .banner-order-information > a");
             checkoutButton.on("click", function (e) {
-                // TODO [GM]: Make the Checkout as a partial
-
+                // TODO [GM]: Complete the checkout functionality
                 e.preventDefault();
 
-                $.ajax({
-                    method: "POST",
-                    headers: {
-                    },
-                    url: "@Url.Action("Checkout", "Order")",
-                    data: {
-                        products: JSON.stringify(Object.keys(window.sessionStorage)
-                            .map(function (product) {
-                            if (product !== "length") {
-                                return { ProductId: product, Quantity: window.sessionStorage[product] };
-                                }
-                            }))
-                    }
-                })
-                .then(function (data) {
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    @: var template = $("#checkout-partial-template").html();
+                    @: var rendered = Mustache.render(template, { orders: Object.keys(window.sessionStorage).map(function (key) { return { name: key, productId: JSON.parse(window.sessionStorage[key]).productId, quantity: JSON.parse(window.sessionStorage[key]).quantity }; }) });
+
+                    @: $("#checkout-dialog").html(rendered);
+
+                    @: checkoutDialog.dialog("open"); 
                     
-                });
+                    @*@:$.ajax({
+                     @:    method: "POST",
+                     @:    url: "@Url.Action("Checkout", "Order")",
+                     @:    data:
+                     @:        {
+                     @:        products: JSON.stringify(Object.keys(window.sessionStorage)
+                     @:            .map(function(product) {
+                     @:                if (product !== "length")
+                     @:                {
+                     @:                    return { ProductId: product, Quantity: window.sessionStorage[product] };
+                     @:                }
+                     @:            }))
+                     @:    }
+                     @:})
+                     @:.then(function(data) {
+                     @:
+                     @:});*@
+                }
+                else
+                {
+                    @: window.location.href = "@Url.Action("Login", "Account")"
+                }
 
             });
         });

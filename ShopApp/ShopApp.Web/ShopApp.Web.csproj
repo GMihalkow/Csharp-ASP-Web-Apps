@@ -207,6 +207,7 @@
     <Content Include="Content\products.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\table.css" />
     <Content Include="Content\typography.css" />
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
@@ -228,7 +229,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Constants\RolesEnum.cs" />
+    <Compile Include="Constants\Roles.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Category\CategoryController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
@@ -257,7 +258,9 @@
     <Compile Include="Utilities\ShopValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -271,6 +274,7 @@
     <Content Include="Views\Shared\_CategoryPartial.cshtml" />
     <Content Include="Views\Product\_AddProductFormPartial.cshtml" />
     <Content Include="Views\Shared\_ErrorDialogTemplate.cshtml" />
+    <Content Include="Views\Shared\_CheckoutPartialTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

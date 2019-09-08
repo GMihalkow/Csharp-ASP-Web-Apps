@@ -10,5 +10,6 @@
         public string Description { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice => (decimal)(this.Product.Price * this.Quantity);
+        public bool IsCompleted { get; set; }
     }
 }
