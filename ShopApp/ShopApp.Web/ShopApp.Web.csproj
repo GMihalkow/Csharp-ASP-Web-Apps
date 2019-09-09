@@ -210,6 +210,7 @@
     <Content Include="Content\table.css" />
     <Content Include="Content\typography.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\shop-banner.jpg" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Views\Product\_ProductDetailsPartialTemplate.cshtml" />
@@ -229,7 +230,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Constants\Roles.cs" />
+    <Compile Include="Constants\RolesContants.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Category\CategoryController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
@@ -249,6 +250,8 @@
     <Compile Include="Services\Account\Contracts\IAccountService.cs" />
     <Compile Include="Services\Category\CategoryService.cs" />
     <Compile Include="Services\Category\Contracts\ICategoryService.cs" />
+    <Compile Include="Services\Order\Contracts\IOrderService.cs" />
+    <Compile Include="Services\Order\OrderService.cs" />
     <Compile Include="Services\Product\Contracts\IProductService.cs" />
     <Compile Include="Services\Product\ProductService.cs" />
     <Compile Include="Startup.cs" />

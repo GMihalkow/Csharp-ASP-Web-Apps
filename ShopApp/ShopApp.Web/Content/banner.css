@@ -3,6 +3,15 @@
 	background-color: #000;
 }
 
+.banner-image-wrapper {
+    background-image: url("../Images/shop-banner.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 25rem;
+    width: 60rem;
+    margin: 1rem auto;
+}
+
 .banner > section {
 	display: flex;
 	width: 60rem;

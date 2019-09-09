@@ -84,13 +84,17 @@
                         $form.submit();
                     },
                     Cancel: function () {
+                        @* Reseting the form values *@
+                        var $addProductForm = $("#add-product-form-wrapper > form");
+                        $addProductForm[0].reset();
+
                         addProductFormDialog.dialog("close");
                     }
                 },
                 close: function () {
-                    // TODO [GM]: Form reset? Research and use it.
-                    //form[0].reset();
-                    //allFields.removeClass("ui-state-error");
+                    @* Reseting the form values *@
+                    var $addProductForm = $("#add-product-form-wrapper > form");
+                    $addProductForm[0].reset();
                 }
             });
 
@@ -150,7 +154,6 @@
                 },
                 buttons: {
                     Confirm: function () {
-                        // TODO [GM]: get the quantity with closest() or find()
                         var productQuantity = $(this).attr("shop-product-quantity");
                         var productId = $(this).attr("shop-product-id");
                         var productName = $(this).attr("shop-product-name");
@@ -191,12 +194,17 @@
                         $form.submit()
                     },
                     Cancel: function () {
+                        @* reseting the add category form *@
+                        var $addCategoryForm = $("#create-category-form-wrapper > form");
+                        $addCategoryForm[0].reset();
+
                         createCategoryFormDialog.dialog("close");
                     }
                 },
                 close: function () {
-                    //form[0].reset();
-                    //allFields.removeClass("ui-state-error");
+                    @* reseting the add category form *@
+                    var $addCategoryForm = $("#create-category-form-wrapper > form");
+                    $addCategoryForm[0].reset();
                 }
             });
 
@@ -205,7 +213,7 @@
             });
 
             // fetching the products per category
-            // TODO [GM]: Implement fully
+            // TODO [GM]: Implement fully, add server paging
             $(".category-partial > a").on("click", function (e) {
                 var categoryId = $(e.currentTarget).attr("shop-role-id");
 

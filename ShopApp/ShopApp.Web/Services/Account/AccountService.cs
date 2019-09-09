@@ -54,6 +54,7 @@ namespace ShopApp.Web.Services.Account
 
 			ShopUser user = new ShopUser
 			{
+                Id = Guid.NewGuid().ToString(),
 				UserName = model.UserName,
 				FirstName = model.FirstName,
 				LastName = model.LastName,
@@ -62,7 +63,7 @@ namespace ShopApp.Web.Services.Account
 				BirthDate = model.BirthDate
 			};
 
-			IdentityResult result = await this.userManager.CreateAsync(user, model.Password);
+            IdentityResult result = await this.userManager.CreateAsync(user, model.Password);
 
 			if (!result.Succeeded)
 			{
@@ -72,11 +73,11 @@ namespace ShopApp.Web.Services.Account
 			// the first registered user is the administrator
 			if (this.dbContext.Users.Count() == 1)
 			{
-				await this.userManager.AddToRoleAsync(this.dbContext.Users.FirstOrDefault().Id, RolesConstants.Administrator);
+				await this.userManager.AddToRoleAsync(user.Id, RolesConstants.Administrator);
 			}
 			else if (this.dbContext.Users.Count() > 1)
 			{
-				await this.userManager.AddToRoleAsync(this.dbContext.Users.LastOrDefault().Id, RolesConstants.User);
+				await this.userManager.AddToRoleAsync(user.Id, RolesConstants.User);
 			}
 
 			await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);

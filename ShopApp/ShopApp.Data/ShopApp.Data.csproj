@@ -112,6 +112,18 @@
     <Compile Include="Migrations\201909071149395_Order-Status.Designer.cs">
       <DependentUpon>201909071149395_Order-Status.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909091705158_Orders.cs" />
+    <Compile Include="Migrations\201909091705158_Orders.Designer.cs">
+      <DependentUpon>201909091705158_Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909091756167_Orders-Status.cs" />
+    <Compile Include="Migrations\201909091756167_Orders-Status.Designer.cs">
+      <DependentUpon>201909091756167_Orders-Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909091758484_Orders-Status-minor-fix.cs" />
+    <Compile Include="Migrations\201909091758484_Orders-Status-minor-fix.Designer.cs">
+      <DependentUpon>201909091758484_Orders-Status-minor-fix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ShopAppDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +144,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909071149395_Order-Status.resx">
       <DependentUpon>201909071149395_Order-Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909091705158_Orders.resx">
+      <DependentUpon>201909091705158_Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909091756167_Orders-Status.resx">
+      <DependentUpon>201909091756167_Orders-Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909091758484_Orders-Status-minor-fix.resx">
+      <DependentUpon>201909091758484_Orders-Status-minor-fix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

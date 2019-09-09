@@ -1,18 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using ShopApp.Web.Services.Order.Contracts;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Order
 {
     public class OrderController : Controller
     {
+        public readonly IOrderService orderService;
+
+        public OrderController(IOrderService orderService)
+        {
+            this.orderService = orderService;
+        }
+
         [HttpPost]
         [Authorize]
-        public ActionResult Checkout(string products)
+        public async Task Checkout(string products)
         {
-            // deserializing the json object to order entities
-            ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(products);
-
-            return this.Redirect("/");
+            await this.orderService.Checkout(products);
         }
     }
 }

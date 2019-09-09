@@ -19,6 +19,8 @@ namespace ShopApp.Web.App_Start
 	using Services.Category;
     using ShopApp.Web.Services.Product.Contracts;
     using ShopApp.Web.Services.Product;
+    using ShopApp.Web.Services.Order;
+    using ShopApp.Web.Services.Order.Contracts;
 
     public static class NinjectWebCommon
 	{
@@ -73,6 +75,7 @@ namespace ShopApp.Web.App_Start
 			kernel.Bind<IAccountService>().To<AccountService>().InRequestScope();
 			kernel.Bind<ICategoryService>().To<CategoryService>().InRequestScope();
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
+            kernel.Bind<IOrderService>().To<OrderService>().InRequestScope();
 		}
 	}
 }
