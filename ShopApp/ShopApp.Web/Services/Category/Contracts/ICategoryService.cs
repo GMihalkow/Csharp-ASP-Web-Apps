@@ -1,5 +1,6 @@
 ﻿using ShopApp.Web.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ShopApp.Web.Services.Category.Contracts
 {
@@ -7,8 +8,12 @@ namespace ShopApp.Web.Services.Category.Contracts
 	{
         CategoryViewModel GetCategory(string id);
 
-		IEnumerable<CategoryViewModel> GetCategories();
+		IEnumerable<CategoryViewModel> GetCategoriesWithProducts();
+
+        IEnumerable<CategoryViewModel> GetCategories();
 
         CategoryInputModel Create(CategoryInputModel model);
+
+        Task Delete(string id);
 	}
 }

@@ -12,8 +12,8 @@ using ShopApp.Models;
 
 namespace ShopApp.Web.Services.Category
 {
-	public class CategoryService : ICategoryService
-	{
+    public class CategoryService : ICategoryService
+    {
         public readonly IAccountService accountService;
 
         public CategoryService(IAccountService accountService)
@@ -21,17 +21,17 @@ namespace ShopApp.Web.Services.Category
             this.accountService = accountService;
         }
 
-		private ShopAppDbContext dbContext
-		{
-			get
-			{
-				return HttpContext.Current.GetOwinContext().Get<ShopAppDbContext>();
-			}
-		}
+        private ShopAppDbContext dbContext
+        {
+            get
+            {
+                return HttpContext.Current.GetOwinContext().Get<ShopAppDbContext>();
+            }
+        }
 
         public CategoryInputModel Create(CategoryInputModel model)
         {
-            if(this.dbContext.Categories.Any(c => c.Name == model.Name))
+            if (this.dbContext.Categories.Any(c => c.Name == model.Name))
             {
                 throw new InvalidOperationException("Category already exists!");
             }
@@ -42,6 +42,7 @@ namespace ShopApp.Web.Services.Category
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = model.Name,
+                CoverUrl = model.CoverUrl,
                 CreatedOn = DateTime.UtcNow,
                 CreatorId = user.Id
             };
@@ -52,33 +53,63 @@ namespace ShopApp.Web.Services.Category
             return model;
         }
 
+        public async Task Delete(string id)
+        {
+            CategoryViewModel categoryModel = this.GetCategory(id);
+
+            ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == categoryModel.Id);
+
+            this.dbContext.Categories.Remove(categoryEntity);
+            this.dbContext.SaveChanges();
+        }
+
         public IEnumerable<CategoryViewModel> GetCategories()
-		{
-			List<CategoryViewModel> categories =
-				this.dbContext
-				.Categories
-				.Include("Products")
-				.Select(c => new CategoryViewModel
-				{
-					Id = c.Id,
-					Name = c.Name,
-					Products = c.Products.Select(p => new ProductViewModel
-					{
-						Id = p.Id,
-						Name = p.Name,
-						AddedOn = p.AddedOn,
+        {
+            List<CategoryViewModel> categories = this.dbContext.Categories
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    CoverUrl = c.CoverUrl,
+                    Name = c.Name
+                })
+                .ToList();
+
+            return categories;
+        }
+
+        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts()
+        {
+            List<CategoryViewModel> categories =
+                this.dbContext
+                .Categories
+                .Include("Products")
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CoverUrl = c.CoverUrl,
+                    Products = c.Products.Select(p => new ProductViewModel
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        AddedOn = p.AddedOn,
                         CoverUrl = p.CoverUrl,
-						Price = p.Price
-					})
-				}).ToList();
-            
-			return categories;
-		}
+                        Price = p.Price
+                    })
+                }).ToList();
+
+            return categories;
+        }
 
         public CategoryViewModel GetCategory(string id)
         {
-            CategoryViewModel category = this.GetCategories()
+            CategoryViewModel category = this.GetCategoriesWithProducts()
                 .FirstOrDefault(c => c.Id == id);
+
+            if (category == null)
+            {
+                throw new InvalidOperationException("Category doesn't exist.");
+            }
 
             return category;
         }

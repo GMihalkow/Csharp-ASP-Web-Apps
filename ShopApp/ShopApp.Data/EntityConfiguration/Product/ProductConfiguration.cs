@@ -11,7 +11,7 @@ namespace ShopApp.Data.EntityConfiguration.Product
 			this.HasRequired(p => p.Category)
 				.WithMany(c => c.Products)
 				.HasForeignKey(p => p.CategoryId)
-				.WillCascadeOnDelete(false);
+				.WillCascadeOnDelete(true);
 		}
 	}
 }

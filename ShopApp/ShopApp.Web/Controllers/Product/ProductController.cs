@@ -28,7 +28,7 @@ namespace ShopApp.Web.Controllers.Product
 
         public ActionResult All()
         {
-            List<CategoryViewModel> categories = this.categoryService.GetCategories().ToList();
+            List<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts().ToList();
 
             return this.View(categories);
         }

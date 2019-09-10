@@ -1,4 +1,9 @@
-﻿<div class="banner-image-wrapper"></div>
-<div class="w-60r mx-auto">
-    New deals
+﻿@model IEnumerable<CategoryViewModel>
+
+<div class="banner-image-wrapper"></div>
+<div class="categoreis-index-wrapper w-60r mx-auto">
+    @foreach(var category in this.Model)
+    {
+       @Html.Partial("_CategoryIndexPartial", category);
+    }
 </div>

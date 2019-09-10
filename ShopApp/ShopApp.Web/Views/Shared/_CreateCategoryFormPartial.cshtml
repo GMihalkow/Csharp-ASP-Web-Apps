@@ -1,4 +1,4 @@
-﻿@model CategoryViewModel
+﻿@model CategoryInputModel
 
 <form class="modal-form" action="@Url.Action("Create","Category")" method="@FormMethod.Post.ToString()">
     @Html.ValidationSummary(true)
@@ -6,5 +6,10 @@
         <label for="@nameof(this.Model.Name)">Name</label>
         @Html.EditorFor(c => c.Name)
         @Html.ValidationMessageFor(c => c.Name)
+    </div>
+    <div>
+        <label for="@nameof(this.Model.CoverUrl)">Cover</label>
+        @Html.EditorFor(c => c.CoverUrl)
+        @Html.ValidationMessageFor(c => c.CoverUrl)
     </div>
 </form>

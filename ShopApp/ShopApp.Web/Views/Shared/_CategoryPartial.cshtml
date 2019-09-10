@@ -6,8 +6,9 @@
     {
         if (this.User.IsInRole(RolesConstants.Administrator))
         {
-            <button shop-action="edit-category" class="ui-button ui-widget ui-corner-all"><i class="fas fa-edit"></i></button>
+            <button shop-action="edit-category" class="bg-edit ui-button ui-widget ui-corner-all"><i class="fas fa-edit"></i></button>
             <button shop-action="add-product" class="ui-button ui-widget ui-corner-all"><i class="fas fa-plus"></i></button>
+            <button shop-action="delete-category" class="ui-button bg-delete ui-widget ui-corner-all"><i class="fas fa-minus"></i></button>
         }
     }
 </div>

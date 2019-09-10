@@ -18,6 +18,33 @@
 
 .product-items {
     width: 43rem;
+    margin-bottom: 2rem;
+}
+
+.categoreis-index-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-index-partial {
+    height: 20rem;
+    width: 15rem;
+    margin: 2rem 2.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.category-index-partial > img {
+    height: 90%;
+    display: block;
+    margin: 0 auto;
+    width: auto;
+}
+
+.category-index-partial > p {
+    width: 100%;
+    padding: 0.5rem;
+    border: #ccc solid 0.5px;
 }
 
 .category-partial {
@@ -25,6 +52,7 @@
     width: 100%;
     padding: 0.5rem 0;
 }
+
 .category-partial > button {
 	margin-left: auto;
 }
@@ -46,6 +74,7 @@
     padding: 0.5rem 0;
 	color: #000;
     width: 6rem;
+    font-size: 14px;
     text-align: start;
     font-weight: bold;
 }
@@ -72,7 +101,7 @@
 
 .categories-list {
 	height: 100%;
-	padding: 1rem 0.5rem;
+	padding: 1rem 0.2rem;
 	display: block;
 }
 

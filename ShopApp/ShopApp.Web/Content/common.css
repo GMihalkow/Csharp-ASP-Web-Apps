@@ -27,6 +27,14 @@ li.ui-menu-item.ui-state-hover {
     margin: 0px;
 }
 
+.ui-button.bg-delete {
+    background-color: #b00;
+}
+
+.ui-button.bg-edit {
+    background-color: #bb0;
+}
+
 .mx-auto {
 	margin: 0 auto;
 }

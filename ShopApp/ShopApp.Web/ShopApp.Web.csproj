@@ -278,6 +278,7 @@
     <Content Include="Views\Product\_AddProductFormPartial.cshtml" />
     <Content Include="Views\Shared\_ErrorDialogTemplate.cshtml" />
     <Content Include="Views\Shared\_CheckoutPartialTemplate.cshtml" />
+    <Content Include="Views\Shared\_CategoryIndexPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

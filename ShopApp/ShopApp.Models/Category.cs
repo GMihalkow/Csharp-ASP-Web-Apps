@@ -8,7 +8,8 @@ namespace ShopApp.Models
 		public string Name { get; set; }
 		public ICollection<Product> Products { get; set; }
 		public DateTime CreatedOn { get; set; }
-		public string CreatorId { get; set; }
+        public string CoverUrl { get; set; }
+        public string CreatorId { get; set; }
 		public ShopUser Creator { get; set; }
 	}
 }

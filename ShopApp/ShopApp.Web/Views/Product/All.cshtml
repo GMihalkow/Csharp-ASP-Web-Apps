@@ -40,7 +40,7 @@
     if (this.User.IsInRole(RolesConstants.Administrator))
     {
         <div id="create-category-form-wrapper" title="Create Category">
-            @Html.Partial("_CreateCategoryFormPartial", new CategoryViewModel())
+            @Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
         </div>
 
         <div id="add-product-form-wrapper" title="Add a Product">
@@ -62,6 +62,25 @@
 
     <script type="text/javascript">
         $(function () {
+            // attaching remove category functionality
+            var removeCategoryButtons = $("[shop-action='delete-category']");
+            removeCategoryButtons.on("click", function (e) {
+                var _this = $(this);
+
+                // TODO [GM]: Maybe change [shop-role-id] to [shop-category-id] ?
+                var categoryId = $(e.currentTarget).parent().find("[shop-role-id]").attr("shop-role-id");
+
+                $.ajax({
+                    url: "/Category/Delete/" + categoryId
+                }).then(function (res) {
+                    // removing the category from the categories list
+                    _this.parent().remove();
+
+                    // removing displayed the products
+                    $(".product-items .featured-products").empty("");
+                });
+            });
+
             // add product form
             var addProductFormDialog = $("#add-product-form-wrapper");
 
@@ -177,7 +196,7 @@
 
             createCategoryFormDialog.dialog({
                 autoOpen: false,
-                height: 250,
+                height: 400,
                 width: 350,
                 modal: true,
                 show: {
@@ -208,8 +227,20 @@
                 }
             });
 
-            $("#create-category").button().on("click", function () {
-                createCategoryFormDialog.dialog("open");
+            $("#create-category, [shop-action='edit-category']").button().on("click", function (e) {
+                if ($(e.currentTarget).attr("shop-action") === "edit-category") {
+                    var categoryId = "";
+
+                    $.ajax({
+                        url: "/Category/Get/" + categoryId,
+                        method: "GET"
+                    }).then(function (res) {
+                        // TODO [GM]: Fully implement edit functionality or Category
+                    });
+
+                } else {
+                    createCategoryFormDialog.dialog("open");
+                }
             });
 
             // fetching the products per category
@@ -263,7 +294,7 @@
                     var productDetailsButtons = $("[shop-action='product-details']");
                     productDetailsButtons.on("click", function () {
                         var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-
+                        // TODO [GM]: Why POST?
                         $.ajax({
                             method: "POST",
                             url: "/Product/GetProduct/" + productId
