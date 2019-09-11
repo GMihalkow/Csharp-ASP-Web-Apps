@@ -41,6 +41,7 @@ namespace ShopApp.Web.Services.Product
                 .Where(product => product.Id == id)
                 .Select(product => new ProductViewModel
                 {
+                    Id = product.Id,
                     Name = product.Name,
                     Price = product.Price,
                     CoverUrl = product.CoverUrl,

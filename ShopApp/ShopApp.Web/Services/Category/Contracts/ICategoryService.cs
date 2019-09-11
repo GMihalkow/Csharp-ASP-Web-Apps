@@ -12,7 +12,7 @@ namespace ShopApp.Web.Services.Category.Contracts
 
         IEnumerable<CategoryViewModel> GetCategories();
 
-        CategoryInputModel Create(CategoryInputModel model);
+        CategoryInputModel CreateOrEdit(CategoryInputModel model);
 
         Task Delete(string id);
 	}

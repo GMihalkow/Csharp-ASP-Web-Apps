@@ -39,13 +39,9 @@
 {
     if (this.User.IsInRole(RolesConstants.Administrator))
     {
-        <div id="create-category-form-wrapper" title="Create Category">
-            @Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
-        </div>
+        <div id="create-category-form-wrapper" title="Create Category"></div>
 
-        <div id="add-product-form-wrapper" title="Add a Product">
-            @Html.Partial("_AddProductFormPartial", new ProductInputModel())
-        </div>
+        <div id="add-product-form-wrapper" title="Add a Product"></div>
     }
 }
 
@@ -56,8 +52,16 @@
         @Html.Partial("_ProductDetailsPartialTemplate")
     </script>
 
+    <script id="add-product-form-template">
+        @Html.Partial("_AddProductFormPartial", new ProductInputModel())
+    </script>
+
     <script id="product-container-template" type="text/html">
         @Html.Partial("_ProductPartialTemplate")
+    </script>
+
+    <script id="create-category-form-template" type="text/html">
+        @Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
     </script>
 
     <script type="text/javascript">
@@ -76,8 +80,8 @@
                     // removing the category from the categories list
                     _this.parent().remove();
 
-                    // removing displayed the products
-                    $(".product-items .featured-products").empty("");
+                    // reloading the page
+                    window.location.reload();
                 });
             });
 
@@ -118,9 +122,8 @@
             });
 
             $("[shop-action='add-product']").button().on("click", function () {
-                // TODO [GM]: Resolve this problem
-                // emptying form input fields
-                //addProductFormDialog.find("input, textarea").val("");
+                var template = $("#add-product-form-template").html();
+                $("#add-product-form-wrapper").html(template);
 
                 var categoryId = $(this).parent().children("a[shop-role-id]");
 
@@ -137,7 +140,7 @@
 
             productDetailsDialog.dialog({
                 autoOpen: false,
-                height: 600,
+                height: 620,
                 width: 500,
                 modal: true,
                 show: {
@@ -149,9 +152,38 @@
                     duration: 500
                 },
                 buttons: {
+                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
+                    {
+                        @: Edit: function () {
+                        @:  var template = $("#add-product-form-template").html();
+                        @:  var $addProductForm = $("#add-product-form-wrapper").html(template);
+
+                        @:  var productId = $(this).parent().find("[shop-product-id]").attr("shop-product-id");
+                        @:  var productName = $(this).parent().find("[shop-product-name]").text();
+                        @:  var productPrice = $(this).parent().find("[shop-product-price]").text();
+                        @:  var productCoverURL = $(this).parent().find("[shop-product-cover-url]").attr("src");
+                        @:  var productDescription = $(this).parent().find("[shop-product-description]").text().trim();
+
+                        @*  TODO [GM]: Implement edit product functionalit fully and find a way to pass the category id *@
+                        @*  changing the title of the dialog and the button's name *@
+                        @:  $addProductForm.prev().find(".ui-dialog-title").text("Edit Product");
+                        @:  $addProductForm.next().find("button").first().text("Edit")
+
+                        @:  $addProductForm.find("#Name").attr("value", productName);
+                        @:  $addProductForm.find("#Description").text(productDescription);
+                        @:  $addProductForm.find("#Price").attr("value", productPrice);
+                        @:  $addProductForm.find("#CoverUrl").attr("value", productCoverURL);
+                        @:  $addProductForm.append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
+
+                        @:  addProductFormDialog.dialog("open");
+                        @:  
+
+                        @: 
+                        @: },
+                    }
                     Cancel: function () {
                         productDetailsDialog.dialog("close");
-                    }
+                    },
                 }
             });
 
@@ -228,14 +260,22 @@
             });
 
             $("#create-category, [shop-action='edit-category']").button().on("click", function (e) {
+                var template = $("#create-category-form-template").html();
+                console.log(template);
+                createCategoryFormDialog.html(template);
+
                 if ($(e.currentTarget).attr("shop-action") === "edit-category") {
-                    var categoryId = "";
+                    var categoryId = $(this).parent().find("[shop-role-id]").attr("shop-role-id");
 
                     $.ajax({
                         url: "/Category/Get/" + categoryId,
                         method: "GET"
-                    }).then(function (res) {
-                        // TODO [GM]: Fully implement edit functionality or Category
+                    }).then(function (category) {
+                        createCategoryFormDialog.dialog("open");
+
+                        $("#create-category-form-wrapper .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
+                        $("#create-category-form-wrapper #Name").attr("value", category.Name);
+                        $("#create-category-form-wrapper #CoverUrl").attr("value", category.CoverUrl);
                     });
 
                 } else {
@@ -256,6 +296,10 @@
                 }).then(function (res) {
                     var productsHolderElement = $(".products-wrapper > .product-items > section");
                     productsHolderElement.html("");
+
+                    if (Array.from(res).length == 0) {
+                        productsHolderElement.html("<p class='p-1 w-100 text-center'>No products found for this category.</p>");
+                    }
 
                     Array.from(res).forEach(function (product) {
                         var template = $("#product-container-template").html();

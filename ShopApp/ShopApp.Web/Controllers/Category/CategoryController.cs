@@ -26,7 +26,7 @@ namespace ShopApp.Web.Controllers.Category
                 throw new InvalidOperationException(this.ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
             }
 
-            this.categoryService.Create(model);
+            this.categoryService.CreateOrEdit(model);
 
             return this.Redirect(this.Url.Action("All", "Product"));
         }
@@ -53,7 +53,7 @@ namespace ShopApp.Web.Controllers.Category
         public ActionResult Get(string id)
         {
             CategoryViewModel categoryModel = this.categoryService.GetCategory(id);
-                
+
             return this.Json(categoryModel, JsonRequestBehavior.AllowGet);
         }
     }

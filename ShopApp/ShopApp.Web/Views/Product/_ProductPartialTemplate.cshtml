@@ -3,12 +3,10 @@
         <a href="#" shop-product-name="{{Name}}" shop-action="product-details">{{Name}}</a>
     </header>
     <img shop-action="product-details" src="{{CoverUrl}}" />
-    <section>
-        <div>
-            <label for="product-quantity">Quantity</label>
-        </div>
-        <input shop-product-quantity type="number" />
-    </section>
+    <div class="text-center">
+        <label for="product-quantity">Quantity</label>
+    </div>
+    <input class="d-block mx-auto" shop-product-quantity type="number" />
     <div class="text-center"> ${{Price}} </div>
     <section>
         <button shop-action="order-product" class="ui-button ui-widget ui-corner-all" type="button">Order</button>

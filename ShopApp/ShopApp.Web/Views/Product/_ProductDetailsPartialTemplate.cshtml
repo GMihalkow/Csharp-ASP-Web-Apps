@@ -1,15 +1,19 @@
-﻿<section class="product-details-wrapper">
+﻿<section shop-product-id="{{Id}}" class="product-details-wrapper">
     <header>
-        <h2>{{Name}}</h2>
+        <h2 shop-product-name>{{Name}}</h2>
     </header>
     <section>
-        <img src="{{CoverUrl}}" />
-        <section
-            <header>Description</header>
-            {{Description}}
-        </section>
+        <img shop-product-cover-url src="{{CoverUrl}}" />
         <section>
-            Price: {{Price}}
+            <div class="w-100 text-center p-1">
+                <header>Description</header>
+            </div>
+            <div class="product-description" shop-product-description>
+                {{Description}}
+            </div>
+        </section>
+        <section class="p-1 text-center w-100">
+            Price: <span shop-product-price>{{Price}}</span>
         </section>
     </section>
 </section>
