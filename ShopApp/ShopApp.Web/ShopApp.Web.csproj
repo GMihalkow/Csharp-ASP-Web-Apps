@@ -204,6 +204,7 @@
     <Content Include="Content\jqueryUI\jquery-ui.structure.css" />
     <Content Include="Content\jqueryUI\jquery-ui.theme.css" />
     <Content Include="Content\navigation.css" />
+    <Content Include="Content\pagging.css" />
     <Content Include="Content\products.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\style.css" />
@@ -230,6 +231,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Constants\RolesContants.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Category\CategoryController.cs" />
@@ -279,6 +281,7 @@
     <Content Include="Views\Shared\_ErrorDialogTemplate.cshtml" />
     <Content Include="Views\Shared\_CheckoutPartialTemplate.cshtml" />
     <Content Include="Views\Shared\_CategoryIndexPartial.cshtml" />
+    <Content Include="Views\Shared\_ProductsPaggingPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

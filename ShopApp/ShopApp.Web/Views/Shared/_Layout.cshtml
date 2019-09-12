@@ -32,7 +32,7 @@
         <nav class="shop-nav">
             <ul>
                 <li>@Html.ActionLink("Index", "Index", "Home")</li>
-                <li>@Html.ActionLink("Browse", "All", "Product")</li>
+                <li><a href="/Product/All?category=Womens">Browse</a></li>
                 <li>@Html.ActionLink("About", "About", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 <li class="dropdown">
@@ -45,7 +45,7 @@
                         }
                         else
                         {
-                            @Html.ActionLink("Login", "Login", "Account")
+                            @Html.ActionLink("Login", "Login", "Account", null,  new { shop_action = "logout" })
                             @Html.ActionLink("Register", "Register", "Account")
                         }
                     </div>
@@ -87,6 +87,12 @@
 
     <script type="text/javascript">
         $(function () {
+            @* Deleting the order's session storage after logout *@
+            var logoutButton = $(".shop-nav").find("[shop-action='logout']");
+            logoutButton.on("click", function () {
+                window.sessionStorage.clear();
+            });
+
             // Visualising the ordered elements count
             @if (this.User.Identity.IsAuthenticated)
             {
@@ -98,7 +104,7 @@
             var checkoutDialog = $("#checkout-dialog");
             checkoutDialog.dialog({
                 autoOpen: false,
-                height: 500,
+                height: 550,
                 width: 400,
                 modal: true,
                 show: {
@@ -143,7 +149,8 @@
                                              return {
                                                  ProductId: product.productId,
                                                  Quantity: product.quantity,
-                                                 Address: $("#checkout-dialog [shop-role='order-address']").val()
+                                                 Address: $("#checkout-dialog [shop-role='order-address']").val(),
+                                                 Description: $("#checkout-dialog [shop-role='order-description']").val()
                                              };
                                          }
                                      })),
@@ -165,15 +172,31 @@
                 }
             });
 
-
             var checkoutButton = $(".banner .banner-order-information > a");
             checkoutButton.on("click", function (e) {
                 e.preventDefault();
 
+                var orders = Object.keys(window.sessionStorage)
+                    .map(function (key) {
+                        return {
+                            name: key,
+                            productId: JSON.parse(window.sessionStorage[key]).productId,
+                            quantity: JSON.parse(window.sessionStorage[key]).quantity,
+                            price: JSON.parse(window.sessionStorage[key]).price
+                        };
+                    });
+
+                var totalPrice = 0;
+
+                Array.from(orders).forEach(function (o) {
+                    totalPrice += (parseFloat(o.quantity) * parseFloat(o.price));
+                });
+
+
                 @if (this.User.Identity.IsAuthenticated)
                 {
                     @: var template = $("#checkout-partial-template").html();
-                    @: var rendered = Mustache.render(template, { orders: Object.keys(window.sessionStorage).map(function (key) { return { name: key, productId: JSON.parse(window.sessionStorage[key]).productId, quantity: JSON.parse(window.sessionStorage[key]).quantity }; }) });
+                    @: var rendered = Mustache.render(template, { orders: orders, totalPrice: totalPrice.toFixed(2).toString() });
 
                     @: $("#checkout-dialog").html(rendered);
 
@@ -183,6 +206,8 @@
                         @: var productName = currentRow.children().first().text();
                         @: window.sessionStorage.removeItem(productName);
                         @: currentRow.remove();
+                        @: checkoutDialog.dialog("close");
+                        @: checkoutButton.click();
 
                         @: var cartElement = $(".banner .banner-order-information i");
                         @: cartElement.text(window.sessionStorage.length);
@@ -192,7 +217,7 @@
                 }
                 else
                 {
-                    @: window.location.href = "@Url.Action("Login", "Account")"
+                    @: window.location.href = "@Url.Action("Login", "Account")";
                 }
 
             });

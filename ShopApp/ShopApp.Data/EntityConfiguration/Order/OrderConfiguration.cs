@@ -10,7 +10,8 @@ namespace ShopApp.Data.EntityConfiguration.Order
 
             this.HasOptional(order => order.Product)
                 .WithMany(product => product.Orders)
-                .HasForeignKey(order => order.ProductId);
+                .HasForeignKey(order => order.ProductId)
+                .WillCascadeOnDelete(true);
 
             this.HasOptional(order => order.User)
                 .WithMany(user => user.Orders)

@@ -1,14 +1,14 @@
 ﻿@model CategoryViewModel
 
 <div class="category-partial">
-    <a shop-role-id="@this.Model.Id" href="#">@this.Model.Name</a>
+    <a shop-role-id="@this.Model.Id" href="/Product/All?category=@this.Model.Name">@this.Model.Name</a>
     @if (this.User.Identity.IsAuthenticated)
     {
         if (this.User.IsInRole(RolesConstants.Administrator))
         {
             <button shop-action="edit-category" class="bg-edit ui-button ui-widget ui-corner-all"><i class="fas fa-edit"></i></button>
             <button shop-action="add-product" class="ui-button ui-widget ui-corner-all"><i class="fas fa-plus"></i></button>
-            <button shop-action="delete-category" class="ui-button bg-delete ui-widget ui-corner-all"><i class="fas fa-minus"></i></button>
+            <a href="/Category/Delete/@this.Model.Id" class="category-action-btn ui-button w-30 text-center bg-delete ui-widget ui-corner-all"><i class="fas fa-minus"></i></a>
         }
     }
 </div>

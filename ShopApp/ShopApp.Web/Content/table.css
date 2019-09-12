@@ -1,0 +1,22 @@
+﻿table {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
+
+tr:nth-child(odd){
+    background-color: #eee;
+}
+
+th {
+    background-color: #000;
+    color: #fff;
+}
+
+th, td {
+    padding: 0.5rem;
+}
+
+th, td {
+    border-bottom: 1px solid #ccc;
+}

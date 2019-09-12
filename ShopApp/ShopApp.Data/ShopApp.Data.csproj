@@ -132,6 +132,10 @@
     <Compile Include="Migrations\201909100759146_category-products-cascade.Designer.cs">
       <DependentUpon>201909100759146_category-products-cascade.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909121040297_Order_ProductId_Cascade.cs" />
+    <Compile Include="Migrations\201909121040297_Order_ProductId_Cascade.Designer.cs">
+      <DependentUpon>201909121040297_Order_ProductId_Cascade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ShopAppDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909100759146_category-products-cascade.resx">
       <DependentUpon>201909100759146_category-products-cascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909121040297_Order_ProductId_Cascade.resx">
+      <DependentUpon>201909121040297_Order_ProductId_Cascade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

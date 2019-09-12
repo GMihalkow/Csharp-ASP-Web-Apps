@@ -1,4 +1,5 @@
 ﻿<section shop-product-id="{{Id}}" class="product-details-wrapper">
+    <span shop-product-category-id="{{CategoryId}}"></span>
     <header>
         <h2 shop-product-name>{{Name}}</h2>
     </header>
@@ -13,7 +14,7 @@
             </div>
         </section>
         <section class="p-1 text-center w-100">
-            Price: <span shop-product-price>{{Price}}</span>
+            Price: $<span shop-product-price>{{Price}}</span>
         </section>
     </section>
 </section>

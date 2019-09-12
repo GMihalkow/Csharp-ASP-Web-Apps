@@ -1,0 +1,39 @@
+﻿<ul id="products-pagging-wrapper" class="pagging-wrapper"></ul>
+
+<script type="text/javascript">
+    $(function () {
+        // getting the URL query parameters
+        const urlParams = Array.from(window.location.search.split(/[?&]/))
+            .filter(function (p) {
+                return p.length > 0 || p;
+            }).map(function (p) {
+                var fullParameter = p.split("=");
+                var key = fullParameter[0];
+                var value = fullParameter[1];
+
+                return {
+                    key: key,
+                    value: value
+                };
+            });
+
+        // getting the category parameter
+        const myParam = Array.from(urlParams).find(function (p) {
+            return p.key === "category";
+        });
+
+        // fetching the products count for this category
+        $.ajax({
+            method: "GET",
+            url: "/Product/Count?category=" + myParam.value
+        }).then(function (productsCount) {
+            var $paggingWrapper = $("#products-pagging-wrapper");
+            var pagesCount = Math.floor(productsCount / 9) + 1;
+
+            for (var index = 1; index <= pagesCount; index++) {
+                $paggingWrapper.append("<li class='mx-auto'><a href='/Product/All?category=" + myParam.value + "&page=" + (index - 1) + "'>" + index + "</a></li>");
+            }
+        });
+
+    });
+</script>

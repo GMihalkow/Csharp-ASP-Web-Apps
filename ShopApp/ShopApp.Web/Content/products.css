@@ -41,10 +41,15 @@
     width: auto;
 }
 
-.category-index-partial > p {
+.category-index-partial p {
     width: 100%;
     padding: 0.5rem;
     border: #ccc solid 0.5px;
+}
+
+.category-index-partial > a {
+    text-decoration: none;
+    color: #000;
 }
 
 .category-partial {
@@ -88,6 +93,11 @@
     font-weight: bold;
 }
 
+.category-partial a.category-action-btn {
+    text-align: center;
+    width: 30%;
+}
+
 .products-wrapper-admin-toolbar {
 	width: 100%;
 	height: 4.2rem;
@@ -129,7 +139,7 @@
 
 .featured-products > .product-container > header {
     padding: 1rem;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
 }

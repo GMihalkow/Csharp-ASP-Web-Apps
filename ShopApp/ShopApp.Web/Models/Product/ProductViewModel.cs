@@ -12,6 +12,8 @@ namespace ShopApp.Web.Models
 
         public decimal Price { get; set; }
 
+        public string CategoryId { get; set; }
+
         public string CoverUrl { get; set; }
 
         public DateTime? AddedOn { get; set; }

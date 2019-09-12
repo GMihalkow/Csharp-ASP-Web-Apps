@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity.Owin;
@@ -35,6 +36,11 @@ namespace ShopApp.Web.Services.Order
 
             // deserializing the json object to order entities
             ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(ordersJson);
+
+            if(orders.Any(order => String.IsNullOrEmpty(order.Address)))
+            {
+                throw new InvalidOperationException("You must provide an address for the Order.");
+            }
 
             // adding the UserId's to the orders
             foreach (var order in orders)

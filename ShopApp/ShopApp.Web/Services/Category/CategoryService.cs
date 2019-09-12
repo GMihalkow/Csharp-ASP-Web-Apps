@@ -32,8 +32,8 @@ namespace ShopApp.Web.Services.Category
         private bool EditCategory(CategoryInputModel model)
         {
             ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == model.Id);
-            
-            if(categoryEntity != null)
+
+            if (categoryEntity != null)
             {
                 categoryEntity.Name = model.Name;
                 categoryEntity.CoverUrl = model.CoverUrl;
@@ -101,7 +101,7 @@ namespace ShopApp.Web.Services.Category
             return categories;
         }
 
-        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts()
+        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page)
         {
             List<CategoryViewModel> categories =
                 this.dbContext
@@ -111,23 +111,34 @@ namespace ShopApp.Web.Services.Category
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    CoverUrl = c.CoverUrl,
-                    Products = c.Products.Select(p => new ProductViewModel
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        AddedOn = p.AddedOn,
-                        CoverUrl = p.CoverUrl,
-                        Price = p.Price
-                    })
+                    CoverUrl = c.CoverUrl
                 }).ToList();
+
+            CategoryViewModel selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
+
+            selectedCategory.Products = this.dbContext.Products
+                .Where(p => p.CategoryId == selectedCategory.Id)
+                .OrderBy(p => p.AddedOn)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    CategoryId = p.CategoryId,
+                    CoverUrl = p.CoverUrl,
+                    Description = p.Description,
+                    Name = p.Name,
+                    Price = p.Price,
+                    AddedOn = p.AddedOn
+                })
+                .Skip(page * GlobalConstants.PageSize)
+                .Take(GlobalConstants.PageSize)
+                .ToList();
 
             return categories;
         }
 
         public CategoryViewModel GetCategory(string id)
         {
-            CategoryViewModel category = this.GetCategoriesWithProducts()
+            CategoryViewModel category = this.GetCategories()
                 .FirstOrDefault(c => c.Id == id);
 
             if (category == null)
@@ -136,6 +147,35 @@ namespace ShopApp.Web.Services.Category
             }
 
             return category;
+        }
+
+        public CategoryViewModel GetCategoryByName(string name)
+        {
+            CategoryViewModel categoryModel = this.dbContext.Categories
+                .Where(c => c.Name == name)
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CoverUrl = c.CoverUrl,
+                    Products = c.Products.Select(p => new ProductViewModel
+                    {
+                        Id = p.Id,
+                        CoverUrl = p.CoverUrl,
+                        AddedOn = p.AddedOn,
+                        CategoryId = p.CategoryId,
+                        Description = p.Description,
+                        Name = p.Name,
+                        Price = p.Price
+                    })
+                })?.FirstOrDefault();
+
+            if (categoryModel == null)
+            {
+                throw new InvalidOperationException("Invalid category name.");
+            }
+
+            return categoryModel;
         }
     }
 }

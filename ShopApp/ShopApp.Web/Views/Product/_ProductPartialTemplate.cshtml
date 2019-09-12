@@ -1,13 +1,15 @@
-﻿<section class="product-container" shop-product-id="{{Id}}">
+﻿@model ProductViewModel
+
+<section class="product-container" shop-product-id="@this.Model.Id">
     <header>
-        <a href="#" shop-product-name="{{Name}}" shop-action="product-details">{{Name}}</a>
+        <a href="#" shop-product-name="@this.Model.Name" shop-action="product-details">@this.Model.Name</a>
     </header>
-    <img shop-action="product-details" src="{{CoverUrl}}" />
+    <img shop-action="product-details" src="@this.Model.CoverUrl" />
     <div class="text-center">
         <label for="product-quantity">Quantity</label>
     </div>
     <input class="d-block mx-auto" shop-product-quantity type="number" />
-    <div class="text-center"> ${{Price}} </div>
+    <div class="text-center" shop-product-price="@this.Model.Price"> $@this.Model.Price </div>
     <section>
         <button shop-action="order-product" class="ui-button ui-widget ui-corner-all" type="button">Order</button>
     </section>

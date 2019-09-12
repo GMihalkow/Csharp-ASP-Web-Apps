@@ -26,9 +26,9 @@ namespace ShopApp.Web.Controllers.Product
             return this.Json(productModel, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult All()
+        public ActionResult All(string category = "Womens", int page = 0)
         {
-            List<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts().ToList();
+            List<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page).ToList();
 
             return this.View(categories);
         }
@@ -41,10 +41,19 @@ namespace ShopApp.Web.Controllers.Product
             {
                 // TODO [GM]: Handle error properly
             }
-            
+
+            string categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
+
             this.productService.AddProduct(productModel);
 
-            return this.RedirectToAction("All");
+            return this.Redirect("/Product/All?category=" + categoryName);
+        }
+
+        public ActionResult Count(string category = "Womens")
+        {
+            int productsCount = this.productService.ProductsCountByCategory(category);
+
+            return this.Json(productsCount, JsonRequestBehavior.AllowGet);
         }
     }
 }

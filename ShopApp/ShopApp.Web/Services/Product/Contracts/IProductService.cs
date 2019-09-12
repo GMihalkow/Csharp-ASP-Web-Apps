@@ -7,5 +7,7 @@ namespace ShopApp.Web.Services.Product.Contracts
         void AddProduct(ProductInputModel productModel);
 
         ProductViewModel RetrieveProduct(string id);
+
+        int ProductsCountByCategory(string category);
     }
 }

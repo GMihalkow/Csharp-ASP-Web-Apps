@@ -8,11 +8,11 @@
     </thead>
     <tbody>
         {{#orders}}
-        <tr shop-product-id="{{productId}}">
-            <td>{{name}}</td>
-            <td><input class="text-center w-50" type="number" value="{{quantity}}"/></td>
-            <td><button shop-action="remove-product" class="ui-button ui-widget ui-corner-all">Remove</button></td>
-        </tr>
+            <tr shop-product-id="{{productId}}">
+                <td>{{name}}</td>
+                <td><input class="text-center w-50" type="number" value="{{quantity}}" /></td>
+                <td><button shop-action="remove-product" class="ui-button ui-widget ui-corner-all">Remove</button></td>
+            </tr>
         {{/orders}}
     </tbody>
 </table>
@@ -20,5 +20,15 @@
     <label for="address">Address</label>
 </div>
 <div class="w-100">
-    <input id="address" class="d-block mx-auto" shop-role="order-address" type="text" name="address" />
+    <input id="address" class="d-block mx-auto" shop-role="order-address" type="text" name="address" placeholder="Address..." />
+</div>
+<div class="w-100 mx-auto text-center p-1">
+    <label for="description">Description</label>
+</div>
+<div class="w-100">
+    <textarea id="description" rows="4" shop-role="order-description" cols="30" class="d-block mx-auto"></textarea>
+</div>
+<div class="w-100 mx-auto text-center p-1">
+    <label for="totalPrice">Total Price:</label>
+    <span shop-order-total-price>${{totalPrice}}</span>
 </div>

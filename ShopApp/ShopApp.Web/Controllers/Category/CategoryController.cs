@@ -44,9 +44,11 @@ namespace ShopApp.Web.Controllers.Category
         }
 
         [Authorize(Roles = RolesConstants.Administrator)]
-        public async Task Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             await this.categoryService.Delete(id);
+
+            return this.RedirectToAction("All", "Product");
         }
 
         [Authorize]

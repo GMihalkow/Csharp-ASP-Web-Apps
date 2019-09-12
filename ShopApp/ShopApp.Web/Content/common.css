@@ -51,6 +51,10 @@ li.ui-menu-item.ui-state-hover {
 	width: 50%;
 }
 
+.w-30 {
+    width: 30%;
+}
+
 .w-90 {
 	width: 90%;
 }

@@ -4,6 +4,7 @@ namespace ShopApp.Web.Models
 {
     public class ProductInputModel
     {
+        public string Id { get; set; }
         [Required]
         [MinLength(3)]
         public string Name { get; set; }
