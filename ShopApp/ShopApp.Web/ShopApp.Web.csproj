@@ -206,6 +206,7 @@
     <Content Include="Content\navigation.css" />
     <Content Include="Content\pagging.css" />
     <Content Include="Content\products.css" />
+    <Content Include="Content\profile.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\table.css" />
@@ -214,7 +215,8 @@
     <Content Include="Images\shop-banner.jpg" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
-    <Content Include="Views\Product\_ProductDetailsPartialTemplate.cshtml" />
+    <Content Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
+    <Content Include="Views\Account\MyProfile.cshtml" />
     <None Include="Views\Product\_ProductPartialTemplate.cshtml" />
     <Content Include="Views\Shared\_CreateCategoryFormPartial.cshtml" />
     <None Include="scripts\jquery-1.8.0.intellisense.js" />
@@ -242,9 +244,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account\LoginInputModel.cs" />
+    <Compile Include="Models\Account\ProfileViewModel.cs" />
     <Compile Include="Models\Account\RegisterInputModel.cs" />
     <Compile Include="Models\Category\CategoryInputModel.cs" />
     <Compile Include="Models\Category\CategoryViewModel.cs" />
+    <Compile Include="Models\Order\OrderViewModel.cs" />
     <Compile Include="Models\Product\ProductInputModel.cs" />
     <Compile Include="Models\Product\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -282,6 +286,7 @@
     <Content Include="Views\Shared\_CheckoutPartialTemplate.cshtml" />
     <Content Include="Views\Shared\_CategoryIndexPartial.cshtml" />
     <Content Include="Views\Shared\_ProductsPaggingPartial.cshtml" />
+    <Content Include="Views\Shared\_ConfirmationPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -291,6 +296,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShopApp.Data\ShopApp.Data.csproj">

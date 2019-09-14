@@ -40,12 +40,16 @@
                     <div class="dropdown-content">
                         @if (this.User.Identity.IsAuthenticated)
                         {
-                            @Html.ActionLink("Profile", "Profle", "Account")
+                            if (this.User.IsInRole(RolesConstants.Administrator))
+                            {
+                                @Html.ActionLink("Orders", "All", "Order")
+                            }
+                            @Html.ActionLink("Profile", "MyProfile", "Account")
                             @Html.ActionLink("Logout", "Logout", "Account", null, new { shop_action = "logout" })
                         }
                         else
                         {
-                            @Html.ActionLink("Login", "Login", "Account", null,  new { shop_action = "logout" })
+                            @Html.ActionLink("Login", "Login", "Account", null, new { shop_action = "logout" })
                             @Html.ActionLink("Register", "Register", "Account")
                         }
                     </div>
@@ -80,6 +84,7 @@
     </footer>
 
     @RenderSection("scripts", required: false)
+    @RenderSection("templates", required: false)
 
     <script id="checkout-partial-template" type="text/html">
         @Html.Partial("_CheckoutPartialTemplate")

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using ShopApp.Data;
 using ShopApp.Models;
+using ShopApp.Web.Constants;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Order.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
@@ -28,7 +29,7 @@ namespace ShopApp.Web.Services.Order
             this.accountService = accountService;
             this.productService = productService;
         }
-        
+
         public async Task Checkout(string ordersJson)
         {
             // getting the logged in user's id
@@ -37,7 +38,7 @@ namespace ShopApp.Web.Services.Order
             // deserializing the json object to order entities
             ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(ordersJson);
 
-            if(orders.Any(order => String.IsNullOrEmpty(order.Address)))
+            if (orders.Any(order => String.IsNullOrEmpty(order.Address)))
             {
                 throw new InvalidOperationException("You must provide an address for the Order.");
             }
@@ -57,6 +58,18 @@ namespace ShopApp.Web.Services.Order
                 this.dbContext.Orders.Add(order);
                 this.dbContext.SaveChanges();
             }
+        }
+
+        public async Task CancelOrder(string orderId)
+        {
+            ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == orderId);
+            if (order == null || (order.User.UserName != HttpContext.Current.User.Identity.Name && HttpContext.Current.User.IsInRole(RolesConstants.Administrator)))
+            {
+                throw new InvalidOperationException("Invalid Order ID.");
+            }
+
+            this.dbContext.Orders.Remove(order);
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }

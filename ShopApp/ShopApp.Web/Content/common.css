@@ -59,6 +59,12 @@ li.ui-menu-item.ui-state-hover {
 	width: 90%;
 }
 
+.header-wrapper {
+    font-size: 24px;
+    color: #fff;
+    background-color: #000;
+}
+
 main {
     /*height: 100%;*/
     min-height: 100vh;

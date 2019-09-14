@@ -1,0 +1,188 @@
+﻿@model ProfileViewModel
+
+<section class="profile-wrapper w-60r mx-auto p-1">
+    <header class="header-wrapper p-1 w-100 text-center">My Profile</header>
+    <h2 class="text-center p-1 w-100">Hello @this.User.Identity.Name</h2>
+    <div class="profile-info w-50 text-center">
+        First Name: <span>
+            @if (String.IsNullOrEmpty(this.Model.FirstName))
+            {
+                @: -
+            }
+            else
+            {
+                @: @this.Html.DisplayFor(x => x.FirstName)
+            }
+        </span>
+    </div>
+    <div class="profile-info w-50 text-center">
+        Last Name: <span>
+            @if (String.IsNullOrEmpty(this.Model.LastName))
+            {
+                @: -
+            }
+            else
+            {
+                @: @this.Html.DisplayFor(x => x.LastName)
+            }
+        </span>
+    </div>
+    <div class="profile-info w-50 text-center">Phone Number: <span>@this.Model.PhoneNumber</span></div>
+    <div class="profile-info w-50 text-center">Email: <span>@this.Html.DisplayFor(x => x.EmailAddress)</span></div>
+    <div class="profile-info w-50 text-center">
+        BirthDate: <span>
+            @if (this.Model.BirthDate == null)
+            {
+                @: -
+            }
+            else
+            {
+                @: @this.Model.BirthDate.Value.ToString("yyyy/mm/dd")
+            }
+        </span>
+    </div>
+    <div class="profile-info w-50 text-center">Registered On: <span>@this.Model.RegisteredOn.ToString("yyyy/mm/dd")</span></div>
+    <div id="orders-history-wrapper" class="p-1 w-90 mx-auto">
+        <h3 class="text-center w-100 p-1">Orders History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Address</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in this.Model.Orders)
+                {
+                    <tr>
+                        <td>@order.Address</td>
+                        <td shop-product-id="@order.ProductId"><a href="" shop-action="product-details">@order.Product.Name</a></td>
+                        <td>@order.Quantity</td>
+                        <td>$@order.TotalPrice</td>
+                        <td>@order.Status.ToString()</td>
+                        <td><button shop-order-id="@order.Id" shop-action="cancel-order" class="ui-button ui-widget ui-corner-all">Cancel</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div id="confirm-order-cancelation-dialog" title="Confirm Cancelation"></div>
+
+<div id="product-details-dialog" title="Product Details"></div>
+
+@section scripts{
+
+    <script id="product-details-template" type="text/html">
+        @Html.Partial("_ProductDetailsPartialTemplate")
+    </script>
+
+    <script id="confrirm-order-cancelation-dialog-template" type="text/html">
+        @Html.Partial("_ConfirmationPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            // confirm order cancelation popup
+            var confirmOrderCancelationDialog = $("#confirm-order-cancelation-dialog");
+
+            confirmOrderCancelationDialog.dialog({
+                autoOpen: false,
+                height: 200,
+                width: 400,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    Confirm: function () {
+                        var orderId = $(this).parent().find("[shop-order-id]").attr("shop-order-id");
+
+                        $.ajax({
+                            url: "/Order/Cancel/" + orderId,
+                            method: "GET"
+                        }).then(function () {
+                            window.location.reload();
+                        });
+
+                    },
+                    Cancel: function () {
+                        confirmOrderCancelationDialog.dialog("close");
+                    }
+                }
+            });
+
+            // product details popup
+             // product details popup dialog
+            var productDetailsDialog = $("#product-details-dialog");
+
+            productDetailsDialog.dialog({
+                autoOpen: false,
+                height: 620,
+                width: 500,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    Cancel: function () {
+                        productDetailsDialog.dialog("close");
+                    },
+                }
+            });
+
+            // TODO [GM]: repeating dialog functionality
+            var productDetailsButtons = $("[shop-action='product-details']");
+            productDetailsButtons.on("click", function (e) {
+                e.preventDefault();
+
+                var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Product/GetProduct/" + productId
+                }).then(function (product) {
+                    var template = $("#product-details-template").html();
+                    var rendered = Mustache.render(template, product);
+
+                    $("#product-details-dialog").html(rendered);
+
+                    productDetailsDialog.dialog("open");
+                });
+            });
+
+
+            var cancelOrderButtons = $("#orders-history-wrapper").find("[shop-action='cancel-order']");
+            cancelOrderButtons.on("click", function () {
+                var currentRow = $(this).closest("tr");
+                var orderId = $(this).attr("shop-order-id");
+
+                var template = $("#confrirm-order-cancelation-dialog-template").html()
+                var rendered = Mustache.render(template);
+
+                confirmOrderCancelationDialog.html(rendered);
+                confirmOrderCancelationDialog.append("<span shop-order-id='" + orderId + "'></span>");
+
+                confirmOrderCancelationDialog.dialog("open");
+
+            });
+
+        });
+    </script>
+
+}
