@@ -1,0 +1,38 @@
+﻿@model IEnumerable<OrderViewModel>
+
+
+@if (this.Model.Count() == 0)
+{
+    <h3 class="text-center p-1 mx-auto w-50">No Orders with this status.</h3>
+}
+else
+{
+    <table class="w-100 p-1 mx-auto">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>User</th>
+                <th>Quantity</th>
+                <th>TotalPrice</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in this.Model)
+            {
+                <tr>
+                    <td><a shop-action="product-details" href="#">@order.Product.Name</a></td>
+                    <td>@order.User</td>
+                    <td>@order.Quantity</td>
+                    <td>$@order.TotalPrice</td>
+                    <td>@order.Status.ToString()</td>
+                    <td>
+                        <button shop-action="" class="ui-button ui-widget ui-corner-all" type="button">Send</button>
+                        <button shop-order-id="@order.Id" shop-action="delete-order" class="ui-button ui-widget ui-corner-all bg-delete" type="button"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<OrderViewModel>
+
+<h1 class="text-center w-60r mx-auto p-1">Orders</h1>
+<div id="orders-wrapper" class="w-60r mx-auto">
+    <h2 class="text-center p-1">New Orders</h2>
+    <div shop-orders-wrapper="new-orders" class="w-100">
+        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.New))
+    </div>
+    <h2 class="text-center p-1">Pending Orders</h2>
+    <div shop-orders-wrapper="pending-orders" class="w-100">
+        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.Pending))
+    </div>
+    <h2 class="text-center p-1">Sent Orders</h2>
+    <div shop-orders-wrapper="sent-orders" class="w-100">
+        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.Sent))
+    </div>
+    <h2 class="text-center p-1">Completed Orders</h2>
+    <div shop-orders-wrapper="completed-orders" class="w-100">
+        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.Completed))
+    </div>
+</div>
+
+<div id="confirmation-dialog"></div>
+
+@section Scripts {
+
+    <script id="confirmation-dialog-template" type="text/html">
+        @Html.Partial("_ConfirmationPartial")
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            var confirmationDialog = $("#confirmation-dialog");
+            confirmationDialog.dialog({
+                autoOpen: false,
+                height: 200,
+                width: 400,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    Confirm: function () {
+                        var orderId = $(this).parent().find("[shop-order-id]").attr("shop-order-id");
+
+                        $.ajax({
+                            url: "/Order/Cancel/" + orderId,
+                            method: "GET"
+                        }).then(function () {
+                            window.location.reload();
+                        });
+
+                        confirmationDialog.dialog("close");
+                    },
+                    Cancel: function () {
+                        confirmationDialog.dialog("close");
+                    }
+                }
+            });
+
+            $("#orders-wrapper").find("[shop-action='delete-order']").on("click", function () {
+                var orderId = $(this).attr("shop-order-id");
+
+                confirmationDialog.html($("#confirmation-dialog-template").html());
+                confirmationDialog.append("<span shop-order-id='" + orderId + "'></span>");
+
+                confirmationDialog.dialog("open");
+            });
+
+            $("#orders-wrapper").accordion({
+                heightStyle: "content",
+                collapsible: true,
+                autoHeight: false,
+                navigation: true
+            });
+        });
+    </script>
+}
