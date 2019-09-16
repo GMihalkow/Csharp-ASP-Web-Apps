@@ -2,7 +2,7 @@
 
 <div class="w-60r mx-auto mt-5r empty-after">
 	<h2 class="form-title text-center">Register</h2>
-    <form class="shop-form text-center" action="@Url.Action("Register", "Account")" method="post">
+    <form class="shop-form text-center" action="@Url.Action("Register", "Account")" method="@FormMethod.Post.ToString()">
         @Html.ValidationSummary(true)
 
         <div>

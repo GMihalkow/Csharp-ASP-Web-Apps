@@ -2,7 +2,7 @@
 
 <div class="w-60r mx-auto mt-5r">
 	<h2 class="form-title text-center">Login</h2>
-	<form class="shop-form text-center" action="@Url.Action("Login", "Account")" method="post">
+	<form class="shop-form text-center" action="@Url.Action("Login", "Account")" method="@FormMethod.Post.ToString()">
 		@Html.ValidationSummary(true)
 		<div>
 			<label for="@nameof(this.Model.UserName)">Username</label>

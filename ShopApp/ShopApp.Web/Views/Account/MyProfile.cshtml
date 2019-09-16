@@ -47,6 +47,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Order Date</th>
                     <th>Address</th>
                     <th>Product</th>
                     <th>Quantity</th>
@@ -59,6 +60,7 @@
                 @foreach (var order in this.Model.Orders)
                 {
                     <tr>
+                        <td>@order.OrderedOn.ToString("yyyy/mm/dd")</td>
                         <td>@order.Address</td>
                         <td shop-product-id="@order.ProductId"><a href="" shop-action="product-details">@order.Product.Name</a></td>
                         <td>@order.Quantity</td>

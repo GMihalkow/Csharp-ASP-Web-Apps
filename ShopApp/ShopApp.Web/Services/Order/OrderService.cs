@@ -56,6 +56,9 @@ namespace ShopApp.Web.Services.Order
                 // setting the UserId property for every order
                 order.UserId = userId;
 
+                // setting the ordered on to utc now
+                order.OrderedOn = DateTime.UtcNow;
+
                 this.dbContext.Orders.Add(order);
                 this.dbContext.SaveChanges();
             }
@@ -83,6 +86,7 @@ namespace ShopApp.Web.Services.Order
                     Address = order.Address,
                     Description = order.Description,
                     Quantity = order.Quantity,
+                    OrderedOn = order.OrderedOn,
                     Status = order.Status,
                     User = order.User.UserName,
                     UserId = order.UserId,
@@ -100,6 +104,36 @@ namespace ShopApp.Web.Services.Order
                 });
 
             return orders;
+        }
+
+        public async Task SendOrder(string orderId)
+        {
+            ShopApp.Models.Order order = await this.GetOrder(orderId);
+
+            order.Status = OrderStatus.Sent;
+
+            this.dbContext.SaveChanges();
+        }
+
+        public async Task CompleteOrder(string orderId)
+        {
+            ShopApp.Models.Order order = await this.GetOrder(orderId);    
+
+            order.Status = OrderStatus.Completed;
+
+            this.dbContext.SaveChanges();
+        }
+
+        public async Task<ShopApp.Models.Order> GetOrder(string id)
+        {
+            ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
+
+            if (order == null)
+            {
+                throw new InvalidOperationException("Invalid order ID.");
+            }
+
+            return order;
         }
     }
 }

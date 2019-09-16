@@ -36,5 +36,17 @@ namespace ShopApp.Web.Controllers.Order
 
             return this.View(orders);
         }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task Send(string id)
+        {
+            await this.orderService.SendOrder(id);
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task Complete(string id)
+        {
+            await this.orderService.CompleteOrder(id);
+        }
     }
 }

@@ -21,15 +21,22 @@ else
         <tbody>
             @foreach (var order in this.Model)
             {
-                <tr>
+                <tr shop-order-id="@order.Id">
                     <td><a shop-action="product-details" href="#">@order.Product.Name</a></td>
                     <td>@order.User</td>
                     <td>@order.Quantity</td>
                     <td>$@order.TotalPrice</td>
                     <td>@order.Status.ToString()</td>
                     <td>
-                        <button shop-action="" class="ui-button ui-widget ui-corner-all" type="button">Send</button>
-                        <button shop-order-id="@order.Id" shop-action="delete-order" class="ui-button ui-widget ui-corner-all bg-delete" type="button"><i class="fas fa-trash-alt"></i></button>
+                        @if (order.Status == ShopApp.Models.OrderStatus.New)
+                        {
+                            <button shop-action="send-order" class="ui-button ui-widget ui-corner-all" type="button">Send</button>
+                        }
+                        else if (order.Status == ShopApp.Models.OrderStatus.Sent)
+                        {   
+                            <button shop-action="complete-order" class="ui-button ui-widget ui-corner-all" type="button">Complete</button>
+                        }
+                        <button shop-action="delete-order" class="ui-button ui-widget ui-corner-all bg-delete" type="button"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
             }

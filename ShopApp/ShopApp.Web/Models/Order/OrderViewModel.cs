@@ -1,5 +1,6 @@
 ﻿using ShopApp.Models;
 using ShopApp.Web.Models;
+using System;
 
 namespace ShopApp.Web
 {
@@ -11,6 +12,7 @@ namespace ShopApp.Web
         public string User { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
+        public DateTime OrderedOn { get; set; }
         public int Quantity { get; set; }
         public OrderStatus Status { get; set; }
         public decimal TotalPrice => this.Quantity * this.Product.Price;
