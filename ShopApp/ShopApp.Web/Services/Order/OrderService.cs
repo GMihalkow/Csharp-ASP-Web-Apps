@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -70,6 +71,35 @@ namespace ShopApp.Web.Services.Order
 
             this.dbContext.Orders.Remove(order);
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public IEnumerable<OrderViewModel> GetOrders()
+        {
+            IEnumerable<OrderViewModel> orders =
+                this.dbContext.Orders
+                .Select(order => new OrderViewModel
+                {
+                    Id = order.Id,
+                    Address = order.Address,
+                    Description = order.Description,
+                    Quantity = order.Quantity,
+                    Status = order.Status,
+                    User = order.User.UserName,
+                    UserId = order.UserId,
+                    Product = new Models.ProductViewModel
+                    {
+                        Id = order.Product.Id,
+                        Description = order.Product.Description,
+                        AddedOn = order.Product.AddedOn,
+                        CategoryId = order.Product.CategoryId,
+                        CategoryName = order.Product.Category.Name,
+                        CoverUrl = order.Product.CoverUrl,
+                        Name = order.Product.Name,
+                        Price = order.Product.Price
+                    },
+                });
+
+            return orders;
         }
     }
 }

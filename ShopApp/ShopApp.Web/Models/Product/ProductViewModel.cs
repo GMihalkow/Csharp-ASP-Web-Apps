@@ -14,6 +14,8 @@ namespace ShopApp.Web.Models
 
         public string CategoryId { get; set; }
 
+        public string CategoryName { get; set; }
+
         public string CoverUrl { get; set; }
 
         public DateTime? AddedOn { get; set; }

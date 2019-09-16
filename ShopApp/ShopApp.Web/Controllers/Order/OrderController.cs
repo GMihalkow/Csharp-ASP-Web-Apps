@@ -1,5 +1,7 @@
 ﻿using ShopApp.Web.Constants;
 using ShopApp.Web.Services.Order.Contracts;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -30,9 +32,9 @@ namespace ShopApp.Web.Controllers.Order
         [Authorize(Roles = RolesConstants.Administrator)]
         public ActionResult All()
         {
+            List<OrderViewModel> orders = this.orderService.GetOrders().ToList();
 
-
-            return this.View();
+            return this.View(orders);
         }
     }
 }
