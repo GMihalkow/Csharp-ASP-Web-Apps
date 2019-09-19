@@ -1,0 +1,22 @@
+﻿.profile-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .profile-wrapper > header {
+        margin: 0 0 1rem 0;
+    }
+
+.profile-info {
+    font-size: 20px;
+    color: #000;
+    width: 26rem;   
+    background-color: #fff;
+    margin: 0 1rem;
+    padding: 1rem 0;
+    border-bottom: #ccc solid 0.5px;
+}
+
+    .profile-info > span {
+        padding: 1rem;
+    }
