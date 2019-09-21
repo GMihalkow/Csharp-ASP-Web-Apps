@@ -16,7 +16,5 @@ namespace ShopApp.Web.Services.Order.Contracts
         Task CompleteOrder(string orderId);
 
         IEnumerable<OrderViewModel> GetOrders();
-
-        // TODO [GM]: Implement /Orders/All (admin orders management functionality)
     }
 }
