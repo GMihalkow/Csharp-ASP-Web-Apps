@@ -2,6 +2,7 @@
 using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -39,7 +40,7 @@ namespace ShopApp.Web.Controllers.Product
         {
             if (!this.ModelState.IsValid)
             {
-                // TODO [GM]: Handle error properly
+                throw new InvalidOperationException(this.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage);
             }
 
             string categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
@@ -54,6 +55,13 @@ namespace ShopApp.Web.Controllers.Product
             int productsCount = this.productService.ProductsCountByCategory(category);
 
             return this.Json(productsCount, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Names()
+        {
+            string[] productsNames = this.productService.GetAll().Select(p => p.Name).ToArray();
+
+            return this.Json(productsNames, JsonRequestBehavior.AllowGet);
         }
     }
 }

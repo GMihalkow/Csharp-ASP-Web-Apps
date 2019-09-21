@@ -1,4 +1,5 @@
 ﻿using ShopApp.Web.Models;
+using System.Collections.Generic;
 
 namespace ShopApp.Web.Services.Product.Contracts
 {
@@ -9,5 +10,7 @@ namespace ShopApp.Web.Services.Product.Contracts
         ProductViewModel RetrieveProduct(string id);
 
         int ProductsCountByCategory(string category);
+
+        IEnumerable<ShopApp.Models.Product> GetAll();
     }
 }

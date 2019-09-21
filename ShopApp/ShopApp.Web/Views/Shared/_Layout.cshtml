@@ -18,11 +18,11 @@
                     <i class="fab fa-stripe-s fa-3x"></i>
                 </div>
                 <div class="banner-search-box">
-                    <input type="text" class="text-center" placeholder="Search for a product..." />
+                    <input id="search-box" type="text" class="text-center" placeholder="Search for a product..." />
                     <button class="shop-btn" type="button"><i class="fas fa-search fa-lg"></i></button>
                 </div>
                 <div class="banner-order-information">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fas fa-shopping-cart fa-2x"></i>
                     </a>
                 </div>
@@ -59,7 +59,10 @@
 
         @this.RenderBody()
 
-        <div id="checkout-dialog" title="Checkout"></div>
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <div id="checkout-dialog" title="Checkout"></div>
+        }
 
     </main>
 
@@ -92,6 +95,21 @@
 
     <script type="text/javascript">
         $(function () {
+            // fetching the products names
+            @*$.ajax({
+                url: "@this.Url.Action("Names", "Product")",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "GET"
+            }).then(function (productsNames) {
+                $(".banner").find("#search-box").autocomplete({
+                    source: productsNames,
+                    show: { effect: "blind", duration: 500 }
+                });
+            });*@
+
+
             @* Deleting the order's session storage after logout *@
             var logoutButton = $(".shop-nav").find("[shop-action='logout']");
             logoutButton.on("click", function () {
@@ -105,7 +123,7 @@
                  @: cartElement.text(window.sessionStorage.length);
             }
 
-            // checkout dialog popup
+            // checkout dialog dialog
             var checkoutDialog = $("#checkout-dialog");
             checkoutDialog.dialog({
                 autoOpen: false,
@@ -123,7 +141,14 @@
                 buttons: {
                     Confirm: function () {
                         var _this = this;
+                        var addressValidationField = $("#address-validation-field");
+                        if ($("#address").val().length == 0) {
+                            addressValidationField.text("Invalid address.");
+                            return;
+                        }
 
+                        addressValidationField.parent().hide();
+                        
                         @*// clearing the session storage *@
                         window.sessionStorage.clear();
 
@@ -196,7 +221,6 @@
                 Array.from(orders).forEach(function (o) {
                     totalPrice += (parseFloat(o.quantity) * parseFloat(o.price));
                 });
-
 
                 @if (this.User.Identity.IsAuthenticated)
                 {

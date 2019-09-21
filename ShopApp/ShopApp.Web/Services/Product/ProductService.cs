@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using ShopApp.Data;
+using ShopApp.Models;
 using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
@@ -92,6 +94,13 @@ namespace ShopApp.Web.Services.Product
             }
 
             return productModel;
+        }
+
+        public IEnumerable<ShopApp.Models.Product> GetAll()
+        {
+            IEnumerable<ShopApp.Models.Product> products = this.dbContext.Products.Include("Category").ToList();
+
+            return products;
         }
     }
 }
