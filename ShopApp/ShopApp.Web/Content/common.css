@@ -45,6 +45,11 @@ li.ui-menu-item.ui-state-hover {
     margin: 2rem auto;
 }
 
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 .mx-auto {
     margin: 0 auto;
 }
