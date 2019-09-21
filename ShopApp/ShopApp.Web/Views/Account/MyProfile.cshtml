@@ -62,7 +62,7 @@
                     <tr>
                         <td>@order.OrderedOn.ToString("yyyy/mm/dd")</td>
                         <td>@order.Address</td>
-                        <td shop-product-id="@order.ProductId"><a href="" shop-action="product-details">@order.Product.Name</a></td>
+                        <td shop-product-id="@order.ProductId"><a href="javascript:void(0)" shop-action="product-details">@order.Product.Name</a></td>
                         <td>@order.Quantity</td>
                         <td>$@order.TotalPrice</td>
                         <td>@order.Status.ToString()</td>
@@ -87,6 +87,8 @@
     <script id="confrirm-order-cancelation-dialog-template" type="text/html">
         @Html.Partial("_ConfirmationPartial")
     </script>
+
+    <script src="~/scripts/common/product-details.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -124,54 +126,9 @@
                 }
             });
 
-            // product details popup
-             // product details popup dialog
-            var productDetailsDialog = $("#product-details-dialog");
-
-            productDetailsDialog.dialog({
-                autoOpen: false,
-                height: 620,
-                width: 500,
-                modal: true,
-                show: {
-                    effect: "blind",
-                    duration: 500
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 500
-                },
-                buttons: {
-                    Cancel: function () {
-                        productDetailsDialog.dialog("close");
-                    },
-                }
-            });
-
-            // TODO [GM]: repeating dialog functionality
-            var productDetailsButtons = $("[shop-action='product-details']");
-            productDetailsButtons.on("click", function (e) {
-                e.preventDefault();
-
-                var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-
-                $.ajax({
-                    method: "GET",
-                    url: "/Product/GetProduct/" + productId
-                }).then(function (product) {
-                    var template = $("#product-details-template").html();
-                    var rendered = Mustache.render(template, product);
-
-                    $("#product-details-dialog").html(rendered);
-
-                    productDetailsDialog.dialog("open");
-                });
-            });
-
-
+        
             var cancelOrderButtons = $("#orders-history-wrapper").find("[shop-action='cancel-order']");
             cancelOrderButtons.on("click", function () {
-                var currentRow = $(this).closest("tr");
                 var orderId = $(this).attr("shop-order-id");
 
                 var template = $("#confrirm-order-cancelation-dialog-template").html()
@@ -181,7 +138,6 @@
                 confirmOrderCancelationDialog.append("<span shop-order-id='" + orderId + "'></span>");
 
                 confirmOrderCancelationDialog.dialog("open");
-
             });
 
         });

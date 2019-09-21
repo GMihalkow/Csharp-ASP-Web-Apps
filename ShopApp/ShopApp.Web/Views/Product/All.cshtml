@@ -82,6 +82,8 @@
         @Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
     </script>
 
+    <script src="~/scripts/common/product-details.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         $(function () {
             // add product form
@@ -124,6 +126,9 @@
                 var template = $("#add-product-form-template").html();
                 $("#add-product-form-wrapper").html(template);
 
+                var $form = $(".modal-form");
+                $.validator.unobtrusive.parse($form);
+
                 var categoryId = $(this).parent().children("a[shop-role-id]");
 
                 var $categoryIdInput = $("#add-product-form-wrapper #CategoryId");
@@ -132,56 +137,6 @@
 
                 // showing the form
                 addProductFormDialog.dialog("open");
-            });
-
-            // product details popup dialog
-            var productDetailsDialog = $("#product-details-dialog");
-
-            productDetailsDialog.dialog({
-                autoOpen: false,
-                height: 620,
-                width: 500,
-                modal: true,
-                show: {
-                    effect: "blind",
-                    duration: 500
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 500
-                },
-                buttons: {
-                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
-                    {
-                        @: Edit: function () {
-                        @:  var template = $("#add-product-form-template").html();
-                        @:  var $addProductForm = $("#add-product-form-wrapper").html(template);
-
-                        @:  var productId = $(this).parent().find("[shop-product-id]").attr("shop-product-id");
-                        @:  var productName = $(this).parent().find("[shop-product-name]").text();
-                        @:  var productPrice = $(this).parent().find("[shop-product-price]").text();
-                        @:  var productCoverURL = $(this).parent().find("[shop-product-cover-url]").attr("src");
-                        @:  var productCategoryId = $(this).parent().find("[shop-product-category-id]").attr("shop-product-category-id");
-                        @:  var productDescription = $(this).parent().find("[shop-product-description]").text().trim();
-
-                        @*  changing the title of the dialog and the button's name *@
-                        @:  $addProductForm.prev().find(".ui-dialog-title").text("Edit Product");
-                        @:  $addProductForm.next().find("button").first().text("Edit")
-
-                        @:  $addProductForm.find("#Name").attr("value", productName);
-                        @:  $addProductForm.find("#Description").text(productDescription);
-                        @:  $addProductForm.find("#Price").attr("value", productPrice);
-                        @:  $addProductForm.find("#CoverUrl").attr("value", productCoverURL);
-                        @:  $addProductForm.find("#CategoryId").attr("value", productCategoryId)
-                        @:  $addProductForm.find(".modal-form").append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
-
-                        @:  addProductFormDialog.dialog("open");
-                        @: },
-                    }
-                    Cancel: function () {
-                        productDetailsDialog.dialog("close");
-                    },
-                }
             });
 
             // confirm order popup
@@ -259,11 +214,15 @@
 
             $("#create-category, [shop-action='edit-category']").button().on("click", function (e) {
                 var template = $("#create-category-form-template").html();
-                console.log(template);
                 createCategoryFormDialog.html(template);
+
+                var $form = $(".modal-form");
+                $.validator.unobtrusive.parse($form);
 
                 if ($(e.currentTarget).attr("shop-action") === "edit-category") {
                     var categoryId = $(this).parent().find("[shop-role-id]").attr("shop-role-id");
+                    
+                    createCategoryFormDialog.find(".modal-form").attr("action", "@Url.Action("Edit", "Category")");
 
                     $.ajax({
                         url: "/Category/Get/" + categoryId,
@@ -279,7 +238,41 @@
                 } else {
                     createCategoryFormDialog.dialog("open");
                 }
+
             });
+
+            @* attaching the edit product functionality *@
+            @if (this.User.IsInRole(RolesConstants.Administrator))
+            {
+                @: var editProductFunctionality = function() {
+                @:    var template = $("#add-product-form-template").html();
+                @:    var $addProductForm = $("#add-product-form-wrapper").html(template);
+
+                @:    var $form = $(".modal-form");
+                @:    $.validator.unobtrusive.parse($form);
+
+                @:    var productId = $(this).parent().find("[shop-product-id]").attr("shop-product-id");
+                @:    var productName = $(this).parent().find("[shop-product-name]").text();
+                @:    var productPrice = $(this).parent().find("[shop-product-price]").text();
+                @:    var productCoverURL = $(this).parent().find("[shop-product-cover-url]").attr("src");
+                @:    var productCategoryId = $(this).parent().find("[shop-product-category-id]").attr("shop-product-category-id");
+                @:    var productDescription = $(this).parent().find("[shop-product-description]").text().trim();
+                @:   
+                @:    $addProductForm.prev().find(".ui-dialog-title").text("Edit Product");
+                @:    $addProductForm.next().find("button").first().text("Edit")
+                @:   
+                @:    $addProductForm.find("#Name").attr("value", productName);
+                @:    $addProductForm.find("#Description").text(productDescription);
+                @:    $addProductForm.find("#Price").attr("value", productPrice);
+                @:    $addProductForm.find("#CoverUrl").attr("value", productCoverURL);
+                @:    $addProductForm.find("#CategoryId").attr("value", productCategoryId)
+                @:    $addProductForm.find(".modal-form").append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
+
+                @:    addProductFormDialog.dialog("open");
+                @: }
+
+                @: productDetailsDialog.dialog("option", "buttons", { Edit: editProductFunctionality, Cancel: function () { productDetailsDialog.dialog("close"); }} );
+            }
 
             // adding the order to the session storage
             var orderButtons = $("[shop-action='order-product']");
@@ -306,26 +299,6 @@
                 }
 
             });
-
-            var productDetailsButtons = $("[shop-action='product-details']");
-            productDetailsButtons.on("click", function () {
-                var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-
-                $.ajax({
-                    method: "GET",
-                    url: "/Product/GetProduct/" + productId
-                }).then(function (product) {
-                    var template = $("#product-details-template").html();
-                    var rendered = Mustache.render(template, product);
-
-                    $("#product-details-dialog").html(rendered);
-
-                    productDetailsDialog.dialog("open");
-                });
-            });
-
-            var $form = $(".modal-form");
-            $.validator.unobtrusive.parse($form);
         });
     </script>
 }

@@ -215,6 +215,7 @@
     <Content Include="Images\shop-banner.jpg" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\common\product-details.js" />
     <Content Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Order\All.cshtml" />
