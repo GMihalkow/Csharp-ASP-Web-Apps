@@ -5,6 +5,7 @@ using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Product
@@ -62,6 +63,12 @@ namespace ShopApp.Web.Controllers.Product
             string[] productsNames = this.productService.GetAll().Select(p => p.Name).ToArray();
 
             return this.Json(productsNames, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task Delete(string id)
+        {
+            await this.productService.Delete(id);
         }
     }
 }

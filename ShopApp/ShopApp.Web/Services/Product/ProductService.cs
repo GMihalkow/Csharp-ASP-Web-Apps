@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using ShopApp.Data;
-using ShopApp.Models;
 using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ShopApp.Web.Services.Product
@@ -101,6 +101,18 @@ namespace ShopApp.Web.Services.Product
             IEnumerable<ShopApp.Models.Product> products = this.dbContext.Products.Include("Category").ToList();
 
             return products;
+        }
+
+        public async Task Delete(string productId)
+        {
+            ShopApp.Models.Product product = this.dbContext.Products.FirstOrDefault(p => p.Id == productId);
+            
+            // we delete the product only if it already exists
+            if(product != null)
+            {
+                this.dbContext.Products.Remove(product);
+                this.dbContext.SaveChanges();
+            }
         }
     }
 }

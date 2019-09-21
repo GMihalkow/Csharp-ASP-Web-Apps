@@ -2,7 +2,7 @@
 
 <section class="product-container" shop-product-id="@this.Model.Id">
     <header>
-        <a href="#" shop-product-name="@this.Model.Name" shop-action="product-details">@this.Model.Name</a>
+        <a href="javascript:void(0)" shop-product-name="@this.Model.Name" shop-action="product-details">@this.Model.Name</a>
     </header>
     <img shop-action="product-details" src="@this.Model.CoverUrl" />
     <div class="text-center">
@@ -12,5 +12,6 @@
     <div class="text-center" shop-product-price="@this.Model.Price"> $@this.Model.Price </div>
     <section>
         <button shop-action="order-product" class="ui-button ui-widget ui-corner-all" type="button">Order</button>
+        <button shop-action="remove-product" class="ui-button ui-widget ui-corner-all bg-delete" type="button"><i class="fas fa-trash-alt"></i></button>
     </section>
 </section>
