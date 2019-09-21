@@ -29,7 +29,7 @@ namespace ShopApp.Web.Services.Category
             }
         }
 
-        private bool EditCategory(CategoryInputModel model)
+        public void Edit(CategoryInputModel model)
         {
             ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == model.Id);
 
@@ -39,25 +39,14 @@ namespace ShopApp.Web.Services.Category
                 categoryEntity.CoverUrl = model.CoverUrl;
 
                 this.dbContext.SaveChanges();
-
-                return true;
             }
-
-            return false;
         }
 
-        public CategoryInputModel CreateOrEdit(CategoryInputModel model)
+        public CategoryInputModel Create(CategoryInputModel model)
         {
             if (this.dbContext.Categories.Any(c => c.Name == model.Name))
             {
                 throw new InvalidOperationException("Category already exists!");
-            }
-
-            // TODO [GM]: Two separate methods ?
-            // editing the entity if it already exists
-            if (this.EditCategory(model))
-            {
-                return model;
             }
 
             ShopApp.Models.ShopUser user = this.accountService.GetUser(HttpContext.Current.User.Identity.Name);

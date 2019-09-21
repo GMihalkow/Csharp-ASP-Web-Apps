@@ -19,6 +19,20 @@ namespace ShopApp.Web.Controllers.Category
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<ActionResult> Edit(CategoryInputModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                throw new InvalidOperationException("Something went wrong");
+            }
+
+            this.categoryService.Edit(model);
+
+            return this.RedirectToAction("All", "Product");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RolesConstants.Administrator)]
         public ActionResult Create(CategoryInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -26,9 +40,9 @@ namespace ShopApp.Web.Controllers.Category
                 throw new InvalidOperationException(this.ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
             }
 
-            this.categoryService.CreateOrEdit(model);
+            this.categoryService.Create(model);
 
-            return this.Redirect(this.Url.Action("All", "Product"));
+            return this.RedirectToAction("All", "Product");
         }
 
         public ActionResult GetCategoryProducts(string id)
