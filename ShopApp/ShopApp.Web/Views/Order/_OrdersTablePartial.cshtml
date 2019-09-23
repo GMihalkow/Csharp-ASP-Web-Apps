@@ -22,7 +22,7 @@ else
             @foreach (var order in this.Model)
             {
                 <tr shop-order-id="@order.Id">
-                    <td><a shop-action="product-details" href="#">@order.Product.Name</a></td>
+                    <td shop-product-id="@order.Product.Id"><a shop-action="product-details" href="javascript:void(0)">@order.Product.Name</a></td>
                     <td>@order.User</td>
                     <td>@order.Quantity</td>
                     <td>$@order.TotalPrice</td>

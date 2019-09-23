@@ -18,13 +18,21 @@
     </div>
 </div>
 
+<div id="product-details-dialog" title="Product Details"></div>
+
 <div id="confirmation-dialog" title="Caution" shop-action=""></div>
 
 @section Scripts {
 
+    <script id="product-details-template" type="text/html">
+        @Html.Partial("_ProductDetailsPartialTemplate")
+    </script>
+
     <script id="confirmation-dialog-template" type="text/html">
         @Html.Partial("_ConfirmationPartial")
     </script>
+
+    <script type="text/javascript" src="~/scripts/common/product-details.js"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -86,7 +94,7 @@
                     }
                 }
             });
-
+            
             // send order functionality
             var sendOrderButtons = $("[shop-orders-wrapper='new-orders']").find("[shop-action='send-order']");
             sendOrderButtons.on("click", function (e) {
