@@ -57,21 +57,27 @@
                         var orderId = $(e.currentTarget).parent().parent().prev().find("[shop-order-id]").attr("shop-order-id");
 
                         if (confirmationDialog.attr("shop-action") === "remove-order") {
+                            var ordersWrapper = $("#orders-wrapper").find("[shop-order-id='" + orderId + "']");
 
                             $.ajax({
                                 url: "/Order/Cancel/" + orderId,
                                 method: "GET"
                             }).then(function () {
-                                // TODO [GM]: dont reload and append elements dynamically?
-                                window.location.reload();
+                                var container = ordersWrapper.parent().parent().parent();
+                                var tbody = ordersWrapper.parent();
+
+                                ordersWrapper.remove();
+
+                                if (tbody.children().length === 0) {
+                                    container.html("<h3 class='text-center p-1 mx-auto w-50'>No Orders with this status.</h3>");
+                                }
                             });
 
                         } else if (confirmationDialog.attr("shop-action") === "send-order") {
-
+                            
                             $.ajax({
                                 url: "/Order/Send/" + orderId,
                                 method: "GET"
-                                // TODO [GM]: Change everywhere to constant variable?
                             }).then(function () {
                                 window.location.reload();
                             });
@@ -94,7 +100,7 @@
                     }
                 }
             });
-            
+
             // send order functionality
             var sendOrderButtons = $("[shop-orders-wrapper='new-orders']").find("[shop-action='send-order']");
             sendOrderButtons.on("click", function (e) {
@@ -133,7 +139,7 @@
 
                 confirmationDialog.dialog("open");
             });
-            
+
             $("#orders-wrapper").tabs({
                 collapsibe: true,
                 show: { effect: "blind", duration: 500 },

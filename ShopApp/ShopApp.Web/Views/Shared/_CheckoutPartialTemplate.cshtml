@@ -17,6 +17,10 @@
     </tbody>
 </table>
 <div class="w-100 mx-auto text-center p-1">
+    <label for="totalPrice">Total Price:</label>
+    <span shop-order-total-price>${{totalPrice}}</span>
+</div>
+<div class="w-100 mx-auto text-center p-1">
     <label for="address">Address</label>
 </div>
 <div class="w-100">
@@ -28,8 +32,4 @@
 </div>
 <div class="w-100">
     <textarea id="description" rows="4" shop-role="order-description" cols="30" class="d-block mx-auto"></textarea>
-</div>
-<div class="w-100 mx-auto text-center p-1">
-    <label for="totalPrice">Total Price:</label>
-    <span shop-order-total-price>${{totalPrice}}</span>
 </div>

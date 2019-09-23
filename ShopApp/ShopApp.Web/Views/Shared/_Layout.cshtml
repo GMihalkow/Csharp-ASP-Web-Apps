@@ -32,7 +32,7 @@
         <nav class="shop-nav">
             <ul>
                 <li>@Html.ActionLink("Index", "Index", "Home")</li>
-                <li><a href="/Product/All?category=Womens">Browse</a></li>
+                <li>@Html.ActionLink("Browse", "All", "Product")</a></li>
                 <li>@Html.ActionLink("About", "About", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 <li class="dropdown">
@@ -96,7 +96,7 @@
     <script type="text/javascript">
         $(function () {
             // fetching the products names
-            @*$.ajax({
+            $.ajax({
                 url: "@this.Url.Action("Names", "Product")",
                 headers: {
                     "Content-Type": "application/json"
@@ -107,8 +107,7 @@
                     source: productsNames,
                     show: { effect: "blind", duration: 500 }
                 });
-            });*@
-
+            });
 
             @* Deleting the order's session storage after logout *@
             var logoutButton = $(".shop-nav").find("[shop-action='logout']");
@@ -148,7 +147,7 @@
                         }
 
                         addressValidationField.parent().hide();
-                        
+
                         @*// clearing the session storage *@
                         window.sessionStorage.clear();
 
@@ -167,27 +166,33 @@
                         });
 
                         $.ajax({
-                             method: "POST",
-                             url: "@Url.Action("Checkout", "Order")",
-                             data: {
-                                 products: JSON.stringify(Object.keys(window.sessionStorage)
-                                     .map(function (productKey) {
-                                         var product = JSON.parse(window.sessionStorage[productKey]);
+                            method: "POST",
+                            url: "@Url.Action("Checkout", "Order")",
+                            data: {
+                                products: JSON.stringify(Object.keys(window.sessionStorage)
+                                    .map(function (productKey) {
+                                        var product = JSON.parse(window.sessionStorage[productKey]);
 
-                                         if (productKey !== "length")
-                                         {
-                                             return {
-                                                 ProductId: product.productId,
-                                                 Quantity: product.quantity,
-                                                 Address: $("#checkout-dialog [shop-role='order-address']").val(),
-                                                 Description: $("#checkout-dialog [shop-role='order-description']").val()
-                                             };
-                                         }
-                                     })),
-                               }
+                                        if (productKey !== "length") {
+                                            return {
+                                                ProductId: product.productId,
+                                                Quantity: product.quantity,
+                                                Address: $("#checkout-dialog [shop-role='order-address']").val(),
+                                                Description: $("#checkout-dialog [shop-role='order-description']").val()
+                                            };
+                                        }
+                                    })),
+                            }
                         })
-                        .then(function(data) {
+                        .then(function () {
                             @* clearing the session storage*@
+                            window.sessionStorage.clear();
+
+                            var cartElement = $(".banner .banner-order-information i");
+                            cartElement.text(window.sessionStorage.length);
+                        })
+                        .fail(function () {
+                            // TODO [GM]: Handle error properly, make error modal?
                             window.sessionStorage.clear();
 
                             var cartElement = $(".banner .banner-order-information i");
@@ -228,6 +233,29 @@
                     @: var rendered = Mustache.render(template, { orders: orders, totalPrice: totalPrice.toFixed(2).toString() });
 
                     @: $("#checkout-dialog").html(rendered);
+
+                    @: var totalPriceElement = $("#checkout-dialog").find("[shop-order-total-price]");
+                    @: var quantityFields = $("#checkout-table").find("[shop-product-id]").find("input[type='number']");
+                    @: quantityFields.on("change", function (e) {
+                    @:    var $element = $(e.currentTarget);
+
+                    @:    var productId = $element.parent().parent().attr("shop-product-id");
+                    @:    var productName = $element.parent().prev().text();
+                    @:    var newQuantityValue = $element.val();
+                    @:    var productPrice = JSON.parse(window.sessionStorage.getItem(productName)).price;
+
+                    @:    window.sessionStorage.setItem(productName, JSON.stringify({ quantity: newQuantityValue, productId: productId, price: productPrice }));
+
+                    @:    var newTotalPrice = 0;
+                    @:    Object.keys(window.sessionStorage).forEach(function (k) {
+                    @:        var product = JSON.parse(window.sessionStorage[k]);
+
+                    @:        newTotalPrice += product.quantity * product.price;
+                    @:
+                    @:    });
+
+                    @:    totalPriceElement.text("$" + newTotalPrice.toFixed(2));
+                    @:});
 
                     @:$("#checkout-dialog").find("button[shop-action='remove-product']").on("click", function (e) {
                         // removing the session storage product items
