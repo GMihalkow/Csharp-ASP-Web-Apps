@@ -26,7 +26,7 @@ namespace ShopApp.Web.Controllers.Category
                 throw new InvalidOperationException("Something went wrong");
             }
 
-            this.categoryService.Edit(model);
+            await this.categoryService.Edit(model);
 
             return this.RedirectToAction("All", "Product");
         }

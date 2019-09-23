@@ -18,6 +18,8 @@ namespace ShopApp.Web.Services.Category.Contracts
 
         Task Delete(string id);
 
-        void Edit(CategoryInputModel model);
+        Task Edit(CategoryInputModel model);
+
+        string GetDefaultCategory();
 	}
 }

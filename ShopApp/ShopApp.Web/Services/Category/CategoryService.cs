@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using ShopApp.Web.Services.Category.Contracts;
+﻿using Microsoft.AspNet.Identity.Owin;
 using ShopApp.Data;
-using System.Web;
-using Microsoft.AspNet.Identity.Owin;
-using System.Linq;
 using ShopApp.Web.Models;
-using System.Threading.Tasks;
-using System;
 using ShopApp.Web.Services.Account.Contracts;
-using ShopApp.Models;
+using ShopApp.Web.Services.Category.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace ShopApp.Web.Services.Category
 {
@@ -29,7 +28,7 @@ namespace ShopApp.Web.Services.Category
             }
         }
 
-        public void Edit(CategoryInputModel model)
+        public async Task Edit(CategoryInputModel model)
         {
             ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == model.Id);
 
@@ -38,10 +37,11 @@ namespace ShopApp.Web.Services.Category
                 categoryEntity.Name = model.Name;
                 categoryEntity.CoverUrl = model.CoverUrl;
 
-                this.dbContext.SaveChanges();
+                await this.dbContext.SaveChangesAsync();
             }
         }
 
+        // TODO [GM]: Make asynchronous
         public CategoryInputModel Create(CategoryInputModel model)
         {
             if (this.dbContext.Categories.Any(c => c.Name == model.Name))
@@ -73,7 +73,7 @@ namespace ShopApp.Web.Services.Category
             ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == categoryModel.Id);
 
             this.dbContext.Categories.Remove(categoryEntity);
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
         }
 
         public IEnumerable<CategoryViewModel> GetCategories()
@@ -165,6 +165,19 @@ namespace ShopApp.Web.Services.Category
             }
 
             return categoryModel;
+        }
+
+        public string GetDefaultCategory()
+        {
+            // TODO [GM]: make async?
+            var defaultCategory = this.GetCategories().FirstOrDefault();
+
+            if (defaultCategory == null)
+            {
+                return string.Empty;
+            }
+
+            return defaultCategory.Name;
         }
     }
 }

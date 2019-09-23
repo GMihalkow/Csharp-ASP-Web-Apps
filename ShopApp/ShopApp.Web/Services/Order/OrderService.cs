@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Constants;
+using ShopApp.Web.Models;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Order.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
@@ -39,6 +40,9 @@ namespace ShopApp.Web.Services.Order
             // deserializing the json object to order entities
             ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(ordersJson);
 
+            // filtering the not valid quantity values
+            orders = orders.Where(o => o.Quantity > 0).ToArray();
+
             if (orders.Any(order => String.IsNullOrEmpty(order.Address)))
             {
                 throw new InvalidOperationException("You must provide an address for the Order.");
@@ -59,8 +63,23 @@ namespace ShopApp.Web.Services.Order
                 // setting the ordered on to utc now
                 order.OrderedOn = DateTime.UtcNow;
 
+                // making sure that we have the correct product with the correct price
+                ProductViewModel product = this.productService.RetrieveProduct(order.ProductId);
+                if(product == null)
+                {
+                    throw new InvalidOperationException("Invalid product id.");
+                }
+
+                order.Product = new ShopApp.Models.Product
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    AddedOn = product.AddedOn,
+                    Price = product.Price
+                };
+
                 this.dbContext.Orders.Add(order);
-                this.dbContext.SaveChanges();
+                await this.dbContext.SaveChangesAsync();
             }
         }
 
@@ -73,6 +92,7 @@ namespace ShopApp.Web.Services.Order
             }
 
             this.dbContext.Orders.Remove(order);
+
             await this.dbContext.SaveChangesAsync();
         }
 
@@ -112,16 +132,16 @@ namespace ShopApp.Web.Services.Order
 
             order.Status = OrderStatus.Sent;
 
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
         }
 
         public async Task CompleteOrder(string orderId)
         {
-            ShopApp.Models.Order order = await this.GetOrder(orderId);    
+            ShopApp.Models.Order order = await this.GetOrder(orderId);
 
             order.Status = OrderStatus.Completed;
 
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
         }
 
         public async Task<ShopApp.Models.Order> GetOrder(string id)
