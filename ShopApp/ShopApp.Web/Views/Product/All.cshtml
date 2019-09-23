@@ -237,6 +237,7 @@
                 @:    var $addProductForm = $("#add-product-form-wrapper").html(template);
 
                 @:    var $form = $(".modal-form");
+                @:    $form.attr("action", "@Url.Action("Edit", "Product")");
                 @:    $.validator.unobtrusive.parse($form);
 
                 @:    var productId = $(this).parent().find("[shop-product-id]").attr("shop-product-id");

@@ -6,7 +6,9 @@ namespace ShopApp.Web.Services.Product.Contracts
 {
     public interface IProductService
     {
-        void AddProduct(ProductInputModel productModel);
+        Task AddProduct(ProductInputModel productModel);
+
+        Task EditProduct(ProductInputModel productModel);
 
         ProductViewModel RetrieveProduct(string id);
 

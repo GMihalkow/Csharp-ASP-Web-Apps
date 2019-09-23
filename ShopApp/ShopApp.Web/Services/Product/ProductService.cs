@@ -28,39 +28,21 @@ namespace ShopApp.Web.Services.Product
             this.categoryService = categoryService;
         }
 
-        // TODO [GM]: Make asynchronous?
-        public void AddProduct(ProductInputModel productModel)
+        public async Task AddProduct(ProductInputModel productModel)
         {
-            ShopApp.Models.Product productEntity =
-                this.dbContext
-                .Products
-                .FirstOrDefault(product => product.Id == productModel.Id);
-
-            if (productEntity != null)
+            ShopApp.Models.Product productEntity = new ShopApp.Models.Product
             {
-                productEntity.Name = productModel.Name;
-                productEntity.Price = productModel.Price;
-                productEntity.Description = productModel.Description;
-                productEntity.CoverUrl = productModel.CoverUrl;
-                productEntity.CategoryId = productModel.CategoryId;
-            }
-            else
-            {
-                productEntity = new ShopApp.Models.Product
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = productModel.Name,
-                    AddedOn = DateTime.UtcNow,
-                    Description = productModel.Description,
-                    CoverUrl = productModel.CoverUrl,
-                    Price = productModel.Price,
-                    CategoryId = productModel.CategoryId
-                };
+                Id = Guid.NewGuid().ToString(),
+                Name = productModel.Name,
+                AddedOn = DateTime.UtcNow,
+                Description = productModel.Description,
+                CoverUrl = productModel.CoverUrl,
+                Price = productModel.Price,
+                CategoryId = productModel.CategoryId
+            };
 
-                this.dbContext.Products.Add(productEntity);
-            }
-
-            this.dbContext.SaveChanges();
+            this.dbContext.Products.Add(productEntity);
+            await this.dbContext.SaveChangesAsync();
         }
 
         public int ProductsCountByCategory(string category)
@@ -106,12 +88,31 @@ namespace ShopApp.Web.Services.Product
         public async Task Delete(string productId)
         {
             ShopApp.Models.Product product = this.dbContext.Products.FirstOrDefault(p => p.Id == productId);
-            
+
             // we delete the product only if it already exists
-            if(product != null)
+            if (product != null)
             {
                 this.dbContext.Products.Remove(product);
-                this.dbContext.SaveChanges();
+                await this.dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditProduct(ProductInputModel productModel)
+        {
+            ShopApp.Models.Product productEntity =
+              this.dbContext
+              .Products
+              .FirstOrDefault(product => product.Id == productModel.Id);
+
+            if (productEntity != null)
+            {
+                productEntity.Name = productModel.Name;
+                productEntity.Price = productModel.Price;
+                productEntity.Description = productModel.Description;
+                productEntity.CoverUrl = productModel.CoverUrl;
+                productEntity.CategoryId = productModel.CategoryId;
+
+                await this.dbContext.SaveChangesAsync();
             }
         }
     }

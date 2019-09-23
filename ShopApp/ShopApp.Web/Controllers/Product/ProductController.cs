@@ -28,8 +28,19 @@ namespace ShopApp.Web.Controllers.Product
             return this.Json(productModel, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult All(string category = "Womens", int page = 0)
+        // TODO [GM]: Make async?
+        public ActionResult All(string category, int page = 0)
         {
+            if (string.IsNullOrWhiteSpace(category))
+            {
+                category = this.categoryService.GetDefaultCategory();
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    // TODO [GM]: throw exception and handle in global error handling filter
+                    return this.HttpNotFound();
+                }
+            }
+
             List<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page).ToList();
 
             return this.View(categories);
@@ -37,7 +48,7 @@ namespace ShopApp.Web.Controllers.Product
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
-        public ActionResult Create(ProductInputModel productModel)
+        public async Task<ActionResult> Create(ProductInputModel productModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -46,13 +57,34 @@ namespace ShopApp.Web.Controllers.Product
 
             string categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
 
-            this.productService.AddProduct(productModel);
+            await this.productService.AddProduct(productModel);
 
             return this.Redirect("/Product/All?category=" + categoryName);
         }
 
-        public ActionResult Count(string category = "Womens")
+        [HttpPost]
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<ActionResult> Edit(ProductInputModel productModel)
         {
+            if (!this.ModelState.IsValid)
+            {
+                throw new InvalidOperationException(this.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage);
+            }
+
+            string categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
+
+            await this.productService.EditProduct(productModel);
+
+            return this.Redirect("/Product/All?category=" + categoryName);
+        }
+
+        public ActionResult Count(string category)
+        {
+            if (string.IsNullOrWhiteSpace(category))
+            {
+                category = this.categoryService.GetDefaultCategory();
+            }
+
             int productsCount = this.productService.ProductsCountByCategory(category);
 
             return this.Json(productsCount, JsonRequestBehavior.AllowGet);
