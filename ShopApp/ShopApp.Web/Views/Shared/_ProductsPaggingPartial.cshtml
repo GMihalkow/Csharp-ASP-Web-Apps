@@ -18,9 +18,11 @@
             });
 
         // getting the category parameter
-        const myParam = Array.from(urlParams).find(function (p) {
+        var myParam = Array.from(urlParams).find(function (p) {
             return p.key === "category";
         });
+        
+        myParam = myParam ? myParam : { value: "Womens" };
 
         // fetching the products count for this category
         $.ajax({
