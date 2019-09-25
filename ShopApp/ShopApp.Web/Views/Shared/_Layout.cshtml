@@ -249,10 +249,12 @@
                     @:    var newTotalPrice = 0;
                     @:    Object.keys(window.sessionStorage).forEach(function (k) {
                     @:        var product = JSON.parse(window.sessionStorage[k]);
-
-                    @:        newTotalPrice += product.quantity * product.price;
-                    @:
+                    @:           newTotalPrice += product.quantity * product.price;
                     @:    });
+                    
+                    @:    if (newTotalPrice < 0) {
+                    @:      newTotalPrice = 0;
+                    @:    }
 
                     @:    totalPriceElement.text("$" + newTotalPrice.toFixed(2));
                     @:});
