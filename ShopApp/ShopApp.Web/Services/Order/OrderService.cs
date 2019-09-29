@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using ShopApp.Data;
 using ShopApp.Models;
@@ -12,6 +7,11 @@ using ShopApp.Web.Models;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Order.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace ShopApp.Web.Services.Order
 {
@@ -65,7 +65,7 @@ namespace ShopApp.Web.Services.Order
 
                 // making sure that we have the correct product with the correct price
                 ProductViewModel product = this.productService.RetrieveProduct(order.ProductId);
-                if(product == null)
+                if (product == null)
                 {
                     throw new InvalidOperationException("Invalid product id.");
                 }

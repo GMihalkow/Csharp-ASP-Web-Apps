@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using ShopApp.Data;
+using ShopApp.Models;
+using ShopApp.Web.Constants;
+using ShopApp.Web.Models;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Utilities;
+using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using ShopApp.Web.Models;
-using System;
-using ShopApp.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using ShopApp.Data;
-using System.Linq;
-using ShopApp.Web.Constants;
-using System.Security.Claims;
-using System.Data.Entity;
-using System.Security.Principal;
 
 namespace ShopApp.Web.Services.Account
 {
@@ -137,8 +135,8 @@ namespace ShopApp.Web.Services.Account
         public ProfileViewModel GetProfileInfo(string username)
         {
             ShopUser userEntity = this.GetUser(username);
-            
-            if(userEntity == null)
+
+            if (userEntity == null)
             {
                 throw new InvalidOperationException("Invalid user!");
             }
