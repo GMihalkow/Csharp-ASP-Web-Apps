@@ -103,6 +103,14 @@ main {
     text-align: center;
 }
 
+.text-black {
+    color: #000;
+}
+
+.text-red {
+    color: #f00;
+}
+
 .p-1 {
     padding: 1rem;
 }
