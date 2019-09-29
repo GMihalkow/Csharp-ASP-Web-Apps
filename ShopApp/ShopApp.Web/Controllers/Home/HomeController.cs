@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Home
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ICategoryService categoryService;
 

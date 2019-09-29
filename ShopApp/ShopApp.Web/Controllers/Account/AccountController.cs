@@ -1,11 +1,11 @@
 ﻿using ShopApp.Web.Models;
-using System.Web.Mvc;
 using ShopApp.Web.Services.Account.Contracts;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Account
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
 
@@ -38,6 +38,7 @@ namespace ShopApp.Web.Controllers.Account
             }
 
             await this.accountService.Login(model);
+
 
             return this.Redirect("/");
         }
@@ -77,8 +78,7 @@ namespace ShopApp.Web.Controllers.Account
 
             return this.Redirect(Url.Action("Index", "Home"));
         }
-
-
+        
         [Authorize]
         public ActionResult MyProfile()
         {

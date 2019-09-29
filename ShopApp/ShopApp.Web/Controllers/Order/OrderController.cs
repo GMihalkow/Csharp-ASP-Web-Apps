@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Order
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
         public readonly IOrderService orderService;
 

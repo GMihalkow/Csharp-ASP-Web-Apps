@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Product
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly ICategoryService categoryService;
         private readonly IProductService productService;

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Category
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         public readonly ICategoryService categoryService;
 
