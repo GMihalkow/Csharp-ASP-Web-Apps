@@ -234,11 +234,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Constants\RolesContants.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Category\CategoryController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Order\OrderController.cs" />
@@ -290,6 +292,7 @@
     <Content Include="Views\Shared\_CategoryIndexPartial.cshtml" />
     <Content Include="Views\Shared\_ProductsPaggingPartial.cshtml" />
     <Content Include="Views\Shared\_ConfirmationPartial.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
