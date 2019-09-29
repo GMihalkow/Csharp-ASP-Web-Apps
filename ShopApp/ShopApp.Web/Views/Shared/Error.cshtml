@@ -1,0 +1,10 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+<div class="text-center p-1">
+    <h2 class="p-1">Error</h2>
+    <hr class="w-30 mx-auto"/>
+    <div class="text-red p-1">
+        @this.Model.Exception.Message
+    </div>
+    <div><button onclick="window.history.back()" class="ui-button ui-widget ui-corner-all">Back</button></div>
+</div>
