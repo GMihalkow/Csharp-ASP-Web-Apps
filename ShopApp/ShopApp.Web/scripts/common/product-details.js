@@ -21,16 +21,12 @@ product.dialog.configuration = {
         }
     }
 };
+
 // product details popup dialog
 var productDetailsDialog = $("#product-details-dialog");
 productDetailsDialog.dialog(product.dialog.configuration);
 
-var productDetailsButtons = $("[shop-action='product-details']");
-productDetailsButtons.on("click", function (e) {
-    e.preventDefault();
-
-    var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-
+function openProductDetailsDialog(productId) {
     $.ajax({
         method: "GET",
         url: "/Product/GetProduct/" + productId
@@ -42,4 +38,4 @@ productDetailsButtons.on("click", function (e) {
 
         productDetailsDialog.dialog("open");
     });
-});
+}
