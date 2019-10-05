@@ -43,7 +43,7 @@ namespace ShopApp.Web.Services.Order
             // filtering the not valid quantity values
             orders = orders.Where(o => o.Quantity > 0).ToArray();
 
-            if (orders.Any(order => String.IsNullOrEmpty(order.Address)))
+            if (orders.Any(order => string.IsNullOrEmpty(order.Address)))
             {
                 throw new InvalidOperationException("You must provide an address for the Order.");
             }
@@ -70,14 +70,8 @@ namespace ShopApp.Web.Services.Order
                     throw new InvalidOperationException("Invalid product id.");
                 }
 
-                order.Product = new ShopApp.Models.Product
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    AddedOn = product.AddedOn,
-                    Price = product.Price
-                };
-
+                order.ProductId = product.Id;
+                
                 this.dbContext.Orders.Add(order);
                 await this.dbContext.SaveChangesAsync();
             }
