@@ -1,5 +1,6 @@
 ﻿using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
+using ShopApp.Web.Models.Product;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System;
@@ -90,11 +91,17 @@ namespace ShopApp.Web.Controllers.Product
             return this.Json(productsCount, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Names()
+        public ActionResult AutocompleteProducts()
         {
-            string[] productsNames = this.productService.GetAll().Select(p => p.Name).ToArray();
+            ProductAutocompleteViewModel[] products = this.productService.GetAll().Select(p =>
+                new ProductAutocompleteViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToArray();
 
-            return this.Json(productsNames, JsonRequestBehavior.AllowGet);
+
+            return this.Json(products, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = RolesConstants.Administrator)]

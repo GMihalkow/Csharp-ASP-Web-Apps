@@ -12,6 +12,10 @@
 </head>
 <body>
     <main>
+        <div id="loader-container" class="ui-widget-overlay ui-front">
+            <div id="loader" class="loader"></div>
+        </div>
+
         <section class="banner">
             <section>
                 <div class="banner-icon">
@@ -93,19 +97,42 @@
         @Html.Partial("_CheckoutPartialTemplate")
     </script>
 
+    <div id="product-details-dialog" title="Product Details"></div>
+
+    <script src="~/scripts/common/product-details.js" type="text/javascript"></script>
+
+    <script id="product-details-template" type="text/html">
+        @Html.Partial("_ProductDetailsPartialTemplate")
+    </script>
+
     <script type="text/javascript">
         $(function () {
-            // fetching the products names
+            $(document).ajaxStart(function () {
+                $("#loader-container").show();
+            });
+
+            $(document).ajaxComplete(function () {
+                $("#loader-container").hide();
+            });
+
+            @* fetching the products names and ids *@
             $.ajax({
-                url: "@this.Url.Action("Names", "Product")",
+                url: "@this.Url.Action("AutocompleteProducts", "Product")",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 method: "GET"
-            }).then(function (productsNames) {
+            }).then(function (products) {
+                products = Array.from(products).map(function (p) {
+                    return { label: p.Name, value: p.Name, productId: p.Id };
+                });
+
                 $(".banner").find("#search-box").autocomplete({
-                    source: productsNames,
-                    show: { effect: "blind", duration: 500 }
+                    source: products,
+                    show: { effect: "blind", duration: 500 },
+                    select: function (event, ui) {
+                        openProductDetailsDialog(ui.item.productId);
+                    }
                 });
             });
 
@@ -251,7 +278,7 @@
                     @:        var product = JSON.parse(window.sessionStorage[k]);
                     @:           newTotalPrice += product.quantity * product.price;
                     @:    });
-                    
+
                     @:    if (newTotalPrice < 0) {
                     @:      newTotalPrice = 0;
                     @:    }
