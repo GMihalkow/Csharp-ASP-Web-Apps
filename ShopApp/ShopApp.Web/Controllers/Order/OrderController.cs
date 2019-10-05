@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Order
 {
+    [Authorize]
     public class OrderController : BaseController
     {
         public readonly IOrderService orderService;
@@ -17,13 +18,11 @@ namespace ShopApp.Web.Controllers.Order
         }
 
         [HttpPost]
-        [Authorize]
         public async Task Checkout(string products)
         {
             await this.orderService.Checkout(products);
         }
 
-        [Authorize]
         public async Task Cancel(string id)
         {
             await this.orderService.CancelOrder(id);

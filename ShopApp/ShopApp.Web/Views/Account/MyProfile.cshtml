@@ -76,19 +76,11 @@
 
 <div id="confirm-order-cancelation-dialog" title="Confirm Cancelation"></div>
 
-<div id="product-details-dialog" title="Product Details"></div>
-
 @section scripts{
-
-    <script id="product-details-template" type="text/html">
-        @Html.Partial("_ProductDetailsPartialTemplate")
-    </script>
 
     <script id="confrirm-order-cancelation-dialog-template" type="text/html">
         @Html.Partial("_ConfirmationPartial")
     </script>
-
-    <script src="~/scripts/common/product-details.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -126,7 +118,15 @@
                 }
             });
 
-        
+            // providing the id for the product details dialog
+            var productDetailsButtons = $("[shop-action='product-details']");
+            productDetailsButtons.on("click", function (e) {
+                e.preventDefault();
+
+                var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
+                openProductDetailsDialog(productId);
+            });
+
             var cancelOrderButtons = $("#orders-history-wrapper").find("[shop-action='cancel-order']");
             cancelOrderButtons.on("click", function () {
                 var orderId = $(this).attr("shop-order-id");

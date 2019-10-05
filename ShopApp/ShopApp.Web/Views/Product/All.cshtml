@@ -49,10 +49,6 @@
     @Html.Partial("_ConfirmationPartial")
 </div>
 
-<div id="product-details-dialog" title="Product Details">
-
-</div>
-
 @if (this.User.Identity.IsAuthenticated)
 {
     if (this.User.IsInRole(RolesConstants.Administrator))
@@ -66,10 +62,6 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script id="product-details-template" type="text/html">
-        @Html.Partial("_ProductDetailsPartialTemplate")
-    </script>
-
     <script id="add-product-form-template" type="text/html">
         @Html.Partial("_AddProductFormPartial", new ProductInputModel())
     </script>
@@ -81,8 +73,6 @@
     <script id="create-category-form-template" type="text/html">
         @Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
     </script>
-
-    <script src="~/scripts/common/product-details.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -137,6 +127,15 @@
 
                 // showing the form
                 addProductFormDialog.dialog("open");
+            });
+
+            // providing the id for the product details dialog
+            var productDetailsButtons = $("[shop-action='product-details']");
+            productDetailsButtons.on("click", function (e) {
+                e.preventDefault();
+
+                var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
+                openProductDetailsDialog(productId);
             });
 
             // confirm order popup
