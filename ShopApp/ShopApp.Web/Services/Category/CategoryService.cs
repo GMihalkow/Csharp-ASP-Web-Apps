@@ -92,6 +92,12 @@ namespace ShopApp.Web.Services.Category
 
         public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page)
         {
+            // filtering invalid negative inputs
+            if (page < 0)
+            {
+                page = 0;
+            }
+
             List<CategoryViewModel> categories =
                 this.dbContext
                 .Categories
