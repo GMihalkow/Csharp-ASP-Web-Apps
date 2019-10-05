@@ -64,6 +64,7 @@ namespace ShopApp.Web.Services.Product
                     Name = product.Name,
                     Price = product.Price,
                     CategoryId = product.CategoryId,
+                    CategoryName = product.Category.Name,
                     CoverUrl = product.CoverUrl,
                     AddedOn = product.AddedOn,
                     Description = product.Description
