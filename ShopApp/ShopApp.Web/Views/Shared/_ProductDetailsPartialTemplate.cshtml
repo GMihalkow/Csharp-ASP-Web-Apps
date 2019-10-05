@@ -12,6 +12,12 @@
             <div class="product-description" shop-product-description>
                 {{Description}}
             </div>
+            <div class="w-100 text-center p-1">
+                <header>Category</header>
+            </div>
+            <div class="w-100 text-center">
+                <input class="w-50 p-1" shop-product-category type="text" value="{{CategoryName}}" disabled />
+            </div>
         </section>
         <section class="p-1 text-center w-100">
             Price: $<span shop-product-price>{{Price}}</span>
