@@ -16,7 +16,7 @@
             <ul>
                 @foreach (var category in this.Model)
                 {
-                    <li>@Html.Partial("_CategoryPartial", category)</li>
+                    <li>@this.Html.Partial("_CategoryPartial", category)</li>
                 }
             </ul>
         </section>
@@ -31,7 +31,7 @@
 
                     foreach (var product in products)
                     {
-                        @: @Html.Partial("_ProductPartialTemplate", product)
+                        @: @this.Html.Partial("_ProductPartialTemplate", product)
                     }
 
                 }
@@ -41,12 +41,12 @@
                 }
             }
         </section>
-        @Html.Partial("_ProductsPaggingPartial")
+        @this.Html.Partial("_ProductsPaggingPartial")
     </section>
 </section>
 
 <div id="confirmation-dialog" title="Confirm Order">
-    @Html.Partial("_ConfirmationPartial")
+    @this.Html.Partial("_ConfirmationPartial")
 </div>
 
 @if (this.User.Identity.IsAuthenticated)
@@ -59,20 +59,22 @@
     }
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
+@section templates {
     <script id="add-product-form-template" type="text/html">
-        @Html.Partial("_AddProductFormPartial", new ProductInputModel())
+        @this.Html.Partial("_AddProductFormPartial", new ProductInputModel())
     </script>
 
     <script id="product-container-template" type="text/html">
-        @Html.Partial("_ProductPartialTemplate", new ProductViewModel())
+        @this.Html.Partial("_ProductPartialTemplate", new ProductViewModel())
     </script>
 
     <script id="create-category-form-template" type="text/html">
-        @Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
+        @this.Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
     </script>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">
         $(function () {
@@ -135,7 +137,20 @@
                 e.preventDefault();
 
                 var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-                openProductDetailsDialog(productId);
+                var buttons = [
+                    {
+                        Name: "Edit",
+                        onClick: editProductFunctionality
+                    },
+                    {
+                        Name: "Cancel",
+                        onClick: function() {
+                            console.log("Cancel");
+                        }
+                    }
+                ];
+
+                openProductDetailsDialog(productId, buttons);
             });
 
             // confirm order popup
@@ -236,15 +251,16 @@
                 @:    var $addProductForm = $("#add-product-form-wrapper").html(template);
 
                 @:    var $form = $(".modal-form");
-                @:    $form.attr("action", "@Url.Action("Edit", "Product")");
+                @:    $form.attr("action", "@this.Url.Action("Edit", "Product")");
                 @:    $.validator.unobtrusive.parse($form);
 
-                @:    var productId = $(this).parent().find("[shop-product-id]").attr("shop-product-id");
-                @:    var productName = $(this).parent().find("[shop-product-name]").text();
-                @:    var productPrice = $(this).parent().find("[shop-product-price]").text();
-                @:    var productCoverURL = $(this).parent().find("[shop-product-cover-url]").attr("src");
-                @:    var productCategoryId = $(this).parent().find("[shop-product-category-id]").attr("shop-product-category-id");
-                @:    var productDescription = $(this).parent().find("[shop-product-description]").text().trim();
+                @:    var $modal = $(this).parent().parent();
+                @:    var productId = $modal.find("[shop-product-id]").attr("shop-product-id");
+                @:    var productName = $modal.find("[shop-product-name]").attr("shop-product-name");
+                @:    var productPrice = $modal.find("[shop-product-price]").attr("shop-product-price");
+                @:    var productCoverURL = $modal.find("[shop-product-cover-url]").attr("src");
+                @:    var productCategoryId = $modal.find("[shop-product-category-id]").attr("shop-product-category-id");
+                @:    var productDescription = $modal.find("[shop-product-description]").text().trim();
                 @:
                 @:    $addProductForm.prev().find(".ui-dialog-title").text("Edit Product");
                 @:    $addProductForm.next().find("button").first().text("Edit")
@@ -258,8 +274,6 @@
 
                 @:    addProductFormDialog.dialog("open");
                 @: }
-
-                @: productDetailsDialog.dialog("option", "buttons", { Edit: editProductFunctionality, Cancel: function () { productDetailsDialog.dialog("close"); }} );
             }
 
             // adding the order to the session storage
