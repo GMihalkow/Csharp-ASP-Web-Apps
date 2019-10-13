@@ -203,6 +203,7 @@
     <Content Include="Content\jqueryUI\jquery-ui.css" />
     <Content Include="Content\jqueryUI\jquery-ui.structure.css" />
     <Content Include="Content\jqueryUI\jquery-ui.theme.css" />
+    <Content Include="Content\loader.css" />
     <Content Include="Content\navigation.css" />
     <Content Include="Content\pagging.css" />
     <Content Include="Content\products.css" />
@@ -254,6 +255,7 @@
     <Compile Include="Models\Category\CategoryInputModel.cs" />
     <Compile Include="Models\Category\CategoryViewModel.cs" />
     <Compile Include="Models\Order\OrderViewModel.cs" />
+    <Compile Include="Models\Product\ProductAutocompleteViewModel.cs" />
     <Compile Include="Models\Product\ProductInputModel.cs" />
     <Compile Include="Models\Product\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
