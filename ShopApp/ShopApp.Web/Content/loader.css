@@ -1,4 +1,8 @@
-﻿.loader {
+﻿#loader-container {
+    display: none;
+}
+
+.loader {
     margin: auto;
     position: absolute;
     top: 0;

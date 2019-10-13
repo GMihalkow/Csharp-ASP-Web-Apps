@@ -107,8 +107,16 @@ main {
     color: #000;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .text-red {
     color: #f00;
+}
+
+.font-26 {
+    font-size: 26px;
 }
 
 .p-1 {
