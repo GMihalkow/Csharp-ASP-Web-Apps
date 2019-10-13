@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "mustache.js@3.1.0",
+      "destination": "scripts/mustache.js/"
+    },
+    {
+      "library": "jquery@3.4.1",
+      "destination": "scripts/jquery/"
+    },
+    {
+      "library": "font-awesome@5.11.2",
+      "destination": "Content/font-awesome/",
+      "files": [
+        "css/all.min.css"
+      ]
+    }
+  ]
+}
