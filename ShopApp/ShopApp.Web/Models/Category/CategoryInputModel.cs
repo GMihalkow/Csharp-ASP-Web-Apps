@@ -7,7 +7,7 @@ namespace ShopApp.Web.Models
 	{
 		public string Id { get; set; }
         [Required]
-        [DataType(DataType.ImageUrl)]
+        [DataType(DataType.ImageUrl)]//TODO [GM]: Fix client validation
         public string CoverUrl { get; set; }
         [Required]
 		public string Name { get; set; }

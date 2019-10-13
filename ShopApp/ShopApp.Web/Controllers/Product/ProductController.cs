@@ -67,12 +67,13 @@ namespace ShopApp.Web.Controllers.Product
         [Authorize(Roles = RolesConstants.Administrator)]
         public async Task<ActionResult> Edit(ProductInputModel productModel)
         {
+            // TODO [GM]: Change category also?
             if (!this.ModelState.IsValid)
             {
                 throw new InvalidOperationException(this.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage);
             }
 
-            string categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
+            var categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
 
             await this.productService.EditProduct(productModel);
 
