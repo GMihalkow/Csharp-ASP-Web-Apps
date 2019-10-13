@@ -204,6 +204,7 @@
     <Content Include="Content\jqueryUI\jquery-ui.structure.css" />
     <Content Include="Content\jqueryUI\jquery-ui.theme.css" />
     <Content Include="Content\loader.css" />
+    <Content Include="Content\modal.css" />
     <Content Include="Content\navigation.css" />
     <Content Include="Content\pagging.css" />
     <Content Include="Content\products.css" />
@@ -216,16 +217,25 @@
     <Content Include="Images\shop-banner.jpg" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\common\custom-product-details.js" />
+    <Content Include="scripts\common\modal.js" />
     <Content Include="scripts\common\product-details.js" />
-    <Content Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
+    <Content Include="libman.json" />
+    <Content Include="scripts\jquery\jquery.min.map" />
+    <Content Include="scripts\jquery\jquery.slim.min.map" />
+    <None Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
+    <Content Include="scripts\jquery\core.js" />
+    <Content Include="scripts\jquery\jquery.js" />
+    <Content Include="scripts\jquery\jquery.min.js" />
+    <Content Include="scripts\jquery\jquery.slim.js" />
+    <Content Include="scripts\jquery\jquery.slim.min.js" />
+    <Content Include="scripts\mustache.js\mustache.js" />
+    <Content Include="scripts\mustache.js\mustache.min.js" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Order\All.cshtml" />
     <Content Include="Views\Order\_OrdersTablePartial.cshtml" />
     <None Include="Views\Product\_ProductPartialTemplate.cshtml" />
     <Content Include="Views\Shared\_CreateCategoryFormPartial.cshtml" />
-    <None Include="scripts\jquery-1.8.0.intellisense.js" />
-    <Content Include="scripts\jquery-1.8.0.js" />
-    <Content Include="scripts\jquery-1.8.0.min.js" />
     <None Include="scripts\jquery.validate-vsdoc.js" />
     <Content Include="scripts\jquery.validate.js" />
     <Content Include="scripts\jquery.validate.min.js" />
@@ -295,6 +305,7 @@
     <Content Include="Views\Shared\_ProductsPaggingPartial.cshtml" />
     <Content Include="Views\Shared\_ConfirmationPartial.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Modal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
