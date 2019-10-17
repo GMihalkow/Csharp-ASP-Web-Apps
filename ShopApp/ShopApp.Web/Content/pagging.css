@@ -6,12 +6,21 @@
     text-align: center;
 }
 
+    .page-btn {
+        border: #fff solid 1px;
+        background-color: #000;
+    }
+
+    .page-btn:hover {
+        background-color: #222;
+    }
+
     .pagging-wrapper > li {
         color: #fff;
         border-radius: 3px;
-        margin: 0 0.1rem;
+        margin: 0;
     }
 
     .pagging-wrapper > li > a {
-        padding: 0.2rem;
+        padding: 0.5rem;
     }
