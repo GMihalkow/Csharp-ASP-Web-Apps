@@ -138,20 +138,23 @@
 
                 var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
                 var buttons = [
+                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
                     {
-                        Name: "Edit",
-                        onClick: editProductFunctionality
-                    },
-                    {
-                        Name: "Cancel",
-                        onClick: function() {
-                            console.log("Cancel");
-                        }
+                        @:{
+                        @:    Name: "Edit",
+                        @:    onClick: editProductFunctionality
+                        @:},
+                        @:{
+                        @:Name: "Cancel",
+                        @:    onClick: function(e) {
+                        @:        $(e.currentTarget).parent().parent().find("[close-modal-btn]").click();
+                        @:    }
+                        @:}
                     }
                 ];
 
-                openProductDetailsDialog(productId, buttons);
-            });
+                    openProductDetailsDialog(productId, buttons);
+                });
 
             // confirm order popup
             var confirmationDialog = $("#confirmation-dialog");
@@ -272,7 +275,7 @@
                 @:    $addProductForm.find("#CategoryId").attr("value", productCategoryId)
                 @:    $addProductForm.find(".modal-form").append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
 
-                @:    addProductFormDialog.dialog("open");
+                @:    $addProductForm.dialog("open");
                 @: }
             }
 
