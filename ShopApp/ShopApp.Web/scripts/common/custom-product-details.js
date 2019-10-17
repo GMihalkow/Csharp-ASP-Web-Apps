@@ -6,7 +6,7 @@
     var modals = $(".modal-wrapper");
     $.ajax({
         method: "GET",
-        url: "/Product/GetProduct/" + productId
+        url: "/api/ProductApi/Get/" + productId
     }).then(function (product) {
         product.ModalHeading = "Product Details";
 
