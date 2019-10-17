@@ -22,13 +22,6 @@ namespace ShopApp.Web.Controllers.Product
             this.categoryService = categoryService;
         }
 
-        public ActionResult GetProduct(string id)
-        {
-            ProductViewModel productModel = this.productService.RetrieveProduct(id);
-
-            return this.Json(productModel, JsonRequestBehavior.AllowGet);
-        }
-
         // TODO [GM]: Make async?
         public ActionResult All(string category, int page = 0)
         {
