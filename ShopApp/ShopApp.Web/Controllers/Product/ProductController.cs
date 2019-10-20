@@ -1,6 +1,5 @@
 ﻿using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
-using ShopApp.Web.Models.Product;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System;
@@ -60,6 +59,7 @@ namespace ShopApp.Web.Controllers.Product
         [Authorize(Roles = RolesConstants.Administrator)]
         public async Task<ActionResult> Edit(ProductInputModel productModel)
         {
+            ;
             // TODO [GM]: Change category also?
             if (!this.ModelState.IsValid)
             {
@@ -71,31 +71,6 @@ namespace ShopApp.Web.Controllers.Product
             await this.productService.EditProduct(productModel);
 
             return this.Redirect("/Product/All?category=" + categoryName);
-        }
-
-        public ActionResult Count(string category)
-        {
-            if (string.IsNullOrWhiteSpace(category))
-            {
-                category = this.categoryService.GetDefaultCategory();
-            }
-
-            int productsCount = this.productService.ProductsCountByCategory(category);
-
-            return this.Json(productsCount, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult AutocompleteProducts()
-        {
-            ProductAutocompleteViewModel[] products = this.productService.GetAll().Select(p =>
-                new ProductAutocompleteViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name
-                }).ToArray();
-
-
-            return this.Json(products, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = RolesConstants.Administrator)]

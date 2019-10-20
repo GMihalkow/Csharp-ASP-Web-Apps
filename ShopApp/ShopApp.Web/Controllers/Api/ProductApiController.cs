@@ -1,11 +1,12 @@
 ﻿using ShopApp.Web.Models;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
-using System.Web.Http.Results;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace ShopApp.Web.Controllers.Api
 {
+    //TODO [GM]: Authorization?
     public class ProductApiController : BaseApiController
     {
         private readonly IProductService productService;
@@ -24,9 +25,8 @@ namespace ShopApp.Web.Controllers.Api
             return this.Json(productModel);
         }
 
-        [AcceptVerbs("GET", "POST")]
         [HttpGet]
-        [Route("api/ProductApi/Count")]
+        [Route(template: "api/ProductApi/Count")]
         public JsonResult<int> Count(string category)
         {
             if (string.IsNullOrWhiteSpace(category))
