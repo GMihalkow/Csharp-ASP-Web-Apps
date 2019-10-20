@@ -9,6 +9,8 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     @Styles.Render("~/Content/style.css")
     @Styles.Render("~/bundles/jquery-ui")
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/tabulator_site.min.css"/>
 </head>
 <body>
 
@@ -36,15 +38,15 @@
             </section>
         </section>
 
+        <!-- TODO [GM]: Extract to partial -->
         <nav class="shop-nav">
             <ul>
                 <li>@this.Html.ActionLink("Index", "Index", "Home")</li>
                 <li>@this.Html.ActionLink("Browse", "All", "Product")</li>
                 <li>@this.Html.ActionLink("About", "About", "Home")</li>
                 <li>@this.Html.ActionLink("Contact", "Contact", "Home")</li>
-                <li><a href="javascript:void(0)" modal-btn>Test Modal</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">My Account</a>
+                    <a href="javascript:void(0)" class="dropbtn">My Account</a>
                     <div class="dropdown-content">
                         @if (this.User.Identity.IsAuthenticated)
                         {
@@ -74,6 +76,7 @@
 
     </main>
 
+    <!-- TODO [GM]: Extract to partial -->
     <footer class="shop-footer">
         <section class="footer-information">
             <section>
@@ -97,8 +100,6 @@
     @this.RenderSection("scripts", required: false)
     @this.RenderSection("templates", required: false)
 
-    <div id="product-details-dialog" title="Product Details"></div>
-
     @* ///////////////////////////// Templates *@
 
     <script id="checkout-partial-template" type="text/html">
@@ -111,8 +112,12 @@
 
     @* ///////////////////////////// Scripts *@
 
-    @* TODO [GM]: Extract these to a budnle*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/js/tabulator.min.js"></script>
+
+    @* TODO [GM]: Extract these to a budnle *@
+    @* TODO [GM]: Or maybe put in one file? *@
     <script type="text/javascript" src="~/scripts/common/modal.js"></script>
+    <script type="text/javascript" src="~/scripts/common/confirm-modal.js"></script>
     <script type="text/javascript" src="~/scripts/common/custom-product-details.js"></script>
 
     <script type="text/javascript">
@@ -124,27 +129,6 @@
 
             $(document).ajaxComplete(function () {
                 $("#loader-container").hide();
-            });
-
-            @* fetching the products names and ids *@
-            $.ajax({
-                url: "@this.Url.Action("AutocompleteProducts", "Product")",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                method: "GET"
-            }).then(function (products) {
-                products = Array.from(products).map(function (p) {
-                    return { label: p.Name, value: p.Name, productId: p.Id };
-                });
-
-                $(".banner").find("#search-box").autocomplete({
-                    source: products,
-                    show: { effect: "blind", duration: 500 },
-                    select: function (event, ui) {
-                        openProductDetailsDialog(ui.item.productId);
-                    }
-                });
             });
 
             @* Deleting the order's session storage after logout *@
@@ -160,90 +144,71 @@
                  @: cartElement.text(window.sessionStorage.length);
             }
 
-            // checkout dialog dialog
-            var checkoutDialog = $("#checkout-dialog");
-            checkoutDialog.dialog({
-                autoOpen: false,
-                height: 550,
-                width: 400,
-                modal: true,
-                show: {
-                    effect: "blind",
-                    duration: 500
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 500
-                },
-                buttons: {
-                    Confirm: function () {
-                        var _this = this;
-                        var addressValidationField = $("#address-validation-field");
-                        if ($("#address").val().length == 0) {
-                            addressValidationField.text("Invalid address.");
-                            return;
-                        }
+            var checkoutCallback = function () {
+                var _this = this;
 
-                        addressValidationField.parent().hide();
-
-                        @*// clearing the session storage *@
-                        window.sessionStorage.clear();
-
-                        $("#checkout-table > tbody > tr").each(function (i, tr) {
-                            var $tr = $(tr);
-
-                            var productId = $tr.attr("shop-product-id");
-                            var productName = $tr.children().first().text();
-                            var productQuantity = $tr.children("td").eq(1).children("input[type='number']").val();
-
-                            window.sessionStorage.setItem(productName, JSON.stringify({
-                                productId: productId,
-                                quantity: productQuantity
-                            }));
-
-                        });
-
-                        $.ajax({
-                            method: "POST",
-                            url: "@Url.Action("Checkout", "Order")",
-                            data: {
-                                products: JSON.stringify(Object.keys(window.sessionStorage)
-                                    .map(function (productKey) {
-                                        var product = JSON.parse(window.sessionStorage[productKey]);
-
-                                        if (productKey !== "length") {
-                                            return {
-                                                ProductId: product.productId,
-                                                Quantity: product.quantity,
-                                                Address: $("#checkout-dialog [shop-role='order-address']").val(),
-                                                Description: $("#checkout-dialog [shop-role='order-description']").val()
-                                            };
-                                        }
-                                    })),
-                            }
-                        })
-                        .then(function () {
-                            @* clearing the session storage*@
-                            window.sessionStorage.clear();
-
-                            var cartElement = $(".banner .banner-order-information i");
-                            cartElement.text(window.sessionStorage.length);
-                        })
-                        .fail(function () {
-                            // TODO [GM]: Handle error properly, make error modal?
-                            window.sessionStorage.clear();
-
-                            var cartElement = $(".banner .banner-order-information i");
-                            cartElement.text(window.sessionStorage.length);
-                        });
-
-                        checkoutDialog.dialog("close");
-                    },
-                    Cancel: function () {
-                        checkoutDialog.dialog("close");
-                    }
+                // TODO [GM]: Better way?
+                var addressValidationField = $("#address-validation-field");
+                if ($("#address").val().length == 0) {
+                    addressValidationField.text("Invalid address.");
+                    return;
                 }
-            });
+
+                addressValidationField.parent().hide();
+
+                @*// clearing the session storage *@
+                window.sessionStorage.clear();
+
+                $("#checkout-table > tbody > tr").each(function (i, tr) {
+                    var $tr = $(tr);
+
+                    var productId = $tr.attr("shop-product-id");
+                    var productName = $tr.children().first().text();
+                    var productQuantity = $tr.children("td").eq(1).children("input[type='number']").val();
+
+                    window.sessionStorage.setItem(productName, JSON.stringify({
+                        productId: productId,
+                        quantity: productQuantity
+                    }));
+
+                });
+
+                $.ajax({
+                    method: "POST",
+                    url: "@this.Url.Action("Checkout", "Order")",
+                    data: {
+                        products: JSON.stringify(Object.keys(window.sessionStorage)
+                            .map(function (productKey) {
+                                var product = JSON.parse(window.sessionStorage[productKey]);
+
+                                if (productKey !== "length") {
+                                    return {
+                                        ProductId: product.productId,
+                                        Quantity: product.quantity,
+                                        Address: $(".custom-modal [shop-role='order-address']").val(),
+                                        Description: $(".custom-modal [shop-role='order-description']").val()
+                                    };
+                                }
+                            })),
+                    }
+                })
+                .then(function () {
+                    @* clearing the session storage*@
+                    window.sessionStorage.clear();
+
+                    var cartElement = $(".banner .banner-order-information i");
+                    cartElement.text(window.sessionStorage.length);
+
+                    $(".custom-modal").find("[close-modal-btn]").click();
+                })
+                .fail(function () {
+                    // TODO [GM]: Handle error properly, make error modal?
+                    window.sessionStorage.clear();
+
+                    var cartElement = $(".banner .banner-order-information i");
+                    cartElement.text(window.sessionStorage.length);
+                });
+            };
 
             var checkoutButton = $(".banner .banner-order-information > a");
             checkoutButton.on("click", function (e) {
@@ -270,11 +235,12 @@
                     @: var template = $("#checkout-partial-template").html();
                     @: var rendered = Mustache.render(template, { orders: orders, totalPrice: totalPrice.toFixed(2).toString() });
 
-                    @: $("#checkout-dialog").html(rendered);
+                    @: openModal("Checkout", rendered, [{ Name: "Confirm", onClick: checkoutCallback }]);
 
-                    @: var totalPriceElement = $("#checkout-dialog").find("[shop-order-total-price]");
-                    @: var quantityFields = $("#checkout-table").find("[shop-product-id]").find("input[type='number']");
-                    @: quantityFields.on("change", function (e) {
+                    @: var totalPriceElement = $(".custom-modal").find("[shop-order-total-price]");
+                    @: var quantityFields = $(".custom-modal").find("[shop-product-id]").find("input[type='number']");
+
+                    @: var changePrice = function changePrice(e) {
                     @:    var $element = $(e.currentTarget);
 
                     @:    var productId = $element.parent().parent().attr("shop-product-id");
@@ -295,26 +261,31 @@
                     @:    }
 
                     @:    totalPriceElement.text("$" + newTotalPrice.toFixed(2));
-                    @:});
+                    @: };
 
-                    @:$("#checkout-dialog").find("button[shop-action='remove-product']").on("click", function (e) {
+                    @: // changing the price dynamically
+                    @: quantityFields.on("change", function (e) { changePrice(e); });
+
+                    @: // removing the ordered products dynamically
+                    @:$(".custom-modal").find("button[shop-action='remove-product']").on("click", function (e) {
                         // removing the session storage product items
                         @: var currentRow = $(this).closest("[shop-product-id]");
                         @: var productName = currentRow.children().first().text();
+
                         @: window.sessionStorage.removeItem(productName);
+
                         @: currentRow.remove();
-                        @: checkoutDialog.dialog("close");
+
+                        @: // updating total price after removing an order
                         @: checkoutButton.click();
 
                         @: var cartElement = $(".banner .banner-order-information i");
                         @: cartElement.text(window.sessionStorage.length);
                     @:});
-
-                    @: checkoutDialog.dialog("open");
                 }
                 else
                 {
-                    @: window.location.href = "@Url.Action("Login", "Account")";
+                    @: window.location.href = "@this.Url.Action("Login", "Account")";
                 }
 
             });

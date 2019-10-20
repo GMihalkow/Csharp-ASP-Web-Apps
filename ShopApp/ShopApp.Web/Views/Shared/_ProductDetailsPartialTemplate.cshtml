@@ -1,22 +1,13 @@
-﻿<span shop-product-id="{{Id}}"></span>
-<span shop-product-category-id="{{CategoryId}}"></span>
-<div class="modal-header text-center w-100">
-    <h3>{{ModalHeading}}</h3>
-    <div class="cancel-modal-btn text-center">
-        <a href="javascript:void(0)" close-modal-btn><i class="fas fa-times fa-3x text-red"></i></a>
-    </div>
+﻿<span shop-product-category-id="{{CategoryId}}"></span>
+<span shop-product-id="{{Id}}"></span>
+<img class="product-details-image" shop-product-cover-url src="{{CoverUrl}}" />
+<div class="product-details-info">
+    <div class="product-details-info-label bold font-26">Name:</div>
+    <p shop-product-name="{{Name}}">{{Name}}</p>
+    <div class="product-details-info-label bold font-26">Price:</div>
+    <p shop-product-price="{{Price}}">{{Price}}$</p>
 </div>
-<div class="modal-body p-1 product-details-body">
-    <img class="product-details-image" shop-product-cover-url src="{{CoverUrl}}" />
-    <div class="product-details-info">
-        <div class="product-details-info-label bold font-26">Name:</div>
-        <p shop-product-name="{{Name}}">{{Name}}</p>
-        <div class="product-details-info-label bold font-26">Price:</div>
-        <p shop-product-price="{{Price}}">{{Price}}$</p>
-    </div>
-    <div class="product-details-description">
-        <div class="product-details-info-label bold font-26">Description:</div>
-        <p class="p-1" shop-product-description>{{Description}}</p>
-    </div>
+<div class="product-details-description">
+    <div class="product-details-info-label bold font-26">Description:</div>
+    <p class="p-1" shop-product-description>{{Description}}</p>
 </div>
-<div class="modal-footer"></div>
