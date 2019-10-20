@@ -13,10 +13,10 @@
     overflow: hidden;
     position: fixed;
     margin: auto;
-    top: 3rem;
+    top: 7rem;
     left: 0;
     right: 0;
-    height: 40rem;
+    max-height: 40rem;
     width: 40rem;
     background-color: #fff;
     z-index: 2;
@@ -31,6 +31,19 @@
     right: 0;
 }
 
+.modal-body {
+    max-height: 24rem;
+    overflow: auto;
+}
+
+.modal-footer {
+    margin: 0 auto;
+    border-top: 1px solid #ccc;
+    padding: 1rem;
+    width: 95%;
+    height: 5rem;
+}
+
 .modal-btn {
     border: none;
     color: #fff;
@@ -43,19 +56,6 @@
     .modal-btn:hover {
         cursor: pointer;
     }
-
-    .modal-body {
-    height: 30rem;
-    overflow: auto;
-}
-
-.modal-footer {
-    margin: 0 auto;
-    border-top: 1px solid #ccc;
-    padding: 1rem;
-    width: 95%;
-    height: 5rem;
-}
 
 .custom-modal > .modal-header {
     height: 5rem;

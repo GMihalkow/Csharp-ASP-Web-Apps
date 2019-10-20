@@ -4,6 +4,8 @@
 
 .modal-form {
 	overflow: auto;
+    width: 100%;
+    padding: 1rem;
 }
 
 .form-title {

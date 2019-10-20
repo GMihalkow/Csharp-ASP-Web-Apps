@@ -36,6 +36,8 @@
 
 .product-details-info-label {
     padding: 1rem;
+    color: #fff;
+    background-color: #000;
     text-align: center;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
