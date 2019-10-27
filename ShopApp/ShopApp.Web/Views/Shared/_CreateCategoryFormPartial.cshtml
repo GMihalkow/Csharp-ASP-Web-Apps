@@ -1,15 +1,15 @@
 ﻿@model CategoryInputModel
 
-<form class="modal-form" action="@Url.Action("Create","Category")" method="@FormMethod.Post.ToString()">
-    @Html.ValidationSummary(true)
+<form class="modal-form" action="@this.Url.Action("Create","Category")" method="@FormMethod.Post.ToString()">
+    @this.Html.ValidationSummary(true)
     <div>
         <label for="@nameof(this.Model.Name)">Name</label>
-        @Html.EditorFor(c => c.Name)
-        @Html.ValidationMessageFor(c => c.Name)
+        @this.Html.EditorFor(c => c.Name)
+        @this.Html.ValidationMessageFor(c => c.Name)
     </div>
     <div>
         <label for="@nameof(this.Model.CoverUrl)">Cover</label>
-        @Html.EditorFor(c => c.CoverUrl)
-        @Html.ValidationMessageFor(c => c.CoverUrl)
+        @this.Html.EditorFor(c => c.CoverUrl)
+        @this.Html.ValidationMessageFor(c => c.CoverUrl)
     </div>
 </form>
