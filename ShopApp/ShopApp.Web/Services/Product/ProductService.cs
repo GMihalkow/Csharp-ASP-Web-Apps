@@ -105,16 +105,18 @@ namespace ShopApp.Web.Services.Product
               .Products
               .FirstOrDefault(product => product.Id == productModel.Id);
 
-            if (productEntity != null)
+            if (productEntity == null)
             {
-                productEntity.Name = productModel.Name;
-                productEntity.Price = productModel.Price;
-                productEntity.Description = productModel.Description;
-                productEntity.CoverUrl = productModel.CoverUrl;
-                productEntity.CategoryId = productModel.CategoryId;
-
-                await this.dbContext.SaveChangesAsync();
+                throw new InvalidOperationException("Invalid product id!");
             }
+
+            productEntity.Name = productModel.Name;
+            productEntity.Price = productModel.Price;
+            productEntity.Description = productModel.Description;
+            productEntity.CoverUrl = productModel.CoverUrl;
+            productEntity.CategoryId = productModel.CategoryId;
+
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }
