@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity.Owin;
-using ShopApp.Data;
+﻿using ShopApp.Data;
 using ShopApp.Web.Models;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
@@ -14,18 +13,12 @@ namespace ShopApp.Web.Services.Category
     public class CategoryService : ICategoryService
     {
         public readonly IAccountService accountService;
+        private readonly ShopAppDbContext dbContext;
 
-        public CategoryService(IAccountService accountService)
+        public CategoryService(IAccountService accountService, ShopAppDbContext dbContext)
         {
             this.accountService = accountService;
-        }
-
-        private ShopAppDbContext dbContext
-        {
-            get
-            {
-                return HttpContext.Current.GetOwinContext().Get<ShopAppDbContext>();
-            }
+            this.dbContext = dbContext;
         }
 
         public async Task Edit(CategoryInputModel model)
@@ -40,16 +33,15 @@ namespace ShopApp.Web.Services.Category
                 await this.dbContext.SaveChangesAsync();
             }
         }
-
-        // TODO [GM]: Make asynchronous
-        public CategoryInputModel Create(CategoryInputModel model)
+        
+        public async Task<CategoryInputModel> Create(CategoryInputModel model)
         {
             if (this.dbContext.Categories.Any(c => c.Name == model.Name))
             {
                 throw new InvalidOperationException("Category already exists!");
             }
 
-            ShopApp.Models.ShopUser user = this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
+            ShopApp.Models.ShopUser user = await this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
 
             ShopApp.Models.Category categoryEntity = new ShopApp.Models.Category
             {
@@ -61,7 +53,7 @@ namespace ShopApp.Web.Services.Category
             };
 
             this.dbContext.Categories.Add(categoryEntity);
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
 
             return model;
         }

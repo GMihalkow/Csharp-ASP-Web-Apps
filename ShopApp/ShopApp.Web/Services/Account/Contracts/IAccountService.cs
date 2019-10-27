@@ -6,7 +6,7 @@ namespace ShopApp.Web.Services.Account.Contracts
 {
     public interface IAccountService
 	{
-        ShopUser GetUser(string username);
+        Task<ShopUser> GetUser(string username);
 
 		Task Register(RegisterInputModel model);
 

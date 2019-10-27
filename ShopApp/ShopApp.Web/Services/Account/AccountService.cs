@@ -17,6 +17,8 @@ namespace ShopApp.Web.Services.Account
 {
     public class AccountService : IAccountService
     {
+        private readonly ShopAppDbContext dbContext;
+
         private ShopUserManager userManager
         {
             get
@@ -24,15 +26,7 @@ namespace ShopApp.Web.Services.Account
                 return HttpContext.Current.GetOwinContext().GetUserManager<ShopUserManager>();
             }
         }
-
-        private ShopAppDbContext dbContext
-        {
-            get
-            {
-                return HttpContext.Current.GetOwinContext().Get<ShopAppDbContext>();
-            }
-        }
-
+        
         private ShopSignInManager signInManager
         {
             get
@@ -47,6 +41,11 @@ namespace ShopApp.Web.Services.Account
             {
                 return HttpContext.Current.GetOwinContext().Get<ShopRoleManager>();
             }
+        }
+
+        public AccountService(ShopAppDbContext dbContext)
+        {
+            this.dbContext = dbContext;
         }
 
         public async Task Register(RegisterInputModel model)
@@ -125,16 +124,19 @@ namespace ShopApp.Web.Services.Account
             this.signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
-        public ShopUser GetUser(string username)
+        public async Task<ShopUser> GetUser(string username)
         {
-            ShopUser user = this.dbContext.Users.Include("Orders").Include("Categories").FirstOrDefault(u => u.UserName == username);
+            return await Task<ShopUser>.Run(() =>
+            {
+                ShopUser user = this.dbContext.Users.Include("Orders").Include("Categories").FirstOrDefault(u => u.UserName == username);
 
-            return user;
+                return user;
+            });
         }
 
         public ProfileViewModel GetProfileInfo(string username)
         {
-            ShopUser userEntity = this.GetUser(username);
+            ShopUser userEntity = this.GetUser(username).GetAwaiter().GetResult();
 
             if (userEntity == null)
             {

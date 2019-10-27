@@ -14,7 +14,7 @@ namespace ShopApp.Web.Services.Category.Contracts
 
         IEnumerable<CategoryViewModel> GetCategories();
 
-        CategoryInputModel Create(CategoryInputModel model);
+        Task<CategoryInputModel> Create(CategoryInputModel model);
 
         Task Delete(string id);
 

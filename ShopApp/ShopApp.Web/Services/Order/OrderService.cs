@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity.Owin;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Constants;
@@ -17,25 +16,22 @@ namespace ShopApp.Web.Services.Order
 {
     public class OrderService : IOrderService
     {
-        private ShopAppDbContext dbContext
-        {
-            get { return HttpContext.Current.GetOwinContext().Get<ShopAppDbContext>(); }
-        }
-
         public readonly IProductService productService;
 
         public readonly IAccountService accountService;
+        private readonly ShopAppDbContext dbContext;
 
-        public OrderService(IProductService productService, IAccountService accountService)
+        public OrderService(IProductService productService, IAccountService accountService, ShopAppDbContext dbContext)
         {
             this.accountService = accountService;
+            this.dbContext = dbContext;
             this.productService = productService;
         }
 
         public async Task Checkout(string ordersJson)
         {
             // getting the logged in user's id
-            var userId = this.accountService.GetUser(HttpContext.Current.User.Identity.Name).Id;
+            var user = await this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
 
             // deserializing the json object to order entities
             ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(ordersJson);
@@ -58,13 +54,13 @@ namespace ShopApp.Web.Services.Order
                 order.Status = OrderStatus.New;
 
                 // setting the UserId property for every order
-                order.UserId = userId;
+                order.UserId = user.Id;
 
                 // setting the ordered on to utc now
                 order.OrderedOn = DateTime.UtcNow;
 
                 // making sure that we have the correct product with the correct price
-                ProductViewModel product = this.productService.RetrieveProduct(order.ProductId);
+                ProductViewModel product = this.productService.Get(order.ProductId);
                 if (product == null)
                 {
                     throw new InvalidOperationException("Invalid product id.");
