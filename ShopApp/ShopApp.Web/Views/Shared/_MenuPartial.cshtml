@@ -1,0 +1,27 @@
+﻿<nav class="shop-nav">
+    <ul>
+        <li>@this.Html.ActionLink("Index", "Index", "Home")</li>
+        <li>@this.Html.ActionLink("Browse", "All", "Product")</li>
+        <li>@this.Html.ActionLink("About", "About", "Home")</li>
+        <li>@this.Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">My Account</a>
+            <div class="dropdown-content">
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    if (this.User.IsInRole(RolesConstants.Administrator))
+                    {
+                        @: @this.Html.ActionLink("Orders", "All", "Order")
+                    }
+                    @: @this.Html.ActionLink("Profile", "MyProfile", "Account")
+                    @: @this.Html.ActionLink("Logout", "Logout", "Account", null, new { shop_action = "logout" })
+                }
+                else
+                {
+                    @: @this.Html.ActionLink("Login", "Login", "Account", null, new { shop_action = "logout" })
+                    @: @this.Html.ActionLink("Register", "Register", "Account")
+                }
+            </div>
+        </li>
+    </ul>
+</nav>
