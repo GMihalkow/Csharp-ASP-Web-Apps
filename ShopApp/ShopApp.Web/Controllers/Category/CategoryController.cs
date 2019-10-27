@@ -33,14 +33,14 @@ namespace ShopApp.Web.Controllers.Category
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
-        public ActionResult Create(CategoryInputModel model)
+        public async Task<ActionResult> Create(CategoryInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 throw new InvalidOperationException(this.ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
             }
 
-            this.categoryService.Create(model);
+            await this.categoryService.Create(model);
 
             return this.RedirectToAction("All", "Product");
         }

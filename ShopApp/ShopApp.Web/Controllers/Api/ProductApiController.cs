@@ -6,7 +6,6 @@ using System.Web.Http.Results;
 
 namespace ShopApp.Web.Controllers.Api
 {
-    //TODO [GM]: Authorization?
     public class ProductApiController : BaseApiController
     {
         private readonly IProductService productService;
@@ -20,7 +19,7 @@ namespace ShopApp.Web.Controllers.Api
 
         public JsonResult<ProductViewModel> Get(string id)
         {
-            ProductViewModel productModel = this.productService.RetrieveProduct(id);
+            ProductViewModel productModel = this.productService.Get(id);
 
             return this.Json(productModel);
         }
