@@ -1,4 +1,7 @@
-﻿<ul id="products-pagging-wrapper" class="pagging-wrapper"></ul>
+﻿@using Asp.Mvc.Web.Extensions.Web;
+
+<ul id="pagging-container" class="pagging-wrapper"></ul>
+
 @* TODO [GM]: Extract in js file? *@
 <script type="text/javascript">
     var numbersRegex = /^\d+$/;
@@ -29,27 +32,28 @@
         // fetching the products count for this category
         $.ajax({
             method: "GET",
-            url: "/api/ProductApi/Count?category=" + myParam.value
-        }).then(function (productsCount) {
-            var $paggingWrapper = $("#products-pagging-wrapper");
-            var pagesCount = Math.floor(productsCount / 9) + 1;
+            url: "/api/" + "@this.Html.CurrentController()" + "Api/Count?category=" + myParam.value,
+            success: function (elementsCount) {
+                var $paggingWrapper = $("#pagging-container");
+                var pagesCount = Math.floor(elementsCount / 9) + 1;
 
-            if (pagesCount == 1) {
-                $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=0'><i class='fas fa-angle-double-left'></i></a></li>");
-                $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='javascript:void(0)' onclick='decrementPage(this);'><i class='fas fa-angle-left'></i></a></li>");
-            }
-
-            for (var index = 1; index <= 1; index++) {
-                $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=" + (index - 1) + "'>" + index + "</a></li>");
                 if (pagesCount == 1) {
-                    $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='javascript:void(0)'>...</a></li>");
+                    $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=0'><i class='fas fa-angle-double-left'></i></a></li>");
+                    $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='javascript:void(0)' onclick='decrementPage(this);'><i class='fas fa-angle-left'></i></a></li>");
                 }
-            }
 
-            $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=" + (pagesCount - 1) + "'>" + (pagesCount) + "</i></a></li>");
-            if (pagesCount == 1) {
-                $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='javascript:void(0)' onclick='incrementPage(this);'><i class='fas fa-angle-right'></i></a></li>");
-                $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=" + (pagesCount - 1) + "'><i class='fas fa-angle-double-right'></i></a></li>");
+                for (var index = 1; index <= 1; index++) {
+                    $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=" + (index - 1) + "'>" + index + "</a></li>");
+                    if (pagesCount == 1) {
+                        $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='javascript:void(0)'>...</a></li>");
+                    }
+                }
+
+                $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=" + (pagesCount - 1) + "'>" + (pagesCount) + "</i></a></li>");
+                if (pagesCount == 1) {
+                    $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='javascript:void(0)' onclick='incrementPage(this);'><i class='fas fa-angle-right'></i></a></li>");
+                    $paggingWrapper.append("<li class='mx-auto'><a class='page-btn' href='/Product/All?category=" + myParam.value + "&page=" + (pagesCount - 1) + "'><i class='fas fa-angle-double-right'></i></a></li>");
+                }
             }
         });
 
