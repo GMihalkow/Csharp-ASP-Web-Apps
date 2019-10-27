@@ -1,152 +1,143 @@
 ﻿@model IEnumerable<OrderViewModel>
 
-<h1 class="text-center w-60r mx-auto p-1">Orders</h1>
-<div id="orders-wrapper" class="w-60r mx-auto">
-    <ul>
-        <li><a href="#new-orders">New</a></li>
-        <li><a href="#sent-orders">Sent</a></li>
-        <li><a href="#completed-orders">Completed</a></li>
-    </ul>
-    <div id="new-orders" shop-orders-wrapper="new-orders" class="w-100">
-        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.New))
+<div class="w-60r mx-auto p-1">
+    <h1 class="text-center w-100 p-1">Orders</h1>
+
+    <div id="orders-table-toolbar" class="w-100 table-toolbar">
+        <select class="shop-select">
+            <option>Show All</option>
+            <option value="Completed">Completed</option>
+            <option value="New">New</option>
+            <option value="Sent">Sent</option>
+        </select>
+        <button id="collapse-groups-btn" class="shop-btn shop-btn-green">Collapse all</button>
+        <button id="send-order-btn" style="display: none;" class="shop-btn shop-btn-green">Send</button>
+        <button id="complete-order-btn" style="display: none;" class="shop-btn shop-btn-green">Complete</button>
     </div>
-    <div id="sent-orders" shop-orders-wrapper="sent-orders" class="w-100">
-        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.Sent))
-    </div>
-    <div id="completed-orders" shop-orders-wrapper="completed-orders" class="w-100">
-        @Html.Partial("_OrdersTablePartial", this.Model.Where(order => order.Status == ShopApp.Models.OrderStatus.Completed))
+    <div id="orders-wrapper" class="w-100">
+        @this.Html.Partial("_OrdersTablePartial", this.Model)
     </div>
 </div>
 
-<div id="confirmation-dialog" title="Caution" shop-action=""></div>
-
 @section Scripts {
-
-    <script id="confirmation-dialog-template" type="text/html">
-        @Html.Partial("_ConfirmationPartial")
-    </script>
 
     <script type="text/javascript">
         $(function () {
-                
-            // providing the id for the product details dialog
-            var productDetailsButtons = $("[shop-action='product-details']");
-            productDetailsButtons.on("click", function (e) {
-                e.preventDefault();
-
-                var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-                openProductDetailsDialog(productId);
+            // collapse all groups functionality
+            $("#collapse-groups-btn").on("click", function () {
+                $(".tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-odd .tabulator-arrow, .tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-even .tabulator-arrow").click();
             });
 
+            // send order
+            $("#send-order-btn").on("click", function () {
+                var sendOrderCallback = function sendOrderCallback() {
+                    var orderId = table.getSelectedRows()[0]._row.data.id;
 
-            // confirmation dialog
-            var confirmationDialog = $("#confirmation-dialog");
-            confirmationDialog.dialog({
-                autoOpen: false,
-                height: 200,
-                width: 400,
-                modal: true,
-                show: {
-                    effect: "blind",
-                    duration: 500
+                    $.ajax({
+                        url: "/Order/Send/" + orderId,
+                        method: "GET"
+                    }).then(function () {
+                        window.location.reload();
+                    });
+
+                    $(".custom-modal").find(".close-modal-btn").click();
+                };
+
+                modalFunctions.openConfirmationModal(sendOrderCallback.bind(this));
+            });
+
+            // complete order
+            $("#complete-order-btn").on("click", function () {
+                var completeOrderCallback = function completeOrderCallback() {
+                    var orderId = table.getSelectedRows()[0]._row.data.id;
+
+                    $.ajax({
+                        url: "/Order/Complete/" + orderId,
+                        method: "GET"
+                    }).then(function () {
+                        window.location.reload();
+                    });
+
+                    $(".custom-modal").find(".close-modal-btn").click();
+                };
+
+                modalFunctions.openConfirmationModal(completeOrderCallback.bind(this));
+            });
+
+            var table = new Tabulator("#orders-wrapper table", {
+                layout: "fitData",
+                selectable: 1,
+                resizableRows: false,
+                resizableColumns: false,
+                pagination: "local",
+                paginationSize: 10,
+                groupBy: "status",
+                cellClick: function (e, cell) {
+                    // show product details modal functionality
+                    var productId = cell._cell.row.data.product_id;
+
+                    var columnType = cell._cell.column.contentElement.innerText;
+                    if (columnType.toLowerCase() === "product") {
+                        modalFunctions.openProductDetailsDialog(productId)
+                    }
                 },
-                hide: {
-                    effect: "explode",
-                    duration: 500
-                },
-                buttons: {
-                    Confirm: function (e) {
-                        var orderId = $(e.currentTarget).parent().parent().prev().find("[shop-order-id]").attr("shop-order-id");
+                rowSelected: function (row) {
+                    var sendBtn = $("#orders-table-toolbar").find("#send-order-btn");
+                    var completeBtn = $("#orders-table-toolbar").find("#complete-order-btn");
 
-                        if (confirmationDialog.attr("shop-action") === "remove-order") {
-                            var ordersWrapper = $("#orders-wrapper").find("[shop-order-id='" + orderId + "']");
-
-                            $.ajax({
-                                url: "/Order/Cancel/" + orderId,
-                                method: "GET"
-                            }).then(function () {
-                                var container = ordersWrapper.parent().parent().parent();
-                                var tbody = ordersWrapper.parent();
-
-                                ordersWrapper.remove();
-
-                                if (tbody.children().length === 0) {
-                                    container.html("<h3 class='text-center p-1 mx-auto w-50'>No Orders with this status.</h3>");
-                                }
-                            });
-
-                        } else if (confirmationDialog.attr("shop-action") === "send-order") {
-                            
-                            $.ajax({
-                                url: "/Order/Send/" + orderId,
-                                method: "GET"
-                            }).then(function () {
-                                window.location.reload();
-                            });
-
-                        } else if (confirmationDialog.attr("shop-action") === "complete-order") {
-
-                            $.ajax({
-                                url: "/Order/Complete/" + orderId,
-                                method: "GET"
-                            }).then(function () {
-                                window.location.reload();
-                            });
-
-                        }
-
-                        confirmationDialog.dialog("close");
-                    },
-                    Cancel: function () {
-                        confirmationDialog.dialog("close");
+                    var currentStatus = row._row.data.status;
+                    if (currentStatus === "New") {
+                        sendBtn.fadeIn(200);
+                        completeBtn.hide();
+                    } else if (currentStatus === "Sent") {
+                        sendBtn.hide();
+                        completeBtn.fadeIn(200);
+                    } else {
+                        sendBtn.fadeOut(100);
+                        completeBtn.fadeOut(100);
                     }
                 }
             });
 
-            // send order functionality
-            var sendOrderButtons = $("[shop-orders-wrapper='new-orders']").find("[shop-action='send-order']");
-            sendOrderButtons.on("click", function (e) {
-                var orderId = $(this).closest("[shop-order-id]").attr("shop-order-id");
+            table.hideColumn("id");
+            table.hideColumn("product_id");
 
-                confirmationDialog.attr("shop-action", "send-order");
+            // cancel order 
+            table.addColumn({
+                formatter: "buttonCross",
+                width: 30,
+                cellClick: function (e, cell) {
+                    var orderId = cell.getRow()._row.data.id;
+                    var cancelOrdercallback = function cancelOrdercallback(orderId) {
 
-                confirmationDialog.html($("#confirmation-dialog-template").html());
-                confirmationDialog.append("<span shop-order-id='" + orderId + "'></span>");
+                        $.ajax({
+                            url: "/Order/Cancel/" + orderId,
+                            method: "GET"
+                        }).then(function () {
+                            window.location.reload();
+                        });
 
-                confirmationDialog.dialog("open");
+                        $(".custom-modal").find(".close-modal-btn").click();
+                    };
+
+                    modalFunctions.openConfirmationModal(cancelOrdercallback.bind(this, orderId));
+                }
             });
 
-            // complete order functionality
-            var completeOrderButtons = $("#orders-wrapper").find("[shop-action='complete-order']");
-            completeOrderButtons.on("click", function (e) {
-                var orderId = $(this).closest("[shop-order-id]").attr("shop-order-id");
+            // filtering by status
+            var statusFilterSelect = $("#orders-table-toolbar").find(".shop-select");
+            statusFilterSelect.on("change", function (e) {
+                var currentStatus = e.currentTarget.value;
 
-                confirmationDialog.attr("shop-action", "complete-order");
-
-                confirmationDialog.html($("#confirmation-dialog-template").html());
-                confirmationDialog.append("<span shop-order-id='" + orderId + "'></span>");
-
-                confirmationDialog.dialog("open");
+                if (currentStatus && currentStatus !== "Show All") {
+                    table.setFilter([
+                        { field: "status", type: "=", value: currentStatus }
+                    ]);
+                } else {
+                    table.clearFilter();
+                }
             });
 
-            // delete order functionality
-            var deleteOrderButtons = $("#orders-wrapper").find("[shop-action='delete-order']");
-            deleteOrderButtons.on("click", function () {
-                var orderId = $(this).closest("[shop-order-id]").attr("shop-order-id");
-
-                confirmationDialog.attr("shop-action", "remove-order");
-
-                confirmationDialog.html($("#confirmation-dialog-template").html());
-                confirmationDialog.append("<span shop-order-id='" + orderId + "'></span>");
-
-                confirmationDialog.dialog("open");
-            });
-
-            $("#orders-wrapper").tabs({
-                collapsibe: true,
-                show: { effect: "blind", duration: 500 },
-                hide: { effect: "blind", duration: 250 },
-            });
         });
     </script>
 }

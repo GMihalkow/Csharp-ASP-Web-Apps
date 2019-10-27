@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CategoryViewModel>
+@using Asp.Mvc.Web.Extensions.Web;
 
 <section class="products-wrapper">
     <section class="products-wrapper-admin-toolbar">
@@ -40,13 +41,13 @@
                 }
             }
         </section>
-        @this.Html.Partial("_ProductsPaggingPartial")
+        @this.Html.Partial("_PaggingPartial")
     </section>
 </section>
 
 @section templates {
     <script id="add-product-form-template" type="text/html">
-        @this.Html.Partial("_AddProductFormPartial", new ProductInputModel())
+        @this.Html.Partial("_FormPartial", new ProductCreateModel())
     </script>
 
     <script id="product-container-template" type="text/html">
@@ -59,34 +60,36 @@
 }
 
 @section Scripts {
+
     @Scripts.Render("~/bundles/jqueryval")
-    @* TODO [GM]: Authorization *@
+
     <script type="text/javascript">
         $(function () {
             var _this = this;
 
-            $("[shop-action='add-product']").button().on("click", function () {
-                var template = $("#add-product-form-template").html();
+            @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
+            {
+               @: $("[shop-action='add-product']").button().on("click", function() {
+               @:   var template = $("#add-product-form-template").html();
 
-                var modalButtons = [
-                    {
-                        Name: "Add",
-                        onClick: function () {
-                            var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
-                            $form.submit();
-                        }
-                    }
-                ];
+               @:   var modalButtons = [
+               @:   {
+               @:        Name: "Add",
+               @:        onClick: function() {
+               @:           var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
+               @:           $form.submit();
+               @:        }
+               @:   }];
 
-                openModal("Add Product", template, modalButtons);
+               @:   modalFunctions.openModal("Add Product", template, modalButtons);
 
-                var categoryId = $(this).parent().children("a[shop-role-id]");
+               @:   var categoryId = $(this).parent().children("a[shop-role-id]");
 
-                var $categoryIdInput = $(".custom-modal").find(".modal-body").find("#CategoryId");
+               @:   var $categoryIdInput = $(".custom-modal").find(".modal-body").find("#CategoryId");
 
-                $categoryIdInput.attr("value", $(categoryId).attr("shop-role-id"));
-            });
-
+               @:   $categoryIdInput.attr("value", $(categoryId).attr("shop-role-id"));
+               @: });
+            }
             // providing the id for the product details modal
             var productDetailsButtons = $("[shop-action='product-details']");
             productDetailsButtons.on("click", function (e) {
@@ -103,68 +106,89 @@
                     }
                 ];
 
-                    openProductDetailsDialog(productId, buttons);
-                });
-
-            $("#create-category, [shop-action='edit-category']").button().on("click", function (e) {
-                var template = $("#create-category-form-template").html();
-
-                var modalButtons = [
-                    {
-                        Name: "Create",
-                        onClick: function () {
-                            var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
-                            $form.submit();
-                        }
-                    }
-                ];
-
-                if ($(e.currentTarget).attr("shop-action") === "edit-category") {
-                    var categoryId = $(this).parent().find("[shop-role-id]").attr("shop-role-id");
-
-                    $.ajax({
-                        url: "/api/CategoryApi/Get/" + categoryId,
-                        method: "GET"
-                    }).then(function (category) {
-                        modalButtons[0].Name = "Edit";
-                        openModal("Create Category", template, modalButtons);
-
-                        $(".custom-modal .modal-form").attr("action", "@this.Url.Action("Edit", "Category")");
-                        $(".custom-modal .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
-                        $(".custom-modal #Name").attr("value", category.Name);
-                        $(".custom-modal #CoverUrl").attr("value", category.CoverUrl);
-                    });
-
-                } else {
-                    openModal("Create Category", template, modalButtons);
-                }
-
+                modalFunctions.openProductDetailsDialog(productId, buttons);
             });
+
+            @if(this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
+             {
+             @:     $("#create-category, [shop-action='edit-category']").button().on("click", function(e) {
+             @:        var template = $("#create-category-form-template").html();
+
+             @:        var modalButtons = [
+             @:        {
+             @:            Name: "Create",
+             @:            onClick: function () {
+             @:                var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
+             @:                $form.submit();
+             @:            }
+             @:        }];
+
+             @:        if ($(e.currentTarget).attr("shop-action") === "edit-category") {
+             @:            var categoryId = $(this).parent().find("[shop-role-id]").attr("shop-role-id");
+
+             @:            $.ajax({
+             @:                url: "/api/CategoryApi/Get/" + categoryId,
+             @:                method: "GET"
+             @:            }).then(function(category) {
+             @:                modalButtons[0].Name = "Edit";
+             @:                modalFunctions.openModal("Create Category", template, modalButtons);
+
+             @:            $(".custom-modal .modal-form").attr("action", "@this.Url.Action("Edit", "Category")");
+             @:            $(".custom-modal .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
+             @:            $(".custom-modal #Name").attr("value", category.Name);
+             @:            $(".custom-modal #CoverUrl").attr("value", category.CoverUrl);
+             @:            });
+
+             @:        } else {
+             @:            modalFunctions.openModal("Create Category", template, modalButtons);
+             @:        }
+
+             @:    });
+            }
 
             @* attaching the edit product functionality *@
             @if (this.User.IsInRole(RolesConstants.Administrator))
             {
                 @: var editProductFunctionality = function() {
-                @:    var template = $("#add-product-form-template").html();
+                @:  var template = $("#add-product-form-template").html();
 
-                @:    var $modal = $(this).closest(".custom-modal"); console.log($modal);
-                @:    var productId = $modal.find("[shop-product-id]").attr("shop-product-id");
-                @:    var productName = $modal.find("[shop-product-name]").attr("shop-product-name");
-                @:    var productPrice = $modal.find("[shop-product-price]").attr("shop-product-price");
-                @:    var productCoverURL = $modal.find("[shop-product-cover-url]").attr("src");
-                @:    var productCategoryId = $modal.find("[shop-product-category-id]").attr("shop-product-category-id");
-                @:    var productDescription = $modal.find("[shop-product-description]").text().trim();
+                @:  var $modal = $(this).closest(".custom-modal");
+                @:  var productId = $modal.find("[shop-product-id]").attr("shop-product-id");
+                @:  var productName = $modal.find("[shop-product-name]").attr("shop-product-name");
+                @:  var productPrice = $modal.find("[shop-product-price]").attr("shop-product-price");
+                @:  var productCoverURL = $modal.find("[shop-product-cover-url]").attr("src");
+                @:  var productCategoryId = $modal.find("[shop-product-category-id]").attr("shop-product-category-id");
+                @:  var productDescription = $modal.find("[shop-product-description]").text().trim();
 
-                @:    var modalButtons = [
-                @:       {
-                @:           Name: "Edit",
-                @:           onClick: function () {
-                @:               var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
-                @:               $form.submit();
-                @:           }
-                @:       }
-                @:   ];
-                @:    openModal("Edit Product", template, modalButtons);
+                @:  var selectWrapper = $("<div><label for='CategoryId'>Choose a category</label></div>");
+                @:  var categoriesList = $("<select id='CategoryId' name='CategoryId' class='shop-select w-100'></select>");
+                @:  var categories = $(".categories-list [shop-role-id]").each(function (index, element) {
+
+                @:    var option = $("<option></option>");
+                @:    option.attr("value", $(element).attr("shop-role-id"));
+                @:    option.text($(element).text());
+
+                @:    if (productCategoryId === $(element).attr("shop-role-id")) {
+                @:      option.attr("selected", "selected");
+                @:    }
+
+                @:    categoriesList.append(option);
+                @:  });
+                @:
+                @:  selectWrapper.append(categoriesList);
+                @:
+
+                @:  var modalButtons = [
+                @:    {
+                @:        Name: "Edit",
+                @:        onClick: function () {
+                @:            var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
+                @:            $form.submit();
+                @:        }
+                @:    }
+                @:  ];
+
+                @:    modalFunctions.openModal("Edit Product", template, modalButtons);
 
                 @:    var $form = $(".custom-modal .modal-form");
                 @:    $form.attr("action", "@this.Url.Action("Edit", "Product")");
@@ -172,7 +196,8 @@
                 @:    $form.find("#Description").text(productDescription);
                 @:    $form.find("#Price").attr("value", productPrice);
                 @:    $form.find("#CoverUrl").attr("value", productCoverURL);
-                @:    $form.find("#CategoryId").attr("value", productCategoryId)
+//                @:    $form.find("#CategoryId").attr("value", productCategoryId)
+                @:    $form.append(selectWrapper);
                 @:    $form.append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
                 @: }
             }
@@ -187,12 +212,12 @@
                 }
                 else
                 {
-                    @:  var callback = function () {
+                    @:  var callback = function (e) {
                     @:      var productQuantity = $(this).closest(".product-container").find("[shop-product-quantity]").val();
                     @:      var productId = $(this).closest(".product-container").attr("shop-product-id");
                     @:      var productName = $(this).closest(".product-container").find("[shop-product-name]").attr("shop-product-name");
                     @:      var productPrice = $(this).closest(".product-container").find("[shop-product-price]").attr("shop-product-price");
-                    @:      // TODO [GM]: Add regex condition?
+
                     @:      if (parseInt(productQuantity) > 0)
                     @:      {
                     @:        window.sessionStorage.setItem(productName, JSON.stringify({ quantity: productQuantity, productId: productId, price: productPrice }));
@@ -200,23 +225,12 @@
 
                     @:      $(".banner-order-information i").text(window.sessionStorage.length);
                     @:      $(".custom-modal").find("[close-modal-btn]").click();
+
+                    @:      // clearing the quantity after ordering
+                    @:      $(this).closest(".product-container").find("[shop-product-quantity]").val("");
                     @:  };
 
-                    @:  openConfirmationModal(callback.bind(this));
-
-                    @:  var productQuantity = $(this).parent().parent().find("[shop-product-quantity]");
-                    @:  var productId = $(this).closest("[shop-product-id]").attr("shop-product-id");
-                    @:  var productName = $(this).parent().parent().find("[shop-product-name]").attr("shop-product-name");
-
-                    @: // var modal = $(".custom-modal");
-                    @: // modal.attr("shop-product-id", productId);
-                    @: // modal.attr("shop-product-name", productName);
-                    @: // modal.attr("shop-product-quantity", productQuantity.val() > 0 ? productQuantity.val() : 0);
-
-                    @:  //confirmationDialog.dialog("open");
-
-                    // emptying the quantity input
-                    @:  //productQuantity.val("");
+                    @: modalFunctions.openConfirmationModal(callback.bind(this));
                 }
             });
 
@@ -241,7 +255,7 @@
                 @:     });
                 @: };
 
-                @: openConfirmationModal(callback.bind(this, [productId]));
+                @: modalFunctions.openConfirmationModal(callback.bind(this, [productId]));
 
                 @:});
             }
