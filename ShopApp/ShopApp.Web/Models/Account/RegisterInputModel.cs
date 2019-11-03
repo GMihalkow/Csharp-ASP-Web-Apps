@@ -32,6 +32,7 @@ namespace ShopApp.Web.Models
 		[Display(Name = "Email Address")]
 		public string Email { get; set; }
 
+        [DataType(DataType.Date)]
 		public DateTime? BirthDate { get; set; }
 
         [Required]
