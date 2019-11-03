@@ -77,7 +77,14 @@ namespace ShopApp.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            // injecting the repositories
+            kernel.Bind<IRepository<CategoryViewModel, CategoryInputModel>>().To<CategoryRepository>().InRequestScope();
+            kernel.Bind<IRepository<ProductViewModel, ProductBaseInputModel>>().To<ProductRepository>().InRequestScope();
+
+            // injecting the db context
             kernel.Bind<ShopAppDbContext>().To<ShopAppDbContext>().InRequestScope();
+
+            // injecting the services
             kernel.Bind<IAccountService>().To<AccountService>().InRequestScope();
             kernel.Bind<ICategoryService>().To<CategoryService>().InRequestScope();
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
