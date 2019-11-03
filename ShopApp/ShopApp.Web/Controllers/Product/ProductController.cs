@@ -1,5 +1,6 @@
 ﻿using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
+using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System;
@@ -13,11 +14,13 @@ namespace ShopApp.Web.Controllers.Product
     public class ProductController : BaseController
     {
         private readonly ICategoryService categoryService;
-        private readonly IProductService productService;
+        private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
+        private readonly IRepository<ProductViewModel, ProductBaseInputModel> productRepository;
 
-        public ProductController(ICategoryService categoryService, IProductService productService)
+        public ProductController(ICategoryService categoryService, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
         {
-            this.productService = productService;
+            this.categoryRepository = categoryRepository;
+            this.productRepository = productRepository;
             this.categoryService = categoryService;
         }
 
@@ -41,34 +44,32 @@ namespace ShopApp.Web.Controllers.Product
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
-        public async Task<ActionResult> Create(ProductInputModel productModel)
+        public async Task<ActionResult> Create(ProductCreateModel productModel)
         {
             if (!this.ModelState.IsValid)
             {
                 throw new InvalidOperationException(this.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage);
             }
 
-            string categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
+            string categoryName = this.categoryRepository.Get(productModel.CategoryId).Name;
 
-            await this.productService.AddProduct(productModel);
+            await this.productRepository.Create(productModel);
 
             return this.Redirect("/Product/All?category=" + categoryName);
         }
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
-        public async Task<ActionResult> Edit(ProductInputModel productModel)
+        public async Task<ActionResult> Edit(ProductEditModel productModel)
         {
-            ;
-            // TODO [GM]: Change category also?
             if (!this.ModelState.IsValid)
             {
                 throw new InvalidOperationException(this.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage);
             }
 
-            var categoryName = this.categoryService.GetCategory(productModel.CategoryId).Name;
+            var categoryName = this.categoryRepository.Get(productModel.CategoryId).Name;
 
-            await this.productService.EditProduct(productModel);
+            await this.productRepository.Edit(productModel);
 
             return this.Redirect("/Product/All?category=" + categoryName);
         }
@@ -76,7 +77,7 @@ namespace ShopApp.Web.Controllers.Product
         [Authorize(Roles = RolesConstants.Administrator)]
         public async Task Delete(string id)
         {
-            await this.productService.Delete(id);
+            await this.productRepository.Delete(id);
         }
     }
 }

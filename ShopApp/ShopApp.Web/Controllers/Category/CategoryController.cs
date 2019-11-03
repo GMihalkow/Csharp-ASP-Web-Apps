@@ -1,5 +1,6 @@
 ﻿using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
+using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
 using System;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace ShopApp.Web.Controllers.Category
     public class CategoryController : BaseController
     {
         public readonly ICategoryService categoryService;
+        private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
         {
             this.categoryService = categoryService;
+            this.categoryRepository = categoryRepository;
         }
 
         [HttpPost]
@@ -26,7 +29,7 @@ namespace ShopApp.Web.Controllers.Category
                 throw new InvalidOperationException("Something went wrong");
             }
 
-            await this.categoryService.Edit(model);
+            await this.categoryRepository.Edit(model);
 
             return this.RedirectToAction("All", "Product");
         }
@@ -40,7 +43,7 @@ namespace ShopApp.Web.Controllers.Category
                 throw new InvalidOperationException(this.ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
             }
 
-            await this.categoryService.Create(model);
+            await this.categoryRepository.Create(model);
 
             return this.RedirectToAction("All", "Product");
         }
@@ -48,7 +51,7 @@ namespace ShopApp.Web.Controllers.Category
         [Authorize(Roles = RolesConstants.Administrator)]
         public async Task<ActionResult> Delete(string id)
         {
-            await this.categoryService.Delete(id);
+            await this.categoryRepository.Delete(id);
 
             return this.RedirectToAction("All", "Product");
         }

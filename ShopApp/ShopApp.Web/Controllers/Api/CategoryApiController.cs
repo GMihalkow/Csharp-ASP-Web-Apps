@@ -1,4 +1,5 @@
 ﻿using ShopApp.Web.Models;
+using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
 using System;
 using System.Collections.Generic;
@@ -9,17 +10,17 @@ namespace ShopApp.Web.Controllers.Api
 {
     public class CategoryApiController : BaseApiController
     {
-        private readonly ICategoryService categoryService;
+        private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
-        public CategoryApiController(ICategoryService categoryService)
+        public CategoryApiController(ICategoryService categoryService, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
         {
-            this.categoryService = categoryService;
+            this.categoryRepository = categoryRepository;
         }
 
         [Authorize]
         public JsonResult<CategoryViewModel> Get(string id)
         {
-            CategoryViewModel categoryModel = this.categoryService.GetCategory(id);
+            CategoryViewModel categoryModel = this.categoryRepository.Get(id);
 
             return this.Json(categoryModel);
         }
@@ -29,7 +30,7 @@ namespace ShopApp.Web.Controllers.Api
         [Route(template: "/api/GetCategoryProducts/{id}")]
         public JsonResult<IEnumerable<ProductViewModel>> GetCategoryProducts(string id)
         {
-            CategoryViewModel category = this.categoryService.GetCategory(id);
+            CategoryViewModel category = this.categoryRepository.Get(id);
 
             if (category == null)
             {

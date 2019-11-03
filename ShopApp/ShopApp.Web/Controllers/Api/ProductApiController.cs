@@ -1,4 +1,5 @@
 ﻿using ShopApp.Web.Models;
+using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System.Web.Http;
@@ -10,16 +11,19 @@ namespace ShopApp.Web.Controllers.Api
     {
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
+        private readonly IRepository<ProductViewModel, ProductBaseInputModel> productRepository;
 
-        public ProductApiController(IProductService productService, ICategoryService categoryService) : base()
+        public ProductApiController(IProductService productService, ICategoryService categoryService, IRepository<ProductViewModel, ProductBaseInputModel> productRepository) 
+            : base()
         {
             this.productService = productService;
             this.categoryService = categoryService;
+            this.productRepository = productRepository;
         }
 
         public JsonResult<ProductViewModel> Get(string id)
         {
-            ProductViewModel productModel = this.productService.Get(id);
+            ProductViewModel productModel = this.productRepository.Get(id);
 
             return this.Json(productModel);
         }

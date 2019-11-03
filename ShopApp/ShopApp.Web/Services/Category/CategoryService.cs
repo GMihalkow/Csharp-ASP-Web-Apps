@@ -1,5 +1,6 @@
 ﻿using ShopApp.Data;
 using ShopApp.Web.Models;
+using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
 using System;
@@ -14,74 +15,15 @@ namespace ShopApp.Web.Services.Category
     {
         public readonly IAccountService accountService;
         private readonly ShopAppDbContext dbContext;
+        private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
-        public CategoryService(IAccountService accountService, ShopAppDbContext dbContext)
+        public CategoryService(IAccountService accountService, ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
         {
             this.accountService = accountService;
             this.dbContext = dbContext;
-        }
-
-        public async Task Edit(CategoryInputModel model)
-        {
-            ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == model.Id);
-
-            if (categoryEntity != null)
-            {
-                categoryEntity.Name = model.Name;
-                categoryEntity.CoverUrl = model.CoverUrl;
-
-                await this.dbContext.SaveChangesAsync();
-            }
+            this.categoryRepository = categoryRepository;
         }
         
-        public async Task<CategoryInputModel> Create(CategoryInputModel model)
-        {
-            if (this.dbContext.Categories.Any(c => c.Name == model.Name))
-            {
-                throw new InvalidOperationException("Category already exists!");
-            }
-
-            ShopApp.Models.ShopUser user = await this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
-
-            ShopApp.Models.Category categoryEntity = new ShopApp.Models.Category
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = model.Name,
-                CoverUrl = model.CoverUrl,
-                CreatedOn = DateTime.UtcNow,
-                CreatorId = user.Id
-            };
-
-            this.dbContext.Categories.Add(categoryEntity);
-            await this.dbContext.SaveChangesAsync();
-
-            return model;
-        }
-
-        public async Task Delete(string id)
-        {
-            CategoryViewModel categoryModel = this.GetCategory(id);
-
-            ShopApp.Models.Category categoryEntity = this.dbContext.Categories.FirstOrDefault(c => c.Id == categoryModel.Id);
-
-            this.dbContext.Categories.Remove(categoryEntity);
-            await this.dbContext.SaveChangesAsync();
-        }
-
-        public IEnumerable<CategoryViewModel> GetCategories()
-        {
-            List<CategoryViewModel> categories = this.dbContext.Categories
-                .Select(c => new CategoryViewModel
-                {
-                    Id = c.Id,
-                    CoverUrl = c.CoverUrl,
-                    Name = c.Name
-                })
-                .ToList();
-
-            return categories;
-        }
-
         public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page)
         {
             // filtering invalid negative inputs
@@ -122,20 +64,7 @@ namespace ShopApp.Web.Services.Category
 
             return categories;
         }
-
-        public CategoryViewModel GetCategory(string id)
-        {
-            CategoryViewModel category = this.GetCategories()
-                .FirstOrDefault(c => c.Id == id);
-
-            if (category == null)
-            {
-                throw new InvalidOperationException("Category doesn't exist.");
-            }
-
-            return category;
-        }
-
+        
         public CategoryViewModel GetCategoryByName(string name)
         {
             CategoryViewModel categoryModel = this.dbContext.Categories
@@ -168,7 +97,8 @@ namespace ShopApp.Web.Services.Category
         public string GetDefaultCategory()
         {
             // TODO [GM]: make async?
-            var defaultCategory = this.GetCategories().FirstOrDefault();
+            // TODO [GM]: don't pull all categories?
+            var defaultCategory = this.categoryRepository.GetAll().FirstOrDefault();
 
             if (defaultCategory == null)
             {

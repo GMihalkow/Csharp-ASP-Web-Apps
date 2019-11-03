@@ -3,9 +3,9 @@ using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
+using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Order.Contracts;
-using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +16,15 @@ namespace ShopApp.Web.Services.Order
 {
     public class OrderService : IOrderService
     {
-        public readonly IProductService productService;
-
         public readonly IAccountService accountService;
         private readonly ShopAppDbContext dbContext;
+        private readonly IRepository<ProductViewModel, ProductBaseInputModel> productRepository;
 
-        public OrderService(IProductService productService, IAccountService accountService, ShopAppDbContext dbContext)
+        public OrderService(IAccountService accountService, ShopAppDbContext dbContext, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
         {
             this.accountService = accountService;
             this.dbContext = dbContext;
-            this.productService = productService;
+            this.productRepository = productRepository;
         }
 
         public async Task Checkout(string ordersJson)
@@ -60,14 +59,14 @@ namespace ShopApp.Web.Services.Order
                 order.OrderedOn = DateTime.UtcNow;
 
                 // making sure that we have the correct product with the correct price
-                ProductViewModel product = this.productService.Get(order.ProductId);
+                ProductViewModel product = this.productRepository.Get(order.ProductId);
                 if (product == null)
                 {
                     throw new InvalidOperationException("Invalid product id.");
                 }
 
                 order.ProductId = product.Id;
-                
+
                 this.dbContext.Orders.Add(order);
                 await this.dbContext.SaveChangesAsync();
             }
