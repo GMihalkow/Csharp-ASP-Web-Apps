@@ -11,10 +11,10 @@
     <input class="d-block mx-auto" shop-product-quantity type="number" />
     <div class="text-center" shop-product-price="@this.Model.Price"> $@this.Model.Price </div>
     <section>
-        <button shop-action="order-product" class="ui-button ui-widget ui-corner-all" type="button">Order</button>
+        <button shop-action="order-product" class="shop-btn" type="button">Order</button>
         @if (this.User.IsInRole(RolesConstants.Administrator))
         {
-            <button shop-action="remove-product" class="ui-button ui-widget ui-corner-all bg-delete" type="button"><i class="fas fa-trash-alt"></i></button>
+            <button shop-action="remove-product" class="shop-btn-delete" type="button"><i class="fas fa-trash-alt"></i></button>
         }
     </section>
 </section>

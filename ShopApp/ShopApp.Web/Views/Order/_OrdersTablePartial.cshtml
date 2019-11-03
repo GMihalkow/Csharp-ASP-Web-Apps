@@ -7,37 +7,29 @@
 }
 else
 {
-    <table class="w-100 p-1 mx-auto">
+    <table class="w-100 mx-auto">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>User</th>
-                <th>Quantity</th>
-                <th>TotalPrice</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th style="display: none;">Id</th>
+                <th style="display: none;">Product Id</th>
+                <th width="200">Product</th>
+                <th width="200">User</th>
+                <th width="150">Quantity</th>
+                <th width="150">Total Price</th>
+                <th width="188">Status</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in this.Model)
             {
-                <tr shop-order-id="@order.Id">
-                    <td shop-product-id="@order.Product.Id"><a shop-action="product-details" href="javascript:void(0)">@order.Product.Name</a></td>
-                    <td>@order.User</td>
-                    <td>@order.Quantity</td>
-                    <td>$@order.TotalPrice</td>
-                    <td>@order.Status.ToString()</td>
-                    <td>
-                        @if (order.Status == ShopApp.Models.OrderStatus.New)
-                        {
-                            <button shop-action="send-order" class="ui-button ui-widget ui-corner-all" type="button">Send</button>
-                        }
-                        else if (order.Status == ShopApp.Models.OrderStatus.Sent)
-                        {   
-                            <button shop-action="complete-order" class="ui-button ui-widget ui-corner-all" type="button">Complete</button>
-                        }
-                        <button shop-action="delete-order" class="ui-button ui-widget ui-corner-all bg-delete" type="button"><i class="fas fa-trash-alt"></i></button>
-                    </td>
+                <tr>
+                    <td style="display: none;">@order.Id</td>
+                    <td style="display: none;">@order.Product.Id</td>
+                    <td width="200">@order.Product.Name</td>
+                    <td width="200">@order.User</td>
+                    <td width="150">@order.Quantity</td>
+                    <td width="150">$@order.TotalPrice</td>
+                    <td width="188">@order.Status.ToString()</td>
                 </tr>
             }
         </tbody>

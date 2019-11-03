@@ -8,11 +8,11 @@
     </thead>
     <tbody>
         {{#orders}}
-            <tr shop-product-id="{{productId}}">
-                <td>{{name}}</td>
-                <td><input class="text-center w-50" type="number"  min="0" value="{{quantity}}" /></td>
-                <td><button shop-action="remove-product" class="ui-button ui-widget ui-corner-all">Remove</button></td>
-            </tr>
+        <tr shop-product-id="{{productId}}">
+            <td>{{name}}</td>
+            <td><input class="text-center w-50" type="number" min="0" value="{{quantity}}" /></td>
+            <td><button shop-action="remove-product" class="shop-btn-delete">Remove</button></td>
+        </tr>
         {{/orders}}
     </tbody>
 </table>

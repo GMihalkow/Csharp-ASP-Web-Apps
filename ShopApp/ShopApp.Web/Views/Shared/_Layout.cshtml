@@ -6,11 +6,9 @@
     <!-- TODO [GM]: Extract to respective bundles -->
     <script src="~/scripts/mustache.js/mustache.min.js"></script>
     <script src="~/scripts/jquery/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     @Styles.Render("~/Content/style.css")
-    @Styles.Render("~/bundles/jquery-ui")
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/tabulator_site.min.css"/>
+    @Styles.Render("~/Content/flatpickr.css")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/tabulator_site.min.css" />
 </head>
 <body>
 
@@ -46,6 +44,7 @@
 
     @this.Html.Partial("_FooterPartial")
 
+    <script type="text/javascript" src="~/scripts/flatpickr/flatpickr.min.js"></script>
     @this.RenderSection("scripts", required: false)
     @this.RenderSection("templates", required: false)
 
@@ -64,7 +63,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/js/tabulator.min.js"></script>
 
     @Scripts.Render("~/bundles/modal")
-
 
     <script type="text/javascript">
         $(function () {
@@ -93,7 +91,7 @@
             var checkoutCallback = function () {
                 var _this = this;
 
-                // TODO [GM]: Better way?
+                //TODO [GM]: Better way?
                 var addressValidationField = $("#address-validation-field");
                 if ($("#address").val().length == 0) {
                     addressValidationField.text("Invalid address.");

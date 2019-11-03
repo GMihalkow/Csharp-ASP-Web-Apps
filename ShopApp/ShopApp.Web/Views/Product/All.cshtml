@@ -7,7 +7,7 @@
         {
             if (this.User.IsInRole(RolesConstants.Administrator))
             {
-                <button id="create-category" class="ui-button ui-widget ui-corner-all" modal-btn type="button">Create</button>
+                <button id="create-category" class="shop-btn" modal-btn type="button">Create</button>
             }
         }
     </section>
@@ -69,7 +69,7 @@
 
             @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
             {
-               @: $("[shop-action='add-product']").button().on("click", function() {
+               @: $("[shop-action='add-product']").on("click", function() {
                @:   var template = $("#add-product-form-template").html();
 
                @:   var modalButtons = [
@@ -111,7 +111,7 @@
 
             @if(this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
              {
-             @:     $("#create-category, [shop-action='edit-category']").button().on("click", function(e) {
+             @:     $("#create-category, [shop-action='edit-category']").on("click", function(e) {
              @:        var template = $("#create-category-form-template").html();
 
              @:        var modalButtons = [
@@ -129,14 +129,14 @@
              @:            $.ajax({
              @:                url: "/api/CategoryApi/Get/" + categoryId,
              @:                method: "GET"
-             @:            }).then(function(category) {
+             @:            }).then(function (category) {
              @:                modalButtons[0].Name = "Edit";
              @:                modalFunctions.openModal("Create Category", template, modalButtons);
 
-             @:            $(".custom-modal .modal-form").attr("action", "@this.Url.Action("Edit", "Category")");
-             @:            $(".custom-modal .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
-             @:            $(".custom-modal #Name").attr("value", category.Name);
-             @:            $(".custom-modal #CoverUrl").attr("value", category.CoverUrl);
+             @:                $(".custom-modal .modal-form").attr("action", "@this.Url.Action("Edit", "Category")");
+             @:                $(".custom-modal .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
+             @:                $(".custom-modal #Name").attr("value", category.Name);
+             @:                $(".custom-modal #CoverUrl").attr("value", category.CoverUrl);
              @:            });
 
              @:        } else {
@@ -196,7 +196,7 @@
                 @:    $form.find("#Description").text(productDescription);
                 @:    $form.find("#Price").attr("value", productPrice);
                 @:    $form.find("#CoverUrl").attr("value", productCoverURL);
-//                @:    $form.find("#CategoryId").attr("value", productCategoryId)
+                @:    $form.find("#CategoryId").attr("value", productCategoryId)
                 @:    $form.append(selectWrapper);
                 @:    $form.append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
                 @: }
