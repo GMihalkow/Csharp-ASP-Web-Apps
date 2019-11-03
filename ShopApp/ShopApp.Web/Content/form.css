@@ -24,7 +24,7 @@
     resize: none;
 }
 
-.shop-form input[type='text'], input[type='password'], input[type='email'] {
+.shop-form input[type='text'], input[type='tel'], input[type='password'], input[type='email'] {
     border: #ccc 1px solid;
     width: 50%;
 }

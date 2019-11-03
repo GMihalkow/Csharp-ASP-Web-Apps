@@ -13,3 +13,15 @@
 .shop-btn-green {
     background-color: #2a2;
 }
+
+.shop-btn-delete {
+    border: none;
+    color: #fff;
+    background-color: #f00;
+    padding: 0.5rem 1rem;
+    font-size: 20px;
+}
+
+.shop-btn-delete:hover {
+    cursor: pointer;
+}
