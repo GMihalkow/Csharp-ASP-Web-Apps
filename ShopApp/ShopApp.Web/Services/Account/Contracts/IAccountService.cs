@@ -14,6 +14,6 @@ namespace ShopApp.Web.Services.Account.Contracts
 
 		void Logout();
 
-        ProfileViewModel GetProfileInfo(string username);
+        Task<ProfileViewModel> GetProfileInfo(string username);
 	}
 }

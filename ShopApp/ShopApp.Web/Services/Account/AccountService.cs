@@ -26,7 +26,7 @@ namespace ShopApp.Web.Services.Account
                 return HttpContext.Current.GetOwinContext().GetUserManager<ShopUserManager>();
             }
         }
-        
+
         private ShopSignInManager signInManager
         {
             get
@@ -134,9 +134,9 @@ namespace ShopApp.Web.Services.Account
             });
         }
 
-        public ProfileViewModel GetProfileInfo(string username)
+        public async Task<ProfileViewModel> GetProfileInfo(string username)
         {
-            ShopUser userEntity = this.GetUser(username).GetAwaiter().GetResult();
+            ShopUser userEntity = await this.GetUser(username);
 
             if (userEntity == null)
             {
