@@ -6,50 +6,51 @@
         @Html.ValidationSummary(true)
 
         <div>
-            <label for="@nameof(this.Model.UserName)">Username</label>
+            @Html.LabelFor(u => u.UserName)
             @Html.EditorFor(u => u.UserName)
             @Html.ValidationMessageFor(u => u.UserName)
         </div>
         <div>
-            <label for="@nameof(this.Model.FirstName)">First Name</label>
+            @Html.LabelFor(u => u.FirstName)
             @Html.EditorFor(u => u.FirstName)
             @Html.ValidationMessageFor(u => u.FirstName)
         </div>
         <div>
-            <label for="@nameof(this.Model.LastName)">Last Name</label>
+            @Html.LabelFor(u => u.LastName)
             @Html.EditorFor(u => u.LastName)
             @Html.ValidationMessageFor(u => u.LastName)
         </div>
         <div>
-            <label for="@nameof(this.Model.Email)">Email Address</label>
+            @Html.LabelFor(u => u.Email)
             @Html.EditorFor(u => u.Email)
             @Html.ValidationMessageFor(u => u.Email)
         </div>
         <div>
-            <label for="@nameof(this.Model.Password)">Password</label>
+            @Html.LabelFor(u => u.Password)
             @Html.EditorFor(u => u.Password)
             @Html.ValidationMessageFor(u => u.Password)
         </div>
         <div>
-            <label for="@nameof(this.Model.ConfirmPassword)">Confirm Password</label>
+            @Html.LabelFor(u => u.ConfirmPassword)
             @Html.EditorFor(u => u.ConfirmPassword)
             @Html.ValidationMessageFor(u => u.ConfirmPassword)
         </div>
         <div>
-            <label for="@nameof(this.Model.PhoneNumber)">Phone Number</label>
+            @Html.LabelFor(u => u.PhoneNumber)
             @Html.EditorFor(u => u.PhoneNumber)
             @Html.ValidationMessageFor(u => u.PhoneNumber)
         </div>
         <div>
-            <label for="@nameof(this.Model.BirthDate)">Birth Date</label>
-            @Html.TextBoxFor(u => u.BirthDate, new { id = "datepicker" })
+            @Html.LabelFor(u => u.BirthDate)
+            @Html.EditorFor(u => u.BirthDate)
+            @Html.ValidationMessageFor(u => u.BirthDate)
         </div>
         <div>
-            <input class="ui-button ui-widget ui-corner-all w-50" type="submit" value="Register" />
+            <input class="shop-btn w-50" type="submit" value="Register" />
         </div>
 
     </form>
-	<p class="text-center">Already have an account? You can sign in <a href="@Url.Action("Login", "Account")">here</a>.</p>
+	<p class="text-center">Already have an account? You can sign in <a href="@this.Url.Action("Login", "Account")">here</a>.</p>
 </div>
 
 @section Scripts {
@@ -57,13 +58,7 @@
 
 	<script type="text/javascript">
 		$(function () {
-			$("#datepicker").datepicker({
-				changeYear: true,
-				changeMonth: true,
-				duration: "fast",
-				showAnim: "slide",
-				showOptions: { direction: "up" }
-			});
+            $("#BirthDate").flatpickr({});
 		});
 	</script>
 }
