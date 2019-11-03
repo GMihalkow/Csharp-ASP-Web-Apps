@@ -1,0 +1,28 @@
+﻿@model ProductBaseInputModel
+
+<form class="modal-form" action="@this.Url.Action(this.Model is ProductCreateModel ? "Create" : this.Model is ProductEditModel ? "Edit" : string.Empty,"Product")" method="@FormMethod.Post.ToString()">
+    @this.Html.ValidationSummary(true)
+
+    @this.Html.HiddenFor(c => c.CategoryId)
+
+    <div>
+        @this.Html.LabelFor(c => c.Name)
+        @this.Html.EditorFor(c => c.Name)
+        @this.Html.ValidationMessageFor(c => c.Name)
+    </div>
+    <div>
+        @this.Html.LabelFor(c => c.Description)
+        @this.Html.TextAreaFor(c => c.Description, new { rows = 5, resize = "none" })
+        @this.Html.ValidationMessageFor(c => c.Description)
+    </div>
+    <div>
+        @this.Html.LabelFor(c => c.Price)
+        @this.Html.EditorFor(c => c.Price)
+        @this.Html.ValidationMessageFor(c => c.Price)
+    </div>
+    <div>
+        @this.Html.LabelFor(c => c.CoverUrl)
+        @this.Html.EditorFor(c => c.CoverUrl)
+        @this.Html.ValidationMessageFor(c => c.CoverUrl)
+    </div>
+</form>

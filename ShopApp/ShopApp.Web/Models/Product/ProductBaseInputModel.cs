@@ -2,8 +2,7 @@
 
 namespace ShopApp.Web.Models
 {
-    // TODO [GM]: Use a ProductBaseInputModel like at work?
-    public class ProductInputModel
+    public class ProductBaseInputModel
     {
         [Required]
         [MinLength(3)]
@@ -17,6 +16,7 @@ namespace ShopApp.Web.Models
         [Required]
         [RegularExpression(pattern: GlobalConstants.UrlRegex, ErrorMessage = "You must provide a valid URL via HTTP or HTTPS.")]
         [DataType(DataType.ImageUrl)]
+        [Display(Name = "Cover Url")]
         public string CoverUrl { get; set; }
 
         public string CategoryId { get; set; }
