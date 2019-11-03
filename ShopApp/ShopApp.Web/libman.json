@@ -16,6 +16,16 @@
       "files": [
         "css/all.min.css"
       ]
+    },
+    {
+      "library": "flatpickr@4.6.3",
+      "destination": "scripts/flatpickr/",
+      "files": [
+        "flatpickr.min.js",
+        "themes/dark.css",
+        "flatpickr.min.css",
+        "ie.css"
+      ]
     }
   ]
 }

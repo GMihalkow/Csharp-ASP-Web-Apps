@@ -25,10 +25,10 @@ namespace ShopApp.Web
             bundles.Add(new StyleBundle("~/Content/style.css").Include(
                 "~/Content/style.css"));
 
-            bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include(
-                "~/Content/jqueryUI/jquery-ui.css",
-                "~/Content/jqueryUI/jquery-ui-structure.css",
-                "~/Content/jqueryUI/jquery-ui-theme.css"));
+            bundles.Add(new StyleBundle("~/Content/flatpickr.css").Include(
+                "~/Content/flatpickr/themes/dark.css",
+                "~/Content/flatpickr/ie.css",
+                "~/Content/flatpickr/flatpickr.min.css"));
         }
     }
 }
