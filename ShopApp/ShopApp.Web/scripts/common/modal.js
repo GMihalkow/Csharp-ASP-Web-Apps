@@ -56,16 +56,6 @@ var modalFunctions = {
             $(renderedButton).on("click", btn.onClick);
             modalFooter.append(renderedButton);
         });
-
-        // TODO [GM]: Don't attach event every time?
-        var closeModalBtns = $(".custom-modal").find("[close-modal-btn]");
-        closeModalBtns.on("click", function (e) {
-            var currentTarget = $(e.currentTarget);
-            var currentModal = currentTarget.closest(".modal-wrapper");
-
-            currentModal.fadeOut(200);
-            currentModal.find(".custom-modal").fadeOut(500);
-        });
     },
 
     openConfirmationModal: function openConfirmationModal(confirmCallback) {
