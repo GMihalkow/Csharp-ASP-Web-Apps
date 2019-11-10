@@ -7,6 +7,9 @@ namespace ShopApp.Web.Models
     {
         public string Id { get; set; }
 
+		[Required]
+        public string CreatorId { get; set; }
+
         [Required]
         [RegularExpression(pattern: GlobalConstants.UrlRegex, ErrorMessage = "You must provide a valid URL via HTTP or HTTPS.")]
         [DataType(DataType.ImageUrl)]

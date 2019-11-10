@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<CategoryViewModel>
-@using Asp.Mvc.Web.Extensions.Web;
+@{
+    var controller = (ShopApp.Web.Controllers.BaseController)this.ViewContext.Controller;
+}
 
 <section class="products-wrapper">
     <section class="products-wrapper-admin-toolbar">
@@ -9,6 +11,18 @@
             {
                 <button id="create-category" class="shop-btn" modal-btn type="button">Create</button>
             }
+        }
+        @if (this.Model.IsNullOrEmpty())
+        {
+            <h2 class="p-1 text-center d-inline float-right">No categories found.</h2>
+        }
+        else
+        {
+            <form class="d-inline" action="@this.Url.Action("All", "Product")" method="@FormMethod.Post">
+                @this.Html.HiddenFor(model => model.FirstOrDefault(c => !c.Products.IsNullOrEmpty()).Name, new { Name = "category" })
+                <input class="shop-btn float-right" type="submit" value="Search" />
+                <input class="float-right mx-1" name="keywords" type="text" placeholder="Search by keyword..." value="@this.ViewBag.Keywords" />
+            </form>
         }
     </section>
     <section class="product-categories">
@@ -55,7 +69,7 @@
     </script>
 
     <script id="create-category-form-template" type="text/html">
-        @this.Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel())
+        @this.Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel { CreatorId = controller.LoggedUserId })
     </script>
 }
 

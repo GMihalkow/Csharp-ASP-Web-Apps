@@ -7,7 +7,7 @@ namespace ShopApp.Web.Services.Category.Contracts
 	{
         CategoryViewModel GetCategoryByName(string name);
 
-		IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page);
+		IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords);
 
         string GetDefaultCategory();
 	}

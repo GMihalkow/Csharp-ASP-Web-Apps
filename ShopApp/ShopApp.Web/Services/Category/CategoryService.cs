@@ -6,8 +6,6 @@ using ShopApp.Web.Services.Category.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace ShopApp.Web.Services.Category
 {
@@ -23,8 +21,8 @@ namespace ShopApp.Web.Services.Category
             this.dbContext = dbContext;
             this.categoryRepository = categoryRepository;
         }
-        
-        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page)
+
+        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords)
         {
             // filtering invalid negative inputs
             if (page < 0)
@@ -41,12 +39,14 @@ namespace ShopApp.Web.Services.Category
                     Id = c.Id,
                     Name = c.Name,
                     CoverUrl = c.CoverUrl
-                }).ToList();
-
+                })
+                .ToList();
+            // TODO [GM]: Make a method in the ProductService for this?
             CategoryViewModel selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
 
             selectedCategory.Products = this.dbContext.Products
                 .Where(p => p.CategoryId == selectedCategory.Id)
+                .Where(p => p.Name.Contains(keywords) || p.Description.Contains(keywords))
                 .OrderBy(p => p.AddedOn)
                 .Select(p => new ProductViewModel
                 {
@@ -64,7 +64,7 @@ namespace ShopApp.Web.Services.Category
 
             return categories;
         }
-        
+
         public CategoryViewModel GetCategoryByName(string name)
         {
             CategoryViewModel categoryModel = this.dbContext.Categories

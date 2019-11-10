@@ -25,19 +25,20 @@ namespace ShopApp.Web.Controllers.Product
         }
 
         // TODO [GM]: Make async?
-        public ActionResult All(string category, int page = 0)
+        public ActionResult All(string category, string keywords = "", int page = 0)
         {
             if (string.IsNullOrWhiteSpace(category))
             {
                 category = this.categoryService.GetDefaultCategory();
                 if (string.IsNullOrWhiteSpace(category))
                 {
-                    // TODO [GM]: throw exception and handle in global error handling filter
-                    return this.HttpNotFound();
+                    return this.View(new List<CategoryViewModel>());
                 }
             }
 
-            List<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page).ToList();
+            IEnumerable<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page, keywords);
+
+            this.ViewBag.Keywords = keywords;
 
             return this.View(categories);
         }
