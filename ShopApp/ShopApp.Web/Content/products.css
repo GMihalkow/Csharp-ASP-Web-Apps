@@ -122,10 +122,6 @@
 	padding: 1rem;
 }
 
-.products-wrapper-admin-toolbar > button {
-	margin-left: auto;
-}
-
 .product-categories > header,
 .product-items > header {
     font-size: 28px;

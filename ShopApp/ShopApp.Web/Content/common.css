@@ -1,57 +1,17 @@
-﻿ul.menu {
-    text-align: left;
-    display: inline;
-    margin: 0;
-    padding: 15px 4px 17px 0;
-    list-style: none;
-}
-
-    ul.menu li {
-        float: left;
-        margin: 0px 10px 0px 10px;
-    }
-
-        ul.menu li.ui-state-hover {
-            margin: -1px 9px -1px 9px;
-        }
-
-.menu li a {
-    display: block;
-}
-
-.menu li ul {
-    display: none;
-    position: absolute;
-}
-
-    .menu li ul li {
-        display: block;
-        float: none;
-    }
-
-li.ui-menu-item.ui-state-hover {
-    margin: 0px;
-}
-
-.ui-button.bg-delete {
-    background-color: #b00;
-}
-
-.ui-button.bg-edit {
-    background-color: #bb0;
-}
-
-.ui-accordion.mx-auto {
-    margin: 2rem auto;
-}
-
-.ui-autocomplete {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.mx-auto {
+﻿.mx-auto {
     margin: 0 auto;
+}
+
+.mx-1 {
+    margin: 0 1rem;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.float-right {
+    float:right;
 }
 
 .w-100 {
@@ -72,6 +32,10 @@ li.ui-menu-item.ui-state-hover {
 
 .w-90 {
     width: 90%;
+}
+
+.d-inline {
+    display: inline;
 }
 
 .header-wrapper {

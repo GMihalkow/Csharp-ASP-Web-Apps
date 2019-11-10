@@ -1,6 +1,6 @@
 ﻿.banner {
-	height: 6rem;
-	background-color: #000;
+    height: 6rem;
+    background-color: #000;
 }
 
 .banner-image-wrapper {
@@ -13,48 +13,32 @@
 }
 
 .banner > section {
-	display: flex;
-	width: 60rem;
-	color: #fff;
-	margin: 0 auto;
-	padding: 1.5rem 0;
+    display: flex;
+    width: 60rem;
+    color: #fff;
+    margin: 0 auto;
+    padding: 1.5rem 0;
 }
 
-.banner > section > .banner-icon {
-	width: 8rem;
-	margin: 0 1rem;
-}
+    .banner > section > .banner-icon {
+        width: 8rem;
+        margin: 0 1rem;
+    }
 
-.banner > section > .banner-search-box { 
-	width: 40rem;
-	position: relative; 
-}
+    .banner > section > .banner-search-box {
+        width: 40rem;
+        position: relative;
+    }
 
-.banner > section > .banner-order-information {
-	width: 10rem;
-	padding: 0.5rem 0.5rem 0 0;
-	text-align: end;
-	font-size: 18px;
-}
+    .banner > section > .banner-order-information {
+        width: 10rem;
+        padding: 0.5rem 0.5rem 0 0;
+        text-align: end;
+        font-size: 18px;
+        margin-left: auto;
+    }
 
-.banner > section > .banner-order-information a{
-	text-decoration: none;
-	color: #fff;
-}
-
-.banner > section > .banner-search-box > input[type='text']{
-	width: 100%;
-	border-radius: 2rem;
-	position: absolute;
-	height: 100%;
-	top: 0;
-	left: 0;
-}
-
-.banner > section > .banner-search-box > button {
-	position: absolute;
-	padding: 0.5rem;
-	right: 0.5rem;
-	top: 0.5rem;
-	font-size: 16px;
-}
+        .banner > section > .banner-order-information a {
+            text-decoration: none;
+            color: #fff;
+        }
