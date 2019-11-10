@@ -5,7 +5,7 @@ namespace ShopApp.Web.Services.Order.Contracts
 {
     public interface IOrderService
     {
-        Task<ShopApp.Models.Order> GetOrder(string id);
+        Task<ShopApp.Models.Order> Get(string id);
 
         Task CancelOrder(string orderId);
 

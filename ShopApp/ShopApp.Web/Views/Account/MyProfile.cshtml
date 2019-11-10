@@ -4,41 +4,23 @@
     <header class="header-wrapper p-1 w-100 text-center">My Profile</header>
     <h2 class="text-center p-1 w-100">Hello @this.User.Identity.Name</h2>
     <div class="profile-info w-50 text-center">
-        First Name: <span>
-            @if (String.IsNullOrEmpty(this.Model.FirstName))
-            {
-                @: -
-            }
-            else
-            {
-                @: @this.Html.DisplayFor(x => x.FirstName)
-            }
+        First Name:
+        <span>
+            @(string.IsNullOrEmpty(this.Model.FirstName) ? new MvcHtmlString("-") : this.Html.DisplayFor(x => x.FirstName))
         </span>
     </div>
     <div class="profile-info w-50 text-center">
-        Last Name: <span>
-            @if (String.IsNullOrEmpty(this.Model.LastName))
-            {
-                @: -
-            }
-            else
-            {
-                @: @this.Html.DisplayFor(x => x.LastName)
-            }
+        Last Name:
+        <span>
+            @(string.IsNullOrEmpty(this.Model.LastName) ? new MvcHtmlString("-") : this.Html.DisplayFor(x => x.LastName))
         </span>
     </div>
-    <div class="profile-info w-50 text-center">Phone Number: <span>@this.Model.PhoneNumber</span></div>
+    <div class="profile-info w-50 text-center">Phone Number: <span>@(this.Model.PhoneNumber.IsNullOrEmpty() ? "-" : this.Model.PhoneNumber)</span></div>
     <div class="profile-info w-50 text-center">Email: <span>@this.Html.DisplayFor(x => x.EmailAddress)</span></div>
     <div class="profile-info w-50 text-center">
-        BirthDate: <span>
-            @if (this.Model.BirthDate == null)
-            {
-                @: -
-            }
-            else
-            {
-                @: @this.Model.BirthDate.Value.ToString("yyyy/mm/dd")
-            }
+        BirthDate:
+        <span>
+            @(!this.Model.BirthDate.HasValue ? "-" : this.Model.BirthDate.Value.ToString("yyyy/mm/dd"))
         </span>
     </div>
     <div class="profile-info w-50 text-center">Registered On: <span>@this.Model.RegisteredOn.ToString("yyyy/mm/dd")</span></div>
@@ -107,5 +89,4 @@
 
         });
     </script>
-
 }

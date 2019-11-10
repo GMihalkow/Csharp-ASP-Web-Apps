@@ -117,7 +117,7 @@ namespace ShopApp.Web.Services.Order
 
         public async Task SendOrder(string orderId)
         {
-            ShopApp.Models.Order order = await this.GetOrder(orderId);
+            ShopApp.Models.Order order = await this.Get(orderId);
 
             order.Status = OrderStatus.Sent;
 
@@ -126,14 +126,14 @@ namespace ShopApp.Web.Services.Order
 
         public async Task CompleteOrder(string orderId)
         {
-            ShopApp.Models.Order order = await this.GetOrder(orderId);
+            ShopApp.Models.Order order = await this.Get(orderId);
 
             order.Status = OrderStatus.Completed;
 
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<ShopApp.Models.Order> GetOrder(string id)
+        public async Task<ShopApp.Models.Order> Get(string id)
         {
             ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
 

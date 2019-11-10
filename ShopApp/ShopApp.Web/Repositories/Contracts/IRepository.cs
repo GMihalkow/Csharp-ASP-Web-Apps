@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace ShopApp.Web.Repositories.Contracts
 {
-    //TODO [GM]: Repository pattern?
     public interface IRepository<TViewModel, TInputModel>
         where TViewModel : class
         where TInputModel : class

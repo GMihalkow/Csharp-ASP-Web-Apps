@@ -28,8 +28,7 @@ namespace ShopApp.Web.Repositories
                 throw new InvalidOperationException("Category already exists!");
             }
 
-            // TODO [GM]: Fix these
-            ShopApp.Models.ShopUser user = await this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
+            ShopApp.Models.ShopUser user = await this.accountService.GetUserById(model.CreatorId);
 
             ShopApp.Models.Category categoryEntity = new ShopApp.Models.Category
             {
