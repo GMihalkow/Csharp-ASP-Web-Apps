@@ -128,9 +128,7 @@ namespace ShopApp.Web.Services.Account
         {
             return await Task<ShopUser>.Run(() =>
             {
-                ShopUser user = this.dbContext.Users.Include("Orders").Include("Categories").FirstOrDefault(u => u.UserName == username);
-
-                return user;
+                return this.dbContext.Users.Include("Orders").Include("Categories").FirstOrDefault(u => u.UserName == username);
             });
         }
 
@@ -155,6 +153,14 @@ namespace ShopApp.Web.Services.Account
             };
 
             return profileModel;
+        }
+
+        public async Task<ShopUser> GetUserById(string id)
+        {
+            return await Task.Run(() =>
+            {
+                return this.dbContext.Users.FirstOrDefault(user => user.Id == id);
+            });
         }
     }
 }

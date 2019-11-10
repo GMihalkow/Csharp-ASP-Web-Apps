@@ -8,6 +8,8 @@ namespace ShopApp.Web.Services.Account.Contracts
 	{
         Task<ShopUser> GetUser(string username);
 
+        Task<ShopUser> GetUserById(string id);
+
 		Task Register(RegisterInputModel model);
 
 		Task Login(LoginInputModel model);
