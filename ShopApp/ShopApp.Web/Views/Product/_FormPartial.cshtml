@@ -1,6 +1,6 @@
 ﻿@model ProductBaseInputModel
 
-<form class="modal-form" action="@this.Url.Action(this.Model is ProductCreateModel ? "Create" : this.Model is ProductEditModel ? "Edit" : string.Empty,"Product")" method="@FormMethod.Post.ToString()">
+<form class="modal-form" action="@this.Url.Action(this.Model is ProductCreateModel ? "Create" : this.Model is ProductEditModel ? "Edit" : string.Empty,"Product")" method="@FormMethod.Post">
     @this.Html.ValidationSummary(true)
 
     @this.Html.HiddenFor(c => c.CategoryId)
