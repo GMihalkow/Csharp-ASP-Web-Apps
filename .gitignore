@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 /ShopApp/ShopApp.Web/scripts/mustache.js
 /ShopApp/ShopApp.Web/scripts/jquery
+/ShopApp/ShopApp.Web/scripts/flatpickr/flatpickr.min.js
