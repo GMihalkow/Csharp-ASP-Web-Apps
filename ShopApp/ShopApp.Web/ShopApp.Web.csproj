@@ -251,7 +251,7 @@
     <Content Include="Views\Order\All.cshtml" />
     <Content Include="Views\Order\_OrdersTablePartial.cshtml" />
     <None Include="Views\Product\_ProductPartialTemplate.cshtml" />
-    <Content Include="Views\Shared\_CreateCategoryFormPartial.cshtml" />
+    <Content Include="Views\Product\Category\_CreateCategoryFormPartial.cshtml" />
     <None Include="scripts\jquery.validate-vsdoc.js" />
     <Content Include="scripts\jquery.validate.js" />
     <Content Include="scripts\jquery.validate.min.js" />
@@ -268,7 +268,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
-    <Compile Include="Constants\RolesContants.cs" />
+    <Compile Include="Constants\RolesConstants.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\Api\CategoryApiController.cs" />
@@ -324,8 +324,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Product\All.cshtml" />
-    <Content Include="Views\Shared\_CategoryPartial.cshtml" />
-    <Content Include="Views\Shared\_ErrorDialogTemplate.cshtml" />
+    <Content Include="Views\Product\Category\_CategoryPartial.cshtml" />
     <Content Include="Views\Shared\_CheckoutPartialTemplate.cshtml" />
     <Content Include="Views\Shared\_CategoryIndexPartial.cshtml" />
     <Content Include="Views\Shared\_PaggingPartial.cshtml" />
