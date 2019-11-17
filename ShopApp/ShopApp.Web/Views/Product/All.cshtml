@@ -22,8 +22,7 @@
                 @this.Html.HiddenFor(model => model.FirstOrDefault(c => !c.Products.IsNullOrEmpty()).Name, new { Name = "category" })
                 <input class="shop-btn float-right" type="submit" value="Search" />
                 <input class="float-right mx-1" name="keywords" type="text" placeholder="Search by keyword..." value="@this.ViewBag.Keywords" />
-                <!-- TODO [GM]: Finish implementing the sorting functionality -->
-                @Html.DropDownList("sortBy", new List<SelectListItem>
+                @this.Html.DropDownList("sortBy", new List<SelectListItem>
                 {
                     new SelectListItem{ Text = "Price", Value = "Price", Selected = this.ViewBag.SortBy == "Price" },
                     new SelectListItem{ Text = "Date", Value = "AddedOn", Selected = this.ViewBag.SortBy == "Date" },
@@ -51,20 +50,18 @@
     <section class="product-items">
         <header>Featured Items</header>
         <section class="featured-products">
-            @{
-                if (this.Model.Any(category => category.Products?.Count() > 0))
-                {
-                    var products = this.Model.FirstOrDefault(category => category.Products?.Count() > 0).Products;
+            @if (this.Model.Any(category => category.Products?.Count() > 0))
+            {
+                var products = this.Model.FirstOrDefault(category => category.Products?.Count() > 0).Products;
 
-                    foreach (var product in products)
-                    {
-                        @: @this.Html.Partial("_ProductPartialTemplate", product)
-                    }
-                }
-                else
+                foreach (var product in products)
                 {
-                    @: <p class="p-1 text-center">No Products found for this category. Or on this page.</p>
+                    @Html.Partial("_ProductPartialTemplate", product)
                 }
+            }
+            else
+            {
+                @: <p class="p-1 text-center">No Products found for this category. Or on this page.</p>
             }
         </section>
         @this.Html.Partial("_PaggingPartial")
@@ -72,17 +69,22 @@
 </section>
 
 @section templates {
-    <script id="add-product-form-template" type="text/html">
-        @this.Html.Partial("_FormPartial", new ProductCreateModel())
-    </script>
+
+    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
+    {
+        <script id="create-category-form-template" type="text/html">
+            @this.Html.Partial("Category/_CreateCategoryFormPartial", new CategoryInputModel { CreatorId = controller.LoggedUserId })
+        </script>
+
+        <script id="add-product-form-template" type="text/html">
+            @this.Html.Partial("_FormPartial", new ProductCreateModel())
+        </script>
+    }
 
     <script id="product-container-template" type="text/html">
         @this.Html.Partial("_ProductPartialTemplate", new ProductViewModel())
     </script>
 
-    <script id="create-category-form-template" type="text/html">
-        @this.Html.Partial("Category/_CreateCategoryFormPartial", new CategoryInputModel { CreatorId = controller.LoggedUserId })
-    </script>
 }
 
 @section Scripts {
@@ -175,55 +177,55 @@
             @* attaching the edit product functionality *@
             @if (this.User.IsInRole(RolesConstants.Administrator))
             {
-                @: var editProductFunctionality = function() {
-                @:  var template = $("#add-product-form-template").html();
+                @:   var editProductFunctionality = function() {
+                @:   var template = $("#add-product-form-template").html();
+                     
+                @:   var $modal = $(this).closest(".custom-modal");
+                @:   var productId = $modal.find("[shop-product-id]").attr("shop-product-id");
+                @:   var productName = $modal.find("[shop-product-name]").attr("shop-product-name");
+                @:   var productPrice = $modal.find("[shop-product-price]").attr("shop-product-price");
+                @:   var productCoverURL = $modal.find("[shop-product-cover-url]").attr("src");
+                @:   var productCategoryId = $modal.find("[shop-product-category-id]").attr("shop-product-category-id");
+                @:   var productDescription = $modal.find("[shop-product-description]").text().trim();
+                     
+                @:   var selectWrapper = $("<div><label for='CategoryId'>Choose a category</label></div>");
+                @:   var categoriesList = $("<select id='CategoryId' name='CategoryId' class='shop-select w-100'></select>");
+                @:   var categories = $(".categories-list [shop-role-id]").each(function (index, element) {
 
-                @:  var $modal = $(this).closest(".custom-modal");
-                @:  var productId = $modal.find("[shop-product-id]").attr("shop-product-id");
-                @:  var productName = $modal.find("[shop-product-name]").attr("shop-product-name");
-                @:  var productPrice = $modal.find("[shop-product-price]").attr("shop-product-price");
-                @:  var productCoverURL = $modal.find("[shop-product-cover-url]").attr("src");
-                @:  var productCategoryId = $modal.find("[shop-product-category-id]").attr("shop-product-category-id");
-                @:  var productDescription = $modal.find("[shop-product-description]").text().trim();
+                @:   var option = $("<option></option>");
+                @:   option.attr("value", $(element).attr("shop-role-id"));
+                @:   option.text($(element).text());
+                     
+                @:   if (productCategoryId === $(element).attr("shop-role-id")) {
+                @:     option.attr("selected", "selected");
+                @:   }
 
-                @:  var selectWrapper = $("<div><label for='CategoryId'>Choose a category</label></div>");
-                @:  var categoriesList = $("<select id='CategoryId' name='CategoryId' class='shop-select w-100'></select>");
-                @:  var categories = $(".categories-list [shop-role-id]").each(function (index, element) {
-
-                @:    var option = $("<option></option>");
-                @:    option.attr("value", $(element).attr("shop-role-id"));
-                @:    option.text($(element).text());
-
-                @:    if (productCategoryId === $(element).attr("shop-role-id")) {
-                @:      option.attr("selected", "selected");
-                @:    }
-
-                @:    categoriesList.append(option);
-                @:  });
+                @:      categoriesList.append(option);
+                @:   });
                 @:
-                @:  selectWrapper.append(categoriesList);
+                @:   selectWrapper.append(categoriesList);
 
-                @:  var modalButtons = [
-                @:    {
-                @:        Name: "Edit",
-                @:        onClick: function () {
-                @:            var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
-                @:            $form.submit();
-                @:        }
-                @:    }
-                @:  ];
+                @:   var modalButtons = [
+                @:     {
+                @:         Name: "Edit",
+                @:         onClick: function () {
+                @:             var $form = $(".custom-modal").find(".modal-body").find(".modal-form");
+                @:             $form.submit();
+                @:         }
+                @:     }
+                @:   ];
 
-                @:    modalFunctions.openModal("Edit Product", template, modalButtons);
+                @:   modalFunctions.openModal("Edit Product", template, modalButtons);
 
-                @:    var $form = $(".custom-modal .modal-form");
-                @:    $form.attr("action", "@this.Url.Action("Edit", "Product")");
-                @:    $form.find("#Name").attr("value", productName);
-                @:    $form.find("#Description").text(productDescription);
-                @:    $form.find("#Price").attr("value", productPrice);
-                @:    $form.find("#CoverUrl").attr("value", productCoverURL);
-                @:    $form.find("#CategoryId").attr("value", productCategoryId)
-                @:    $form.append(selectWrapper);
-                @:    $form.append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
+                @:   var $form = $(".custom-modal .modal-form");
+                @:   $form.attr("action", "@this.Url.Action("Edit", "Product")");
+                @:   $form.find("#Name").attr("value", productName);
+                @:   $form.find("#Description").text(productDescription);
+                @:   $form.find("#Price").attr("value", productPrice);
+                @:   $form.find("#CoverUrl").attr("value", productCoverURL);
+                @:   $form.find("#CategoryId").attr("value", productCategoryId)
+                @:   $form.append(selectWrapper);
+                @:   $form.append("<input id='Id' name='Id' type='hidden' value='" + productId + "' />");
                 @: }
             }
 
@@ -282,7 +284,7 @@
                 @:         setTimeout(function () {
                 @:             productContainer.remove();
                 @:         }, 1000);
-                @*      TODO [GM]: Reload is neccassery? *@
+
                 @:         window.location.reload();
                 @:     });
                 @: };
@@ -293,4 +295,5 @@
             }
         });
     </script>
+
 }
