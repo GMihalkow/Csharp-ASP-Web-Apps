@@ -45,9 +45,12 @@
 
     @* ///////////////////////////// Templates *@
 
-    <script id="checkout-partial-template" type="text/html">
-        @this.Html.Partial("_CheckoutPartialTemplate")
-    </script>
+    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
+    {
+        <script id="checkout-partial-template" type="text/html">
+            @this.Html.Partial("_CheckoutPartialTemplate")
+        </script>
+    }
 
     <script id="product-details-template" type="text/html">
         @this.Html.Partial("_ProductDetailsPartialTemplate")
@@ -61,16 +64,9 @@
     <script type="text/javascript" src="~/scripts/utils.js"></script>
 
     <script type="text/javascript">
+
         $(function () {
-            // TODO: Extract to js file?
-            $(document).ajaxStart(function () {
-                $("#loader-container").show();
-            });
-
-            $(document).ajaxComplete(function () {
-                $("#loader-container").hide();
-            });
-
+            
             @* Deleting the order's session storage after logout *@
             var logoutButton = $(".shop-nav").find("[shop-action='logout']");
             logoutButton.on("click", function () {
@@ -85,7 +81,6 @@
             }
 
             var checkoutCallback = function () {
-                var _this = this;
 
                 var addressValidationField = $("#address-validation-field");
                 if ($("#address").val().length == 0) {
@@ -109,7 +104,6 @@
                         productId: productId,
                         quantity: productQuantity
                     }));
-
                 });
 
                 $.ajax({
@@ -141,11 +135,12 @@
                     $(".custom-modal").find("[close-modal-btn]").click();
                 })
                 .fail(function () {
-                    // TODO [GM]: Handle error properly, make error modal?
                     window.sessionStorage.clear();
 
                     var cartElement = $(".banner .banner-order-information i");
                     cartElement.text(window.sessionStorage.length);
+                    
+                    modalFunctions.openErrorModal();
                 });
             };
 
@@ -171,15 +166,15 @@
 
                 @if (this.User.Identity.IsAuthenticated)
                 {
-                    @: var template = $("#checkout-partial-template").html();
-                    @: var rendered = Mustache.render(template, { orders: orders, totalPrice: totalPrice.toFixed(2).toString() });
+                    @:    var template = $("#checkout-partial-template").html();
+                    @:    var rendered = Mustache.render(template, { orders: orders, totalPrice: totalPrice.toFixed(2).toString() });
 
-                    @: modalFunctions.openModal("Checkout", rendered, [{ Name: "Confirm", onClick: checkoutCallback }]);
+                    @:    modalFunctions.openModal("Checkout", rendered, [{ Name: "Confirm", onClick: checkoutCallback }]);
 
-                    @: var totalPriceElement = $(".custom-modal").find("[shop-order-total-price]");
-                    @: var quantityFields = $(".custom-modal").find("[shop-product-id]").find("input[type='number']");
+                    @:    var totalPriceElement = $(".custom-modal").find("[shop-order-total-price]");
+                    @:    var quantityFields = $(".custom-modal").find("[shop-product-id]").find("input[type='number']");
 
-                    @: var changePrice = function changePrice(e) {
+                    @:    var changePrice = function changePrice(e) {
                     @:    var $element = $(e.currentTarget);
 
                     @:    var productId = $element.parent().parent().attr("shop-product-id");
@@ -202,10 +197,10 @@
                     @:    totalPriceElement.text("$" + newTotalPrice.toFixed(2));
                     @: };
 
-                    @: // changing the price dynamically
+                    // changing the price dynamically
                     @: quantityFields.on("change", function (e) { changePrice(e); });
 
-                    @: // removing the ordered products dynamically
+                    // removing the ordered products dynamically
                     @:$(".custom-modal").find("button[shop-action='remove-product']").on("click", function (e) {
                         // removing the session storage product items
                         @: var currentRow = $(this).closest("[shop-product-id]");
@@ -215,7 +210,7 @@
 
                         @: currentRow.remove();
 
-                        @: // updating total price after removing an order
+                        // updating total price after removing an order
                         @: checkoutButton.click();
 
                         @: var cartElement = $(".banner .banner-order-information i");
@@ -229,6 +224,7 @@
 
             });
         });
+
     </script>
 
 </body>

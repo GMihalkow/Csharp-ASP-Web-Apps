@@ -13,10 +13,7 @@
 var _this = this;
 
 var modalFunctions = {
-    openModal: function openModal(heading, body, footerBtns) {
-        if (!footerBtns) {
-            footerBtns = [];
-        }
+    openModal: function openModal(heading, body, footerBtns = [], headerClass = "modal-default-bg") {
 
         var closeModalBtnExists = footerBtns.some(function (btn) {
             return btn.Name === "Cancel";
@@ -38,7 +35,14 @@ var modalFunctions = {
         modals.fadeIn(200);
         modals.find(".custom-modal").fadeIn(500);
 
-        modals.find(".modal-header").find("h3").text(heading);
+        var modalHeader = modals.find(".modal-header");
+        modalHeader.find("h3").text(heading);
+
+        if (headerClass !== "modal-default-bg") {
+            modalHeader.addClass(headerClass);
+        } else {
+            modalHeader.addClass("modal-default-bg");
+        }
 
         var modalBody = modals.find(".modal-body");
         modalBody.html("");
@@ -69,6 +73,10 @@ var modalFunctions = {
         ];
 
         _this.modalFunctions.openModal("Confirm", body, buttons);
+    },
+
+    openErrorModal: function openErrorModal() {
+        _this.modalFunctions.openModal("Error", "An error occured. Please contact the development team.", footerBtns = [], headerClass = "modal-error-bg");
     },
 
     openProductDetailsDialog: function openProductDetailsDialog(productId, buttons) {

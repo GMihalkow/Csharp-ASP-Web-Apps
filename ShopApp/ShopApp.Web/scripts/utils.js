@@ -8,4 +8,13 @@
         currentModal.fadeOut(200);
         currentModal.find(".custom-modal").fadeOut(500);
     });
+
+    // Shows a spinner/loader for ever ajax call
+    $(document).ajaxStart(function () {
+        $("#loader-container").show();
+    });
+
+    $(document).ajaxComplete(function () {
+        $("#loader-container").hide();
+    });
 });

@@ -44,6 +44,14 @@
     height: 5rem;
 }
 
+.modal-default-bg {
+    background-color: #000;
+}
+
+.modal-error-bg {
+    background-color: #f00;
+}
+
 .modal-btn {
     border: none;
     color: #fff;
@@ -59,7 +67,6 @@
 
 .custom-modal > .modal-header {
     height: 5rem;
-    background-color: #000;
 }
 
     .custom-modal > .modal-header > h3 {
