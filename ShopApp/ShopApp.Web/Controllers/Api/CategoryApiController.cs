@@ -1,8 +1,6 @@
 ﻿using ShopApp.Web.Models;
 using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
-using System;
-using System.Collections.Generic;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 
