@@ -14,6 +14,14 @@
     float:right;
 }
 
+.m-05{
+    margin: 0.5rem;
+}
+
+.mx-05 {
+    margin: 0 0.5rem;
+}
+
 .w-100 {
     width: 100%
 }
