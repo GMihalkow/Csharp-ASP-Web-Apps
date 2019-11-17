@@ -2,7 +2,6 @@
 
 <ul id="pagging-container" class="pagging-wrapper"></ul>
 
-@* TODO [GM]: Extract in js file? *@
 <script type="text/javascript">
     var numbersRegex = /^\d+$/;
 
@@ -58,8 +57,7 @@
         });
 
     });
-
-
+    
     function incrementPage(currentPage) {
         var pages = $("#products-pagging-wrapper").find("li");
 

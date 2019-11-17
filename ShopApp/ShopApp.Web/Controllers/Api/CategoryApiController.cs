@@ -24,20 +24,5 @@ namespace ShopApp.Web.Controllers.Api
 
             return this.Json(categoryModel);
         }
-
-        // TODO [GM]: Is this even used anywhere?
-        [HttpGet]
-        [Route(template: "/api/GetCategoryProducts/{id}")]
-        public JsonResult<IEnumerable<ProductViewModel>> GetCategoryProducts(string id)
-        {
-            CategoryViewModel category = this.categoryRepository.Get(id);
-
-            if (category == null)
-            {
-                throw new InvalidOperationException("Invalid Category id.");
-            }
-
-            return this.Json(category.Products);
-        }
     }
 }

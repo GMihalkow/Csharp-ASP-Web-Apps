@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ShopApp</title>
-    <!-- TODO [GM]: Extract to respective bundles -->
     <script src="~/scripts/mustache.js/mustache.min.js"></script>
     <script src="~/scripts/jquery/jquery.min.js"></script>
     @Styles.Render("~/Content/style.css")
@@ -88,7 +87,6 @@
             var checkoutCallback = function () {
                 var _this = this;
 
-                //TODO [GM]: Better way?
                 var addressValidationField = $("#address-validation-field");
                 if ($("#address").val().length == 0) {
                     addressValidationField.text("Invalid address.");
