@@ -2,7 +2,6 @@
 using ShopApp.Web.Models;
 using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
-using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +24,7 @@ namespace ShopApp.Web.Controllers.Product
         }
 
         // TODO [GM]: Make async?
-        public ActionResult All(string category, string keywords = "", int page = 0)
+        public ActionResult All(string category, string keywords = "", int page = 0, string sortBy = "", bool sortDesc = false)
         {
             if (string.IsNullOrWhiteSpace(category))
             {
@@ -36,9 +35,11 @@ namespace ShopApp.Web.Controllers.Product
                 }
             }
 
-            IEnumerable<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page, keywords);
+            IEnumerable<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page, keywords, sortBy: sortBy, sortDesc: sortDesc);
 
             this.ViewBag.Keywords = keywords;
+            this.ViewBag.SortBy = sortBy;
+            this.ViewBag.SortDesc = sortDesc;
 
             return this.View(categories);
         }

@@ -11,7 +11,9 @@ namespace ShopApp.Web.Services.Category
 {
     public class CategoryService : ICategoryService
     {
-        public readonly IAccountService accountService;
+        private readonly string[] allowedSortColumns = new string[] { "AddedOn", "Name", "Price" };
+
+        private readonly IAccountService accountService;
         private readonly ShopAppDbContext dbContext;
         private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
@@ -22,7 +24,7 @@ namespace ShopApp.Web.Services.Category
             this.categoryRepository = categoryRepository;
         }
 
-        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords)
+        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false)
         {
             // filtering invalid negative inputs
             if (page < 0)
@@ -41,7 +43,7 @@ namespace ShopApp.Web.Services.Category
                     CoverUrl = c.CoverUrl
                 })
                 .ToList();
-            // TODO [GM]: Make a method in the ProductService for this?
+
             CategoryViewModel selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
 
             selectedCategory.Products = this.dbContext.Products
@@ -61,6 +63,23 @@ namespace ShopApp.Web.Services.Category
                 .Skip(page * GlobalConstants.PageSize)
                 .Take(GlobalConstants.PageSize)
                 .ToList();
+
+            if (!string.IsNullOrEmpty(sortBy) && this.allowedSortColumns.Contains(sortBy))
+            {
+                if (sortDesc)
+                {
+                    selectedCategory.Products = selectedCategory.Products.OrderByDescending(sortBy);
+                }
+                else
+                {
+                    selectedCategory.Products = selectedCategory.Products.OrderBy(sortBy);
+                }
+            }
+            else
+            {
+                // default sorting
+                selectedCategory.Products = selectedCategory.Products.OrderBy(pr => pr.Price);
+            }
 
             return categories;
         }
@@ -98,7 +117,7 @@ namespace ShopApp.Web.Services.Category
         {
             // TODO [GM]: make async?
             // TODO [GM]: don't pull all categories?
-            var defaultCategory = this.categoryRepository.GetAll().FirstOrDefault();
+            var defaultCategory = this.dbContext.Categories.FirstOrDefault();
 
             if (defaultCategory == null)
             {

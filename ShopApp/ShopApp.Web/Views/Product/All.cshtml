@@ -18,10 +18,22 @@
         }
         else
         {
-            <form class="d-inline" action="@this.Url.Action("All", "Product")" method="@FormMethod.Post">
+            <form class="d-inline" action="@this.Url.Action("All", "Product")" method="@FormMethod.Get">
                 @this.Html.HiddenFor(model => model.FirstOrDefault(c => !c.Products.IsNullOrEmpty()).Name, new { Name = "category" })
                 <input class="shop-btn float-right" type="submit" value="Search" />
                 <input class="float-right mx-1" name="keywords" type="text" placeholder="Search by keyword..." value="@this.ViewBag.Keywords" />
+                <!-- TODO [GM]: Finish implementing the sorting functionality -->
+                @Html.DropDownList("sortBy", new List<SelectListItem>
+                {
+                    new SelectListItem{ Text = "Price", Value = "Price", Selected = this.ViewBag.SortBy == "Price" },
+                    new SelectListItem{ Text = "Date", Value = "AddedOn", Selected = this.ViewBag.SortBy == "Date" },
+                    new SelectListItem{ Text = "Name", Value = "Name", Selected = this.ViewBag.SortBy == "Name" }
+                }, new { @class = "shop-select mx-05 w-30 float-right" })
+                <select id="sortDesc" name="sortDesc" class="shop-select float-right">
+                    <option value="true" @(this.ViewBag.SortDesc == true ? "selected=\"selected\"" : string.Empty)>Desc</option>
+                    <option value="false" @(this.ViewBag.SortDesc == false ? "selected=\"selected\"" : string.Empty)>Asc</option>
+                </select>
+                <label for="sortBy" class="m-05 float-right">Sort By</label>
             </form>
         }
     </section>
@@ -31,7 +43,7 @@
             <ul>
                 @foreach (var category in this.Model)
                 {
-                    <li>@this.Html.Partial("_CategoryPartial", category)</li>
+                    <li>@this.Html.Partial("Category/_CategoryPartial", category)</li>
                 }
             </ul>
         </section>
@@ -69,7 +81,7 @@
     </script>
 
     <script id="create-category-form-template" type="text/html">
-        @this.Html.Partial("_CreateCategoryFormPartial", new CategoryInputModel { CreatorId = controller.LoggedUserId })
+        @this.Html.Partial("Category/_CreateCategoryFormPartial", new CategoryInputModel { CreatorId = controller.LoggedUserId })
     </script>
 }
 
@@ -124,7 +136,7 @@
             });
 
             @if(this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
-             {
+            {
              @:     $("#create-category, [shop-action='edit-category']").on("click", function(e) {
              @:        var template = $("#create-category-form-template").html();
 
@@ -190,7 +202,6 @@
                 @:  });
                 @:
                 @:  selectWrapper.append(categoriesList);
-                @:
 
                 @:  var modalButtons = [
                 @:    {
@@ -246,6 +257,13 @@
 
                     @: modalFunctions.openConfirmationModal(callback.bind(this));
                 }
+            });
+
+            // form auto submit after changing the sorting options
+            var sortBy = $("#sortBy, #sortDesc");
+            sortBy.on("change", function (e) {
+                var $form = $(e.currentTarget).closest("form");
+                $form.submit();
             });
 
             @* Adding the delete product functionality *@
