@@ -142,6 +142,10 @@
     <Compile Include="Migrations\201909161846544_Order-OrderedOn.Designer.cs">
       <DependentUpon>201909161846544_Order-OrderedOn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911171330474_StockCount_Product.cs" />
+    <Compile Include="Migrations\201911171330474_StockCount_Product.Designer.cs">
+      <DependentUpon>201911171330474_StockCount_Product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ShopAppDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -183,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909161846544_Order-OrderedOn.resx">
       <DependentUpon>201909161846544_Order-OrderedOn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911171330474_StockCount_Product.resx">
+      <DependentUpon>201911171330474_StockCount_Product.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
