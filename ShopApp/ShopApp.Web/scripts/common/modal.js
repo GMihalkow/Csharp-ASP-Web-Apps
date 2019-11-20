@@ -75,8 +75,14 @@ var modalFunctions = {
         _this.modalFunctions.openModal("Confirm", body, buttons);
     },
 
-    openErrorModal: function openErrorModal() {
-        _this.modalFunctions.openModal("Error", "An error occured. Please contact the development team.", footerBtns = [], headerClass = "modal-error-bg");
+    openErrorModal: function openErrorModal(errorMessage) {
+        errorMessage = errorMessage || "An error occured. Please contact the development team.";
+
+        _this.modalFunctions.openModal("Error", errorMessage, footerBtns = [], headerClass = "modal-error-bg");
+    },
+
+    closeAllModals: function closeAllModals() {
+        $(".custom-modal .modal-header a[close-modal-btn]").click();
     },
 
     openProductDetailsDialog: function openProductDetailsDialog(productId, buttons) {
