@@ -19,5 +19,7 @@ namespace ShopApp.Web.Models
         public string CoverUrl { get; set; }
 
         public DateTime? AddedOn { get; set; }
-	}
+
+        public int StockCount { get; set; }
+    }
 }

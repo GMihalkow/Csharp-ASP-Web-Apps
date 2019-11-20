@@ -5,13 +5,18 @@
         <a href="javascript:void(0)" shop-product-name="@this.Model.Name" shop-action="product-details">@this.Model.Name</a>
     </header>
     <img shop-action="product-details" src="@this.Model.CoverUrl" />
-    <div class="text-center">
-        <label for="product-quantity">Quantity</label>
-    </div>
-    <input class="d-block mx-auto" shop-product-quantity type="number" />
+    @if (this.Model.StockCount > 0)
+    {
+        <div class="text-center"><label for="product-quantity">Quantity</label></div>
+        <input class="d-block mx-auto w-30" shop-product-quantity type="number" />
+    }
     <div class="text-center" shop-product-price="@this.Model.Price"> $@this.Model.Price </div>
+    <div shop-product-stock-type class="text-center @(this.Model.StockCount > 0 ? "text-green" : "text-red")"> @(this.Model.StockCount > 0 ? "In" : "Out of") Stock</div>
     <section>
-        <button shop-action="order-product" class="shop-btn" type="button">Order</button>
+        @if (this.Model.StockCount > 0)
+        {
+            <button shop-action="order-product" class="shop-btn" type="button">Order</button>
+        }
         @if (this.User.IsInRole(RolesConstants.Administrator))
         {
             <button shop-action="remove-product" class="shop-btn-delete" type="button"><i class="fas fa-trash-alt"></i></button>
