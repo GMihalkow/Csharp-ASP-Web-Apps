@@ -83,8 +83,12 @@ main {
     font-weight: bold;
 }
 
+.text-green {
+    color: #0a0;
+}
+
 .text-red {
-    color: #f00;
+    color: #a00;
 }
 
 .font-26 {

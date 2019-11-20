@@ -1,8 +1,8 @@
 ﻿.products-wrapper {
-	display: flex;
-	width: 60rem;
-	flex-wrap: wrap;
-	margin: 0 auto;
+    display: flex;
+    width: 60rem;
+    flex-wrap: wrap;
+    margin: 0 auto;
 }
 
 .featured-products {
@@ -97,29 +97,29 @@
     padding: 0.5rem 0;
 }
 
-.category-partial > button {
-	margin-left: auto;
-}
+    .category-partial > button {
+        margin-left: auto;
+    }
 
-.category-partial a {
-    text-decoration: none;
-    padding: 0.5rem 0;
-    color: #000;
-    width: 6rem;
-    font-size: 14px;
-    text-align: start;
-    font-weight: bold;
-}
+    .category-partial a {
+        text-decoration: none;
+        padding: 0.5rem 0;
+        color: #000;
+        width: 6rem;
+        font-size: 14px;
+        text-align: start;
+        font-weight: bold;
+    }
 
-.category-partial a.category-action-btn {
-    text-align: center;
-    width: 30%;
-}
+        .category-partial a.category-action-btn {
+            text-align: center;
+            width: 30%;
+        }
 
 .products-wrapper-admin-toolbar {
-	width: 100%;
-	height: 4.2rem;
-	padding: 1rem;
+    width: 100%;
+    height: 4.2rem;
+    padding: 1rem;
 }
 
 .product-categories > header,
@@ -133,22 +133,22 @@
 }
 
 .categories-list {
-	height: 100%;
-	padding: 1rem 0.2rem;
-	display: block;
+    height: 100%;
+    padding: 1rem 0.2rem;
+    display: block;
 }
 
 .featured-products > .product-container {
     width: 12rem;
-    height: 22rem;
+    height: 24rem;
     margin: 1rem;
     border-bottom: #e6e6e6 solid 1px;
     border-radius: 5px;
 }
 
 .categories-list > ul {
-	height: 100%;
-	list-style: none;
+    height: 100%;
+    list-style: none;
 }
 
 .featured-products > .product-container > header {
@@ -166,9 +166,9 @@
     width: auto;
 }
 
-.featured-products > .product-container > img:hover{
-    cursor: pointer;
-}
+    .featured-products > .product-container > img:hover {
+        cursor: pointer;
+    }
 
 .featured-products > .product-container > section {
     width: 100%;
@@ -178,14 +178,14 @@
 
 .categories-list > ul > li {
     display: inline-block;
-	width: 100%;
+    width: 100%;
 }
 
 
-.categories-list > ul > li > a {
-	color: #000;
-	text-decoration: none;
-}
+    .categories-list > ul > li > a {
+        color: #000;
+        text-decoration: none;
+    }
 
 .featured-products > .product-container > header a {
     text-decoration: none;
