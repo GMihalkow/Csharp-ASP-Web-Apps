@@ -50,10 +50,8 @@ namespace ShopApp.Web.Repositories
 
         public async Task Edit(ProductBaseInputModel model)
         {
-            ShopApp.Models.Product productEntity =
-            this.dbContext
-            .Products
-            .FirstOrDefault(product => product.Id == ((ProductEditModel)model).Id);
+            ShopApp.Models.Product productEntity = this.dbContext.Products
+                .FirstOrDefault(product => product.Id == ((ProductEditModel)model).Id);
 
             if (productEntity == null)
             {
@@ -82,7 +80,8 @@ namespace ShopApp.Web.Repositories
                    CategoryName = product.Category.Name,
                    CoverUrl = product.CoverUrl,
                    AddedOn = product.AddedOn,
-                   Description = product.Description
+                   Description = product.Description,
+                   StockCount = product.StockCount
                })
                .FirstOrDefault();
 

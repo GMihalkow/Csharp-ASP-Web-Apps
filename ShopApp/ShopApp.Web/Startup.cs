@@ -1,19 +1,19 @@
-﻿using Owin;
-using ShopApp.Data;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
-using ShopApp.Web.Utilities;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.AspNet.Identity;
+using Owin;
+using ShopApp.Data;
+using ShopApp.Web.Utilities;
 using System;
 
 [assembly: OwinStartup(typeof(ShopApp.Web.Startup))]
 namespace ShopApp.Web
 {
-	public partial class Startup
+    public partial class Startup
 	{
 		public void Configuration(IAppBuilder app)
 		{
-			ConfigureAuth(app);
+			this.ConfigureAuth(app);
 		}
 
 		// For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
