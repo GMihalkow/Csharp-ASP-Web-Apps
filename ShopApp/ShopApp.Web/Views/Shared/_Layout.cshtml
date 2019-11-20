@@ -66,7 +66,7 @@
     <script type="text/javascript">
 
         $(function () {
-            
+            @* TODO [GM]: More authorization? *@
             @* Deleting the order's session storage after logout *@
             var logoutButton = $(".shop-nav").find("[shop-action='logout']");
             logoutButton.on("click", function () {
@@ -125,21 +125,53 @@
                             })),
                     }
                 })
-                .then(function () {
+                .then(function (res) {
                     @* clearing the session storage*@
                     window.sessionStorage.clear();
 
                     var cartElement = $(".banner .banner-order-information i");
                     cartElement.text(window.sessionStorage.length);
 
-                    $(".custom-modal").find("[close-modal-btn]").click();
+                    var result = JSON.parse(res);
+
+                    var errors = [];
+
+                    result.forEach(function (msg) {
+                        var parsedResultObj = JSON.parse(msg);
+
+                        if (parsedResultObj.type === "error") {
+                            errors.push(parsedResultObj.message);
+                        } else if (parsedResultObj.type === "outOfStock") {
+                            var productNode = $(".product-items [shop-product-id=\"" + parsedResultObj.productId + "\"]");
+
+                            // TODO [GM]: Optimize?
+                            if (productNode.length === 1) {
+                                var productQuantity = productNode.find("[shop-product-quantity]");
+                                productQuantity.prev().remove();
+                                productQuantity.remove();
+
+                                var productStockType = productNode.find("[shop-product-stock-type]");
+                                productStockType.text("Out Of Stock")
+                                productStockType.removeClass("text-green");
+                                productStockType.addClass("text-red");
+
+                                productNode.find("button[shop-action=\"order-product\"]").remove();
+                            }
+                        }
+                    });
+
+                    if (errors.length > 0) {
+                        modalFunctions.openErrorModal(errors.join("\n"));
+                    } else {
+                        modalFunctions.closeAllModals();
+                    }
                 })
-                .fail(function () {
+                .fail(function (e) {
                     window.sessionStorage.clear();
 
                     var cartElement = $(".banner .banner-order-information i");
                     cartElement.text(window.sessionStorage.length);
-                    
+
                     modalFunctions.openErrorModal();
                 });
             };
