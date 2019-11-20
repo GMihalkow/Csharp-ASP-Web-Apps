@@ -27,10 +27,7 @@ namespace ShopApp.Web.Services.Category
         public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false)
         {
             // filtering invalid negative inputs
-            if (page < 0)
-            {
-                page = 0;
-            }
+            if (page < 0) { page = 0; }
 
             List<CategoryViewModel> categories =
                 this.dbContext
@@ -58,7 +55,8 @@ namespace ShopApp.Web.Services.Category
                     Description = p.Description,
                     Name = p.Name,
                     Price = p.Price,
-                    AddedOn = p.AddedOn
+                    AddedOn = p.AddedOn,
+                    StockCount = p.StockCount
                 })
                 .Skip(page * GlobalConstants.PageSize)
                 .Take(GlobalConstants.PageSize)

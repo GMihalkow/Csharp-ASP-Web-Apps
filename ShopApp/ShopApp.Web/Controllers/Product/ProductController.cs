@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers.Product
 {
+    // TODO [GM]: Create a supply products functionality? (Add product stock count control?)
     public class ProductController : BaseController
     {
         private readonly ICategoryService categoryService;
