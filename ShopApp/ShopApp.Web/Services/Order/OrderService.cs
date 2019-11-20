@@ -6,9 +6,11 @@ using ShopApp.Web.Models;
 using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Order.Contracts;
+using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -18,16 +20,18 @@ namespace ShopApp.Web.Services.Order
     {
         public readonly IAccountService accountService;
         private readonly ShopAppDbContext dbContext;
+        private readonly IProductService productService;
         private readonly IRepository<ProductViewModel, ProductBaseInputModel> productRepository;
 
-        public OrderService(IAccountService accountService, ShopAppDbContext dbContext, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
+        public OrderService(IAccountService accountService, ShopAppDbContext dbContext, IProductService productService, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
         {
             this.accountService = accountService;
             this.dbContext = dbContext;
+            this.productService = productService;
             this.productRepository = productRepository;
         }
 
-        public async Task Checkout(string ordersJson)
+        public async Task<string> Checkout(string ordersJson)
         {
             // getting the logged in user's id
             var user = await this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
@@ -42,6 +46,8 @@ namespace ShopApp.Web.Services.Order
             {
                 throw new InvalidOperationException("You must provide an address for the Order.");
             }
+
+            var outputMessages = new List<string>();
 
             // adding the UserId's to the orders
             foreach (var order in orders)
@@ -62,7 +68,22 @@ namespace ShopApp.Web.Services.Order
                 ProductViewModel product = this.productRepository.Get(order.ProductId);
                 if (product == null)
                 {
-                    throw new InvalidOperationException("Invalid product id.");
+                    outputMessages.Add($"{{ \"productId\":  \"{product.Id}\", \"type\": \"error\", \"message\": \"Invalid product Id {product.Id}.\" }}");
+
+                    continue;
+                }
+                else if (product.StockCount - order.Quantity < 0)
+                {
+                    outputMessages.Add($"{{ \"productId\":  \"{product.Id}\", \"type\": \"error\", \"message\": \"Insufficient quantity of product {product.Name}.\" }}");
+
+                    continue;
+                }
+
+                await this.productService.DecrementProductStockCount(order.ProductId, order.Quantity);
+
+                if (product.StockCount - order.Quantity == 0)
+                {
+                    outputMessages.Add($"{{ \"productId\": \"{product.Id}\", \"type\": \"outOfStock\", \"message\": \"out of stock\" }}");
                 }
 
                 order.ProductId = product.Id;
@@ -70,6 +91,20 @@ namespace ShopApp.Web.Services.Order
                 this.dbContext.Orders.Add(order);
                 await this.dbContext.SaveChangesAsync();
             }
+
+            return JsonConvert.SerializeObject(outputMessages);
+
+            //if (sb.Length == 0)
+            //{
+            //    return $"Order was successful";
+            //}
+            //else
+            //{
+            //    sb.AppendLine(sb.ToString().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).Length == orders.Length
+            //        ? string.Empty : "All other orders were successful.");
+
+            //    return sb.ToString().TrimEnd();
+            //}
         }
 
         public async Task CancelOrder(string orderId)

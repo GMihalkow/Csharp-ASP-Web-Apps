@@ -9,7 +9,7 @@ namespace ShopApp.Web.Services.Order.Contracts
 
         Task CancelOrder(string orderId);
 
-        Task Checkout(string ordersJson);
+        Task<string> Checkout(string ordersJson);
 
         Task SendOrder(string orderId);
 

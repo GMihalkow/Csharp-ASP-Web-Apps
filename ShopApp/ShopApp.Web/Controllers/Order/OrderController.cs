@@ -17,10 +17,11 @@ namespace ShopApp.Web.Controllers.Order
             this.orderService = orderService;
         }
 
+        // TODO [GM]: Extract to API controller?
         [HttpPost]
-        public async Task Checkout(string products)
+        public async Task<string> Checkout(string products)
         {
-            await this.orderService.Checkout(products);
+            return await this.orderService.Checkout(products);
         }
 
         public async Task Cancel(string id)
