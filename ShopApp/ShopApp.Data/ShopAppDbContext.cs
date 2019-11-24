@@ -12,7 +12,8 @@ namespace ShopApp.Data
 		public ShopAppDbContext() 
 			: base("DbConnection")
 		{
-		}
+            this.Configuration.LazyLoadingEnabled = false;
+        }
 
         public DbSet<Order> Orders { get; set; }
 
