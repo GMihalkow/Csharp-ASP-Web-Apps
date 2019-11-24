@@ -5,9 +5,9 @@ namespace ShopApp.Models
     public class Order : BaseEntity<string>
     {
         public string UserId { get; set; }
-        public virtual ShopUser User { get; set; }
+        public ShopUser User { get; set; }
         public string ProductId { get; set; }
-        public virtual Product Product { get; set; }
+        public Product Product { get; set; }
         public DateTime OrderedOn { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
