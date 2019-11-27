@@ -21,26 +21,17 @@ namespace ShopApp.Web.Services.Account
 
         private ShopUserManager userManager
         {
-            get
-            {
-                return HttpContext.Current.GetOwinContext().GetUserManager<ShopUserManager>();
-            }
+            get { return HttpContext.Current.GetOwinContext().GetUserManager<ShopUserManager>(); }
         }
 
         private ShopSignInManager signInManager
         {
-            get
-            {
-                return HttpContext.Current.GetOwinContext().Get<ShopSignInManager>();
-            }
+            get { return HttpContext.Current.GetOwinContext().Get<ShopSignInManager>(); }
         }
 
         private ShopRoleManager roleManager
         {
-            get
-            {
-                return HttpContext.Current.GetOwinContext().Get<ShopRoleManager>();
-            }
+            get { return HttpContext.Current.GetOwinContext().Get<ShopRoleManager>(); }
         }
 
         public AccountService(ShopAppDbContext dbContext)
@@ -64,14 +55,8 @@ namespace ShopApp.Web.Services.Account
                 BirthDate = model.BirthDate
             };
 
-            if (this.userManager.Users.Any(u => u.UserName == user.UserName))
-            {
-                throw new InvalidOperationException("Username is already taken.");
-            }
-            else if (this.userManager.Users.Any(u => u.Email == user.Email))
-            {
-                throw new InvalidOperationException("Email already exists.");
-            }
+            if (this.userManager.Users.Any(u => u.UserName == user.UserName)) { throw new InvalidOperationException("Username is already taken."); }
+            else if (this.userManager.Users.Any(u => u.Email == user.Email)) { throw new InvalidOperationException("Email already exists."); }
 
             IdentityResult result = await this.userManager.CreateAsync(user, model.Password);
 
@@ -91,7 +76,6 @@ namespace ShopApp.Web.Services.Account
             }
 
             await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
-
         }
 
         private async Task SeedRoles()
@@ -113,10 +97,7 @@ namespace ShopApp.Web.Services.Account
         {
             SignInStatus signInResult = await this.signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
 
-            if (signInResult == SignInStatus.Failure)
-            {
-                throw new InvalidOperationException("Incorrect username or password.");
-            }
+            if (signInResult == SignInStatus.Failure) { throw new InvalidOperationException("Incorrect username or password."); }
         }
 
         public void Logout()
@@ -128,7 +109,7 @@ namespace ShopApp.Web.Services.Account
         {
             return await Task<ShopUser>.Run(() =>
             {
-                return this.dbContext.Users.Include("Orders").Include("Categories").FirstOrDefault(u => u.UserName == username);
+                return this.dbContext.Users.Include(u => u.Orders).Include(o => o.Categories).FirstOrDefault(u => u.UserName == username);
             });
         }
 
@@ -136,10 +117,7 @@ namespace ShopApp.Web.Services.Account
         {
             ShopUser userEntity = await this.GetUser(username);
 
-            if (userEntity == null)
-            {
-                throw new InvalidOperationException("Invalid user!");
-            }
+            if (userEntity == null) { throw new InvalidOperationException("Invalid user!"); }
 
             ProfileViewModel profileModel = new ProfileViewModel
             {
