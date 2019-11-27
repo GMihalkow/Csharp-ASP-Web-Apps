@@ -24,22 +24,21 @@ namespace ShopApp.Web.Services.Category
             this.categoryRepository = categoryRepository;
         }
 
-        public IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false)
+        public IEnumerable<CategoryViewModel> GetCategoriesWithProductsForSelectedCategory(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false)
         {
             // filtering invalid negative inputs
             if (page < 0) { page = 0; }
 
-            List<CategoryViewModel> categories =
-                this.dbContext
-                .Categories
-                .Include("Products")
-                .Select(c => new CategoryViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    CoverUrl = c.CoverUrl
-                })
-                .ToList();
+            List<CategoryViewModel> categories = this.dbContext
+                    .Categories
+                    .Include(c => c.Products)
+                    .Select(c => new CategoryViewModel
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        CoverUrl = c.CoverUrl
+                    })
+                    .ToList();
 
             CategoryViewModel selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
 
@@ -101,12 +100,10 @@ namespace ShopApp.Web.Services.Category
                         Name = p.Name,
                         Price = p.Price
                     })
-                })?.FirstOrDefault();
+                })?
+                .FirstOrDefault();
 
-            if (categoryModel == null)
-            {
-                throw new InvalidOperationException("Invalid category name.");
-            }
+            if (categoryModel == null) { throw new InvalidOperationException("Invalid category name."); }
 
             return categoryModel;
         }
@@ -115,7 +112,7 @@ namespace ShopApp.Web.Services.Category
         {
             // TODO [GM]: make async?
             // TODO [GM]: don't pull all categories?
-            var defaultCategory = this.dbContext.Categories.FirstOrDefault();
+            ShopApp.Models.Category defaultCategory = defaultCategory = this.dbContext.Categories.FirstOrDefault();
 
             if (defaultCategory == null)
             {

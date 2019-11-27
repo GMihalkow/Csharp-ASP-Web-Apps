@@ -7,7 +7,7 @@ namespace ShopApp.Web.Services.Category.Contracts
     {
         CategoryViewModel GetCategoryByName(string name);
 
-        IEnumerable<CategoryViewModel> GetCategoriesWithProducts(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false);
+        IEnumerable<CategoryViewModel> GetCategoriesWithProductsForSelectedCategory(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false);
 
         string GetDefaultCategory();
     }
