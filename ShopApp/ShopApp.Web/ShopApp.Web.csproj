@@ -239,6 +239,10 @@
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
     <Content Include="Views\Product\_FormPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
     <Content Include="scripts\jquery\core.js" />
     <Content Include="scripts\jquery\jquery.js" />
@@ -248,8 +252,8 @@
     <Content Include="scripts\mustache.js\mustache.js" />
     <Content Include="scripts\mustache.js\mustache.min.js" />
     <Content Include="Views\Account\MyProfile.cshtml" />
-    <Content Include="Views\Order\All.cshtml" />
-    <Content Include="Views\Order\_OrdersTablePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Administration\Orders.cshtml" />
+    <Content Include="Areas\Admin\Views\Administration\_OrdersTablePartial.cshtml" />
     <None Include="Views\Product\_ProductPartialTemplate.cshtml" />
     <Content Include="Views\Product\Category\_CreateCategoryFormPartial.cshtml" />
     <None Include="scripts\jquery.validate-vsdoc.js" />
@@ -267,6 +271,8 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdministrationController.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Constants\RolesConstants.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
@@ -279,6 +285,7 @@
     <Compile Include="Controllers\Order\OrderController.cs" />
     <Compile Include="Controllers\Product\ProductController.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\IQueryableExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -339,6 +346,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Product\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Asp.Mvc.Web.Extensions\Asp.Mvc.Web.Extensions.csproj">

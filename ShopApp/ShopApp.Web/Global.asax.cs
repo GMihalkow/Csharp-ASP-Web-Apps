@@ -10,6 +10,8 @@ namespace ShopApp.Web
     {
         protected void Application_Start()
         {
+            AreaRegistration.RegisterAllAreas();
+
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
 
@@ -17,7 +19,6 @@ namespace ShopApp.Web
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            AreaRegistration.RegisterAllAreas();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

@@ -34,7 +34,7 @@
                     var orderId = table.getSelectedRows()[0]._row.data.id;
 
                     $.ajax({
-                        url: "/Order/Send/" + orderId,
+                        url: "/Admin/Order/Send/" + orderId,
                         method: "GET"
                     }).then(function () {
                         window.location.reload();
@@ -52,7 +52,7 @@
                     var orderId = table.getSelectedRows()[0]._row.data.id;
 
                     $.ajax({
-                        url: "/Order/Complete/" + orderId,
+                        url: "/Admin/Order/Complete/" + orderId,
                         method: "GET"
                     }).then(function () {
                         window.location.reload();
@@ -102,7 +102,7 @@
             table.hideColumn("id");
             table.hideColumn("product_id");
 
-            // cancel order 
+            // cancel order
             table.addColumn({
                 formatter: "buttonCross",
                 width: 30,
