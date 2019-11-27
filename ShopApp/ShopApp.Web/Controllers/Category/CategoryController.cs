@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace ShopApp.Web.Controllers.Category
+namespace ShopApp.Web.Controllers
 {
     public class CategoryController : BaseController
     {

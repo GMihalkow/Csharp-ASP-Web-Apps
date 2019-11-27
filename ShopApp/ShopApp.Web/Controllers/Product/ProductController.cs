@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace ShopApp.Web.Controllers.Product
+namespace ShopApp.Web.Controllers
 {
     // TODO [GM]: Create a supply products functionality? (Add product stock count control?)
     public class ProductController : BaseController
@@ -36,7 +36,7 @@ namespace ShopApp.Web.Controllers.Product
                 }
             }
 
-            IEnumerable<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProducts(category, page, keywords, sortBy: sortBy, sortDesc: sortDesc);
+            IEnumerable<CategoryViewModel> categories = this.categoryService.GetCategoriesWithProductsForSelectedCategory(category, page, keywords, sortBy: sortBy, sortDesc: sortDesc);
 
             this.ViewBag.Keywords = keywords;
             this.ViewBag.SortBy = sortBy;

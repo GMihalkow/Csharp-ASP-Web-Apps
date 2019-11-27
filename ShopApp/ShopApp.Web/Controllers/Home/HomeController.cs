@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace ShopApp.Web.Controllers.Home
+namespace ShopApp.Web.Controllers
 {
     public class HomeController : BaseController
     {
