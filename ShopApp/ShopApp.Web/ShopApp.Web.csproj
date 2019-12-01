@@ -230,11 +230,16 @@
     <Content Include="scripts\common\modal.js" />
     <Content Include="libman.json" />
     <Content Include="Content\flatpickr\flatpickr.min.css" />
+    <Content Include="scripts\flatpickr\flatpickr.min.css" />
     <Content Include="scripts\flatpickr\flatpickr.min.js" />
     <Content Include="Content\flatpickr\ie.css" />
     <Content Include="Content\flatpickr\themes\dark.css" />
+    <Content Include="scripts\flatpickr\ie.css" />
+    <Content Include="scripts\flatpickr\themes\dark.css" />
     <Content Include="scripts\jquery\jquery.min.map" />
     <Content Include="scripts\jquery\jquery.slim.min.map" />
+    <Content Include="scripts\moment.js\moment-with-locales.min.js" />
+    <Content Include="scripts\moment.js\moment.min.js" />
     <Content Include="scripts\utils.js" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
@@ -243,6 +248,7 @@
     <Content Include="Areas\Admin\Views\web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Areas\Admin\Views\Administration\Products.cshtml" />
     <None Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
     <Content Include="scripts\jquery\core.js" />
     <Content Include="scripts\jquery\jquery.js" />
@@ -273,6 +279,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdministrationController.cs" />
+    <Compile Include="Areas\Admin\Models\Adminstration\ProductTableViewModel.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Constants\RolesConstants.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
@@ -346,8 +353,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Product\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Order\" />
   </ItemGroup>
