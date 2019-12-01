@@ -4,6 +4,7 @@ using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
 using ShopApp.Web.Services.Product.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -52,6 +53,37 @@ namespace ShopApp.Web.Services.Product
             int productsCount = this.dbContext.Products.Where(c => c.CategoryId == categoryId).Count();
 
             return productsCount;
+        }
+
+        public IEnumerable<ProductTableViewModel> GetAdminViewProducts()
+        {
+            var products = this.dbContext.Products
+                .Include(p => p.Category)
+                .Select(p => new ProductTableViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    AddedOn = p.AddedOn,
+                    CategoryName = p.Category.Name,
+                    StockCount = p.StockCount
+                })
+                .ToList();
+
+            return products;
+        }
+
+        public async Task EditStockCount(string id, int stockCount)
+        {
+            if(stockCount < 0) { throw new ArgumentException("Invalid stock count."); }
+
+            var product = this.dbContext.Products.FirstOrDefault(p => p.Id == id);
+
+            if (product != null)
+            {
+                product.StockCount = stockCount;
+
+                await this.dbContext.SaveChangesAsync();
+            }
         }
     }
 }

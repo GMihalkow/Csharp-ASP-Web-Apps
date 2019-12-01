@@ -2,6 +2,7 @@
 using ShopApp.Web.Models;
 using ShopApp.Web.Repositories.Contracts;
 using ShopApp.Web.Services.Category.Contracts;
+using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,16 @@ namespace ShopApp.Web.Controllers
     public class ProductController : BaseController
     {
         private readonly ICategoryService categoryService;
+        private readonly IProductService productService;
         private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
         private readonly IRepository<ProductViewModel, ProductBaseInputModel> productRepository;
 
-        public ProductController(ICategoryService categoryService, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
+        public ProductController(ICategoryService categoryService, IProductService productService, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
         {
             this.categoryRepository = categoryRepository;
             this.productRepository = productRepository;
             this.categoryService = categoryService;
+            this.productService = productService;
         }
 
         // TODO [GM]: Make async?
@@ -59,6 +62,13 @@ namespace ShopApp.Web.Controllers
             await this.productRepository.Create(productModel);
 
             return this.Redirect("/Product/All?category=" + categoryName);
+        }
+
+        [HttpPut]
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task EditStockCount(string id, int stockCount)
+        {
+            await this.productService.EditStockCount(id, stockCount);
         }
 
         [HttpPost]
