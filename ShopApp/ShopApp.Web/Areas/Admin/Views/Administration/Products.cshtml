@@ -1,0 +1,111 @@
+﻿<div class="w-60r mx-auto p-1">
+    <h1 class="text-center w-100 p-1">Products</h1>
+
+    <div id="products-table-toolbar" class="w-100 table-toolbar">
+        <select class="shop-select">
+            <option>Show All</option>
+        </select>
+    </div>
+    <div id="products-wrapper" class="w-100">
+        <table class="w-100 mx-auto"></table>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+                $(function () {
+				// TODO [GM]: Finish edit functionality and categories filter
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/ProductApi/GetProductAdministrationModels",
+                        contentType: "application/json",
+                        success: function (products) {
+
+                            var categoriesSelect = $("#products-table-toolbar").find(".shop-select");
+
+                            var categories = products.map(function (pr) {return pr.CategoryName;});
+                            categories.forEach(function (c) {
+                                if (!categoriesSelect.children().toArray().some(function (op) { return op.textContent === c; })) {
+                                    categoriesSelect.append("<option ='" + c + "'>" + c + "</option>");
+                                }
+                            });
+                            // TODO [GM]: Remove all promises and use callbacks everywhere
+
+                            var table = new Tabulator("#products-wrapper table", {
+                                layout: "fitDataFill",
+                                selectable: 1,
+                                resizableRows: false,
+                                resizableColumns: false,
+                                pagination: "local",
+                                paginationSize: 10,
+                                cellEditing: function (cell) {
+                                    // TODO [GM]: Validate incoming data (front end validation)
+                                },
+                                cellEdited: function (cell) {
+                                    console.log(arguments);
+
+                                    $.ajax({
+                                        url: "/Product/EditStockCount/" + cell.getData().Id,
+                                        type: "PUT",
+                                        error: function (res) {
+                                            modalFunctions.openErrorModal("Something went wrong. Please contact the development team.");
+                                        },
+                                        data: { stockCount: cell.getData().StockCount }
+                                    });
+                                },
+                                groupBy: "CategoryName",
+                                cellClick: function (e, cell) {
+                                    // show product details modal functionality
+                                    var productId = cell.getData().Id;
+
+                                    var columnType = cell._cell.column.contentElement.innerText;
+                                    if (columnType.toLowerCase() === "name") {
+                                        modalFunctions.openProductDetailsDialog(productId)
+                                    }
+                                },
+                                columns: [
+                                    { title: "Id", field: "Id", sorter: "string", width: 250, visible: false },
+                                    { title: "Name", field: "Name", sorter: "string", width: 250 },
+                                    {
+                                        title: "Added On",
+                                        field: "AddedOn",
+                                        sorter: "datetime",
+                                        sorterParams: { format: "YYYY-MM-DDTHH:mm:ss.sssZ" },
+                                        width: 300,
+                                        formatter: "datetime",
+                                        formatterParams: {
+                                            inputFormat: "YYYY-MM-DD hh:mm:ss",
+                                            outputFormat: "DD/MM/YY hh:mm:ss",
+                                            invalidPlaceholder: "(invalid date)",
+                                        }
+                                    },
+                                    { title: "Category", field: "CategoryName", sorter: "string", width: 200 },
+                                    { title: "Stock Count", field: "StockCount", sorter: "number", width: 150, editor: true }
+                                ]
+                            });
+
+                            // setting the table data
+                            table.setData(products);
+
+                            // filtering by status
+                            var categoryFilterSelect = $("#products-table-toolbar").find(".shop-select");
+                            categoryFilterSelect.on("change", function (e) {
+                                var currentCategory = e.currentTarget.value;
+
+                                if (currentCategory && currentCategory !== "Show All") {
+                                    table.setFilter([
+                                        { field: "CategoryName", type: "=", value: currentCategory }
+                                    ]);
+                                } else {
+                                    table.clearFilter();
+                                }
+                            });
+
+                        }
+                    });
+                });
+    </script>
+
+}
