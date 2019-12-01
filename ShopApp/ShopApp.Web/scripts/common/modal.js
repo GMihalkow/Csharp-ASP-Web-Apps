@@ -39,8 +39,10 @@ var modalFunctions = {
         modalHeader.find("h3").text(heading);
 
         if (headerClass !== "modal-default-bg") {
+            modalHeader.removeClass("modal-default-bg");
             modalHeader.addClass(headerClass);
         } else {
+            modalHeader.removeClass("modal-error-bg");
             modalHeader.addClass("modal-default-bg");
         }
 
@@ -72,7 +74,7 @@ var modalFunctions = {
             }
         ];
 
-        _this.modalFunctions.openModal("Confirm", body, buttons);
+        _this.modalFunctions.openModal("Confirm", body, footerBtns = buttons, headerClass = "modal-default-bg");
     },
 
     openErrorModal: function openErrorModal(errorMessage) {
@@ -93,7 +95,7 @@ var modalFunctions = {
             var template = $("#product-details-template").html();
             var rendered = Mustache.render(template, product);
 
-            _this.modalFunctions.openModal("Product Details", rendered, buttons);
+            _this.modalFunctions.openModal("Product Details", rendered, footerBtns = buttons, headerClass = "modal-default-bg");
         });
     }
 };
