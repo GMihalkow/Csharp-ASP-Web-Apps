@@ -18,6 +18,11 @@ namespace ShopApp.Web
             bundles.Add(new ScriptBundle("~/bundles/modal").Include(
                 "~/scripts/common/modal.js"
             ));
+
+            bundles.Add(new ScriptBundle("~/bundles/moment.js").Include(
+                "~/scripts/moment.js/moment.min.js",
+                "~/scripts/moment.js/moment-with-locales.min.js"
+            ));
         }
 
         private static void RegisterStyles(BundleCollection bundles)
