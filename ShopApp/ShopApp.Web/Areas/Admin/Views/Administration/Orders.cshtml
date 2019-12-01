@@ -23,10 +23,15 @@
 
     <script type="text/javascript">
         $(function () {
+			// TODO [GM]: Extract model to CategoryApi? and fill table with json?
+		
             // collapse all groups functionality
             $("#collapse-groups-btn").on("click", function () {
+                // TODO [GM]: A better way?
                 $(".tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-odd .tabulator-arrow, .tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-even .tabulator-arrow").click();
             });
+
+            // TODO [GM]: Add search by name?
 
             // send order
             $("#send-order-btn").on("click", function () {
@@ -74,7 +79,7 @@
                 groupBy: "status",
                 cellClick: function (e, cell) {
                     // show product details modal functionality
-                    var productId = cell._cell.row.data.product_id;
+                    var productId = cell.getData().product_id;
 
                     var columnType = cell._cell.column.contentElement.innerText;
                     if (columnType.toLowerCase() === "product") {
