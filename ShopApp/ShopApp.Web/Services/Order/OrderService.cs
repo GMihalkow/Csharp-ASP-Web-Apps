@@ -10,7 +10,6 @@ using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -93,23 +92,12 @@ namespace ShopApp.Web.Services.Order
             }
 
             return JsonConvert.SerializeObject(outputMessages);
-
-            //if (sb.Length == 0)
-            //{
-            //    return $"Order was successful";
-            //}
-            //else
-            //{
-            //    sb.AppendLine(sb.ToString().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).Length == orders.Length
-            //        ? string.Empty : "All other orders were successful.");
-
-            //    return sb.ToString().TrimEnd();
-            //}
         }
 
         public async Task CancelOrder(string orderId)
         {
-            ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == orderId);
+            ShopApp.Models.Order order = this.dbContext.Orders.Include(o => o.User).FirstOrDefault(o => o.Id == orderId);
+
             if (order == null || (order.User.UserName != HttpContext.Current.User.Identity.Name && HttpContext.Current.User.IsInRole(RolesConstants.Administrator)))
             {
                 throw new InvalidOperationException("Invalid Order ID.");
@@ -170,14 +158,14 @@ namespace ShopApp.Web.Services.Order
 
         public async Task<ShopApp.Models.Order> Get(string id)
         {
-            ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
-
-            if (order == null)
+            return await Task.Run(() =>
             {
-                throw new InvalidOperationException("Invalid order ID.");
-            }
+                ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
 
-            return order;
+                if (order == null) { throw new InvalidOperationException("Invalid order ID."); }
+
+                return order;
+            });
         }
     }
 }
