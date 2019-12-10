@@ -1,7 +1,7 @@
 ﻿input[type='tel'], input[type='text'], input[type='password'], input[type='email'] {
 	border: #ccc solid 0.5px;
 	font-size: 20px;
-	padding: 0.5rem;
+	padding: 0.4rem;
 	border-radius: 5px;
 }
 
