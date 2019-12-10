@@ -11,13 +11,6 @@
       "destination": "scripts/jquery/"
     },
     {
-      "library": "font-awesome@5.11.2",
-      "destination": "Content/font-awesome/",
-      "files": [
-        "css/all.min.css"
-      ]
-    },
-    {
       "library": "flatpickr@4.6.3",
       "destination": "scripts/flatpickr/",
       "files": [
@@ -33,6 +26,28 @@
       "files": [
         "moment-with-locales.min.js",
         "moment.min.js"
+      ]
+    },
+    {
+      "library": "font-awesome@5.11.2",
+      "destination": "Content/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "webfonts/fa-brands-400.eot",
+        "webfonts/fa-brands-400.svg",
+        "webfonts/fa-brands-400.ttf",
+        "webfonts/fa-brands-400.woff",
+        "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-regular-400.eot",
+        "webfonts/fa-regular-400.svg",
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-regular-400.woff",
+        "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-solid-900.eot",
+        "webfonts/fa-solid-900.svg",
+        "webfonts/fa-solid-900.ttf",
+        "webfonts/fa-solid-900.woff",
+        "webfonts/fa-solid-900.woff2"
       ]
     }
   ]
