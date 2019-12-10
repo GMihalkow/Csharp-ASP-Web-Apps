@@ -23,7 +23,7 @@ namespace ShopApp.Web
 
         public int Quantity { get; set; }
 
-        public OrderStatus Status { get; set; }
+        public string Status { get; set; }
 
         public decimal TotalPrice => this.Quantity * this.Product.Price;
     }

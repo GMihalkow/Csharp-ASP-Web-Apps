@@ -119,7 +119,7 @@ namespace ShopApp.Web.Services.Order
                     Description = order.Description,
                     Quantity = order.Quantity,
                     OrderedOn = order.OrderedOn,
-                    Status = order.Status,
+                    Status = order.Status.ToString(),
                     User = order.User.UserName,
                     UserId = order.UserId,
                     Product = new Models.ProductViewModel
@@ -158,6 +158,7 @@ namespace ShopApp.Web.Services.Order
 
         public async Task<ShopApp.Models.Order> Get(string id)
         {
+            // TODO [GM]: Avoid using Task.Run when having no asynchronous work to do
             return await Task.Run(() =>
             {
                 ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
