@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers
 {
-    // TODO [GM]: Create a supply products functionality? (Add product stock count control?)
     [Authorize(Roles = RolesConstants.Administrator)]
     public class ProductController : BaseController
     {
@@ -51,7 +50,6 @@ namespace ShopApp.Web.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = RolesConstants.Administrator)]
         public async Task<ActionResult> Create(ProductCreateModel productModel)
         {
             if (!this.ModelState.IsValid)
@@ -67,14 +65,12 @@ namespace ShopApp.Web.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = RolesConstants.Administrator)]
         public async Task EditStockCount(string id, int stockCount)
         {
             await this.productService.EditStockCount(id, stockCount);
         }
 
         [HttpPost]
-        //[Authorize(Roles = RolesConstants.Administrator)]
         public async Task<ActionResult> Edit(ProductEditModel productModel)
         {
             if (!this.ModelState.IsValid)
@@ -89,7 +85,6 @@ namespace ShopApp.Web.Controllers
             return this.Redirect("/Product/All?category=" + categoryName);
         }
 
-        //[Authorize(Roles = RolesConstants.Administrator)]
         public async Task Delete(string id)
         {
             await this.productRepository.Delete(id);
