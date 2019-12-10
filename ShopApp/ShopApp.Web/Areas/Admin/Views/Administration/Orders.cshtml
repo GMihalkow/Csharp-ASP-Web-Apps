@@ -1,21 +1,19 @@
-﻿@model IEnumerable<OrderViewModel>
-
-<div class="w-60r mx-auto p-1">
+﻿<div class="w-60r mx-auto p-1">
     <h1 class="text-center w-100 p-1">Orders</h1>
 
     <div id="orders-table-toolbar" class="w-100 table-toolbar">
         <select class="shop-select">
             <option>Show All</option>
-            <option value="Completed">Completed</option>
-            <option value="New">New</option>
-            <option value="Sent">Sent</option>
+            <option value="@ShopApp.Models.OrderStatus.Completed.ToString()">Completed</option>
+            <option value="@ShopApp.Models.OrderStatus.New.ToString()">New</option>
+            <option value="@ShopApp.Models.OrderStatus.Sent.ToString()">Sent</option>
         </select>
         <button id="collapse-groups-btn" class="shop-btn shop-btn-green">Collapse all</button>
         <button id="send-order-btn" style="display: none;" class="shop-btn shop-btn-green">Send</button>
         <button id="complete-order-btn" style="display: none;" class="shop-btn shop-btn-green">Complete</button>
     </div>
     <div id="orders-wrapper" class="w-100">
-        @this.Html.Partial("_OrdersTablePartial", this.Model)
+        <table class="w-100 mx-auto"></table>
     </div>
 </div>
 
@@ -23,127 +21,140 @@
 
     <script type="text/javascript">
         $(function () {
-			// TODO [GM]: Extract model to CategoryApi? and fill table with json?
-		
-            // collapse all groups functionality
-            $("#collapse-groups-btn").on("click", function () {
-                // TODO [GM]: A better way?
-                $(".tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-odd .tabulator-arrow, .tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-even .tabulator-arrow").click();
-            });
+            // TODO [GM]: Extract model to CategoryApi?
 
-            // TODO [GM]: Add search by name?
-
-            // send order
-            $("#send-order-btn").on("click", function () {
-                var sendOrderCallback = function sendOrderCallback() {
-                    var orderId = table.getSelectedRows()[0]._row.data.id;
-
-                    $.ajax({
-                        url: "/Admin/Administration/Send/" + orderId,
-                        method: "GET"
-                    }).then(function () {
-                        window.location.reload();
+            $.ajax({
+                type: "GET",
+                url: "/api/OrderApi/GetOrders",
+                contentType: "application/json",
+                success: function (orders) {
+                    // collapse all groups functionality
+                    $("#collapse-groups-btn").on("click", function () {
+                        // TODO [GM]: A better way?
+                        $(".tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-odd .tabulator-arrow, .tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-even .tabulator-arrow").click();
                     });
 
-                    $(".custom-modal").find(".close-modal-btn").click();
-                };
+                    // TODO [GM]: Add search by name?
 
-                modalFunctions.openConfirmationModal(sendOrderCallback.bind(this));
-            });
+                    // send order
+                    $("#send-order-btn").on("click", function () {
+                        var sendOrderCallback = function sendOrderCallback() {
+                            var orderId = table.getSelectedRows()[0].getData().Id;
 
-            // complete order
-            $("#complete-order-btn").on("click", function () {
-                var completeOrderCallback = function completeOrderCallback() {
-                    var orderId = table.getSelectedRows()[0]._row.data.id;
+                            $.ajax({
+                                url: "/Admin/Administration/Send/" + orderId,
+                                method: "GET"
+                            }).then(function () {
+                                window.location.reload();
+                            });
 
-                    $.ajax({
-                        url: "/Admin/Administration/Complete/" + orderId,
-                        method: "GET"
-                    }).then(function () {
-                        window.location.reload();
+                            $(".custom-modal").find(".close-modal-btn").click();
+                        };
+
+                        modalFunctions.openConfirmationModal(sendOrderCallback.bind(this));
                     });
 
-                    $(".custom-modal").find(".close-modal-btn").click();
-                };
+                    // complete order
+                    $("#complete-order-btn").on("click", function () {
+                        var completeOrderCallback = function completeOrderCallback() {
+                            var orderId = table.getSelectedRows()[0].getData().Id;
 
-                modalFunctions.openConfirmationModal(completeOrderCallback.bind(this));
-            });
+                            $.ajax({
+                                url: "/Admin/Administration/Complete/" + orderId,
+                                method: "GET"
+                            }).then(function () {
+                                window.location.reload();
+                            });
 
-            var table = new Tabulator("#orders-wrapper table", {
-                layout: "fitData",
-                selectable: 1,
-                resizableRows: false,
-                resizableColumns: false,
-                pagination: "local",
-                paginationSize: 10,
-                groupBy: "status",
-                cellClick: function (e, cell) {
-                    // show product details modal functionality
-                    var productId = cell.getData().product_id;
+                            $(".custom-modal").find(".close-modal-btn").click();
+                        };
 
-                    var columnType = cell._cell.column.contentElement.innerText;
-                    if (columnType.toLowerCase() === "product") {
-                        modalFunctions.openProductDetailsDialog(productId)
-                    }
-                },
-                rowSelected: function (row) {
-                    var sendBtn = $("#orders-table-toolbar").find("#send-order-btn");
-                    var completeBtn = $("#orders-table-toolbar").find("#complete-order-btn");
+                        modalFunctions.openConfirmationModal(completeOrderCallback.bind(this));
+                    });
 
-                    var currentStatus = row._row.data.status;
-                    if (currentStatus === "New") {
-                        sendBtn.fadeIn(200);
-                        completeBtn.hide();
-                    } else if (currentStatus === "Sent") {
-                        sendBtn.hide();
-                        completeBtn.fadeIn(200);
-                    } else {
-                        sendBtn.fadeOut(100);
-                        completeBtn.fadeOut(100);
-                    }
-                },
-                rowDeselected: function (row) {
-                    $("#orders-table-toolbar").find("#send-order-btn").fadeOut(100);
-                    $("#orders-table-toolbar").find("#complete-order-btn").fadeOut(100);;
-                }
-            });
+                    var table = new Tabulator("#orders-wrapper table", {
+                        layout: "fitData",
+                        selectable: 1,
+                        resizableRows: false,
+                        resizableColumns: false,
+                        pagination: "local",
+                        paginationSize: 10,
+                        groupBy: "Status",
+                        cellClick: function (e, cell) {
+                            // show product details modal functionality
+                            var productId = cell.getData().Product.Id;
 
-            table.hideColumn("id");
-            table.hideColumn("product_id");
+                            var columnType = cell._cell.column.contentElement.innerText;
+                            if (columnType.toLowerCase() === "product") {
+                                modalFunctions.openProductDetailsDialog(productId)
+                            }
+                        },
+                        rowSelected: function (row) {
+                            var sendBtn = $("#orders-table-toolbar").find("#send-order-btn");
+                            var completeBtn = $("#orders-table-toolbar").find("#complete-order-btn");
 
-            // cancel order
-            table.addColumn({
-                formatter: "buttonCross",
-                width: 30,
-                cellClick: function (e, cell) {
-                    var orderId = cell.getRow()._row.data.id;
-                    var cancelOrdercallback = function cancelOrdercallback(orderId) {
+                            var currentStatus = row.getData().Status;
+                            if (currentStatus === "@ShopApp.Models.OrderStatus.New.ToString()") {
+                                sendBtn.fadeIn(200);
+                                completeBtn.hide();
+                            } else if (currentStatus === "@ShopApp.Models.OrderStatus.Sent.ToString()") {
+                                sendBtn.hide();
+                                completeBtn.fadeIn(200);
+                            } else {
+                                sendBtn.fadeOut(100);
+                                completeBtn.fadeOut(100);
+                            }
+                        },
+                        rowDeselected: function () {
+                            $("#orders-table-toolbar").find("#send-order-btn").fadeOut(100);
+                            $("#orders-table-toolbar").find("#complete-order-btn").fadeOut(100);
+                        },
+                        columns: [
+                            { title: "Id", field: "OrderId", sorter: "string", visible: false },
+                            { title: "ProductId", field: "Product.Id", sorter: "string", visible: false },
+                            { title: "Product", field: "Product.Name", sorter: "string", width: 200 },
+                            { title: "User", field: "User", sorter: "string", width: 200 },
+                            { title: "Quantity", field: "Quantity", sorter: "number", width: 150 },
+                            { title: "Total Price", field: "TotalPrice", sorter: "number", width: 150 },
+                            { title: "Status", field: "Status", sorter: "string", width: 180 },
+                            {
+                                formatter: "buttonCross",
+                                width: 30,
+                                cellClick: function (e, cell) {
+                                    var orderId = cell.getRow().getData().Id;
 
-                        $.ajax({
-                            url: "/Order/Cancel/" + orderId,
-                            method: "GET"
-                        }).then(function () {
-                            window.location.reload();
-                        });
+                                    var cancelOrderCallback = function cancelOrderCallback(orderId) {
+                                        $.ajax({
+                                            url: "/Order/Cancel/" + orderId,
+                                            method: "GET"
+                                        }).then(function () {
+                                            window.location.reload();
+                                        });
 
-                        $(".custom-modal").find(".close-modal-btn").click();
-                    };
+                                        $(".custom-modal").find(".close-modal-btn").click();
+                                    };
 
-                    modalFunctions.openConfirmationModal(cancelOrdercallback.bind(this, orderId));
-                }
-            });
+                                    modalFunctions.openConfirmationModal(cancelOrderCallback.bind(this, orderId));
+                                }
+                            }
+                        ]
+                    });
 
-            // filtering by status
-            var statusFilterSelect = $("#orders-table-toolbar").find(".shop-select");
-            statusFilterSelect.on("change", function (e) {
-                var currentStatus = e.currentTarget.value;
+                    table.setData(orders);
 
-                if (currentStatus && currentStatus !== "Show All") {
-                    table.setFilter([
-                        { field: "status", type: "=", value: currentStatus }
-                    ]);
-                } else {
-                    table.clearFilter();
+                    // filtering by status
+                    var statusFilterSelect = $("#orders-table-toolbar").find(".shop-select");
+                    statusFilterSelect.on("change", function (e) {
+                        var currentStatus = e.currentTarget.value;
+
+                        if (currentStatus && currentStatus !== "Show All") {
+                            table.setFilter([
+                                { field: "Status", type: "=", value: currentStatus }
+                            ]);
+                        } else {
+                            table.clearFilter();
+                        }
+                    });
                 }
             });
         });
