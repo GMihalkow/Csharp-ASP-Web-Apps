@@ -42,6 +42,8 @@ namespace ShopApp.Web.Services.Category
 
             CategoryViewModel selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
 
+            if (selectedCategory == null) { throw new InvalidOperationException("Category not found."); }
+
             selectedCategory.Products = this.dbContext.Products
                 .Where(p => p.CategoryId == selectedCategory.Id)
                 .Where(p => p.Name.Contains(keywords) || p.Description.Contains(keywords))
@@ -112,12 +114,9 @@ namespace ShopApp.Web.Services.Category
         {
             // TODO [GM]: make async?
             // TODO [GM]: don't pull all categories?
-            ShopApp.Models.Category defaultCategory = defaultCategory = this.dbContext.Categories.FirstOrDefault();
+            ShopApp.Models.Category defaultCategory = this.dbContext.Categories.FirstOrDefault();
 
-            if (defaultCategory == null)
-            {
-                return string.Empty;
-            }
+            if (defaultCategory == null) { return string.Empty; }
 
             return defaultCategory.Name;
         }
