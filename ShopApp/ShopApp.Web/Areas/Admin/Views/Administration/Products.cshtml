@@ -2,9 +2,8 @@
     <h1 class="text-center w-100 p-1">Products</h1>
 
     <div id="products-table-toolbar" class="w-100 table-toolbar">
-        <select class="shop-select">
-            <option>Show All</option>
-        </select>
+        <input id="products-search" type="text" placeholder="Search by name..." />
+        <input id="products-search-submit" class="shop-btn" type="submit" value="Search" />
     </div>
     <div id="products-wrapper" class="w-100">
         <table class="w-100 mx-auto"></table>
@@ -15,23 +14,17 @@
 
     <script type="text/javascript">
         $(function () {
-            // TODO [GM]: Finish edit functionality and categories filter
-
             $.ajax({
                 type: "GET",
                 url: "/api/ProductApi/GetProductAdministrationModels",
                 contentType: "application/json",
                 success: function (products) {
+                    
+                    var categoriesObj = products.reduce(function (acm, pr) {
+                        acm[pr.CategoryName.toLowerCase()] = pr.CategoryName;
 
-                    var categoriesSelect = $("#products-table-toolbar").find(".shop-select");
-
-                    var categories = products.map(function (pr) { return pr.CategoryName; });
-                    categories.forEach(function (c) {
-                        if (!categoriesSelect.children().toArray().some(function (op) { return op.textContent === c; })) {
-                            categoriesSelect.append("<option ='" + c + "'>" + c + "</option>");
-                        }
-                    });
-                    // TODO [GM]: Remove all promises and use callbacks everywhere
+                        return acm;
+                    }, {});
 
                     var table = new Tabulator("#products-wrapper table", {
                         layout: "fitDataFill",
@@ -82,7 +75,8 @@
                                     invalidPlaceholder: "(invalid date)",
                                 }
                             },
-                            { title: "Category", field: "CategoryName", sorter: "string", width: 200 },
+                            // filtering by category name
+                            { title: "Category", field: "CategoryName", sorter: "string", width: 200, editor: "select", editorParams: { values: categoriesObj }, headerFilter: true, headerFilterParams: categoriesObj },
                             { title: "Stock Count", field: "StockCount", sorter: "number", width: 150, editor: true }
                         ]
                     });
@@ -90,20 +84,16 @@
                     // setting the table data
                     table.setData(products);
 
-                    // filtering by status
-                    var categoryFilterSelect = $("#products-table-toolbar").find(".shop-select");
-                    categoryFilterSelect.on("change", function (e) {
-                        var currentCategory = e.currentTarget.value;
+                    // filtering by product name
+                    var productsSearch = $("#products-search");
+                    productsSearch.on("change", function (e) {
+                        var inputText = $(e.currentTarget).val();
 
-                        if (currentCategory && currentCategory !== "Show All") {
-                            table.setFilter([
-                                { field: "CategoryName", type: "=", value: currentCategory }
-                            ]);
-                        } else {
-                            table.clearFilter();
-                        }
+                        table.setFilter([{ field: "Name", type: "like", value: inputText }]);
                     });
 
+                    var productsSearchBtn = $("#products-search-submit");
+                    productsSearchBtn.on("click", function () { productsSearch.trigger("change"); });
                 }
             });
         });

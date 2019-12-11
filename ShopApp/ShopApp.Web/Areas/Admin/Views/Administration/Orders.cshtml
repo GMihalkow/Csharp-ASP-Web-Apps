@@ -2,12 +2,6 @@
     <h1 class="text-center w-100 p-1">Orders</h1>
 
     <div id="orders-table-toolbar" class="w-100 table-toolbar">
-        <select class="shop-select">
-            <option>Show All</option>
-            <option value="@ShopApp.Models.OrderStatus.Completed.ToString()">Completed</option>
-            <option value="@ShopApp.Models.OrderStatus.New.ToString()">New</option>
-            <option value="@ShopApp.Models.OrderStatus.Sent.ToString()">Sent</option>
-        </select>
         <button id="collapse-groups-btn" class="shop-btn shop-btn-green">Collapse all</button>
         <button id="send-order-btn" style="display: none;" class="shop-btn shop-btn-green">Send</button>
         <button id="complete-order-btn" style="display: none;" class="shop-btn shop-btn-green">Complete</button>
@@ -28,13 +22,18 @@
                 url: "/api/OrderApi/GetOrders",
                 contentType: "application/json",
                 success: function (orders) {
+
+                    var statusTypesObj = orders.reduce(function (acm, or) {
+                        acm[or.Status.toLowerCase()] = or.Status;
+
+                        return acm;
+                    }, {});
+
                     // collapse all groups functionality
                     $("#collapse-groups-btn").on("click", function () {
                         // TODO [GM]: A better way?
                         $(".tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-odd .tabulator-arrow, .tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-even .tabulator-arrow").click();
                     });
-
-                    // TODO [GM]: Add search by name?
 
                     // send order
                     $("#send-order-btn").on("click", function () {
@@ -43,9 +42,10 @@
 
                             $.ajax({
                                 url: "/Admin/Administration/Send/" + orderId,
-                                method: "GET"
-                            }).then(function () {
-                                window.location.reload();
+                                method: "GET",
+                                success: function () {
+                                    window.location.reload();
+                                }
                             });
 
                             $(".custom-modal").find(".close-modal-btn").click();
@@ -61,9 +61,10 @@
 
                             $.ajax({
                                 url: "/Admin/Administration/Complete/" + orderId,
-                                method: "GET"
-                            }).then(function () {
-                                window.location.reload();
+                                method: "GET",
+                                success: function () {
+                                    window.location.reload();
+                                }
                             });
 
                             $(".custom-modal").find(".close-modal-btn").click();
@@ -116,7 +117,8 @@
                             { title: "User", field: "User", sorter: "string", width: 200 },
                             { title: "Quantity", field: "Quantity", sorter: "number", width: 150 },
                             { title: "Total Price", field: "TotalPrice", sorter: "number", width: 150 },
-                            { title: "Status", field: "Status", sorter: "string", width: 180 },
+                            // filtering by status
+                            { title: "Status", field: "Status", sorter: "string", width: 180, editor: "select", editorParams: { values: statusTypesObj }, headerFilter: true, headerFilterParams: statusTypesObj },
                             {
                                 formatter: "buttonCross",
                                 width: 30,
@@ -126,9 +128,10 @@
                                     var cancelOrderCallback = function cancelOrderCallback(orderId) {
                                         $.ajax({
                                             url: "/Order/Cancel/" + orderId,
-                                            method: "GET"
-                                        }).then(function () {
-                                            window.location.reload();
+                                            method: "GET",
+                                            sucess: function () {
+                                                window.location.reload();
+                                            }
                                         });
 
                                         $(".custom-modal").find(".close-modal-btn").click();
@@ -141,20 +144,6 @@
                     });
 
                     table.setData(orders);
-
-                    // filtering by status
-                    var statusFilterSelect = $("#orders-table-toolbar").find(".shop-select");
-                    statusFilterSelect.on("change", function (e) {
-                        var currentStatus = e.currentTarget.value;
-
-                        if (currentStatus && currentStatus !== "Show All") {
-                            table.setFilter([
-                                { field: "Status", type: "=", value: currentStatus }
-                            ]);
-                        } else {
-                            table.clearFilter();
-                        }
-                    });
                 }
             });
         });
