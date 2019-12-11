@@ -14,16 +14,9 @@ namespace ShopApp.Web.Controllers
             this.orderService = orderService;
         }
 
-        // TODO [GM]: Extract to API controller?
-        [HttpPost]
-        public async Task<string> Checkout(string products)
-        {
-            return await this.orderService.Checkout(products);
-        }
-
         public async Task Cancel(string id)
         {
             await this.orderService.CancelOrder(id);
         }
     }
-}
+} 

@@ -39,13 +39,13 @@
 
     @this.Html.Partial("_FooterPartial")
 
-    <script type="text/javascript" src="~/scripts/flatpickr/flatpickr.min.js"></script>
+    <script type="text/javascript" src="~/Content/flatpickr/flatpickr.min.js"></script>
     @this.RenderSection("scripts", required: false)
     @this.RenderSection("templates", required: false)
 
     @* ///////////////////////////// Templates *@
 
-    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole(RolesConstants.Administrator))
+    @if (this.User.Identity.IsAuthenticated)
     {
         <script id="checkout-partial-template" type="text/html">
             @this.Html.Partial("_CheckoutPartialTemplate")
@@ -109,7 +109,9 @@
 
                 $.ajax({
                     method: "POST",
-                    url: "@this.Url.Action("Checkout", "Order")",
+                    //url: "@this.Url.Action("Checkout", "OrderApi")",
+                    url: "/api/OrderApi/Checkout",
+                    dataType: "json",
                     data: {
                         products: JSON.stringify(Object.keys(window.sessionStorage)
                             .map(function (productKey) {
@@ -123,57 +125,57 @@
                                         Description: $(".custom-modal [shop-role='order-description']").val()
                                     };
                                 }
-                            })),
-                    }
-                })
-                .then(function (res) {
-                    @* clearing the session storage*@
-                    window.sessionStorage.clear();
+                            }))
+                    },
+                    error: function (e) {
+                        window.sessionStorage.clear();
 
-                    var cartElement = $(".banner .banner-order-information i");
-                    cartElement.text(window.sessionStorage.length);
+                        var cartElement = $(".banner .banner-order-information i");
+                        cartElement.text(window.sessionStorage.length);
 
-                    var result = JSON.parse(res);
+                        modalFunctions.openErrorModal();
+                    },
+                    success: function (res) {
+                         @* clearing the session storage*@
+                        window.sessionStorage.clear();
 
-                    var errors = [];
+                        var cartElement = $(".banner .banner-order-information i");
+                        cartElement.text(window.sessionStorage.length);
 
-                    result.forEach(function (msg) {
-                        var parsedResultObj = JSON.parse(msg);
+                        var result = JSON.parse(res);
 
-                        if (parsedResultObj.type === "error") {
-                            errors.push(parsedResultObj.message);
-                        } else if (parsedResultObj.type === "outOfStock") {
-                            var productNode = $(".product-items [shop-product-id=\"" + parsedResultObj.productId + "\"]");
+                        var errors = [];
 
-                            // TODO [GM]: Optimize?
-                            if (productNode.length === 1) {
-                                var productQuantity = productNode.find("[shop-product-quantity]");
-                                productQuantity.prev().remove();
-                                productQuantity.remove();
+                        result.forEach(function (msg) {
+                            var parsedResultObj = JSON.parse(msg);
 
-                                var productStockType = productNode.find("[shop-product-stock-type]");
-                                productStockType.text("Out Of Stock")
-                                productStockType.removeClass("text-green");
-                                productStockType.addClass("text-red");
+                            if (parsedResultObj.type === "error") {
+                                errors.push(parsedResultObj.message);
+                            } else if (parsedResultObj.type === "outOfStock") {
+                                var productNode = $(".product-items [shop-product-id=\"" + parsedResultObj.productId + "\"]");
 
-                                productNode.find("button[shop-action=\"order-product\"]").remove();
+                                // TODO [GM]: Optimize?
+                                if (productNode.length === 1) {
+                                    var productQuantity = productNode.find("[shop-product-quantity]");
+                                    productQuantity.prev().remove();
+                                    productQuantity.remove();
+
+                                    var productStockType = productNode.find("[shop-product-stock-type]");
+                                    productStockType.text("Out Of Stock")
+                                    productStockType.removeClass("text-green");
+                                    productStockType.addClass("text-red");
+
+                                    productNode.find("button[shop-action=\"order-product\"]").remove();
+                                }
                             }
+                        });
+
+                        if (errors.length > 0) {
+                            modalFunctions.openErrorModal(errors.join("\n"));
+                        } else {
+                            modalFunctions.closeAllModals();
                         }
-                    });
-
-                    if (errors.length > 0) {
-                        modalFunctions.openErrorModal(errors.join("\n"));
-                    } else {
-                        modalFunctions.closeAllModals();
                     }
-                })
-                .fail(function (e) {
-                    window.sessionStorage.clear();
-
-                    var cartElement = $(".banner .banner-order-information i");
-                    cartElement.text(window.sessionStorage.length);
-
-                    modalFunctions.openErrorModal();
                 });
             };
 
