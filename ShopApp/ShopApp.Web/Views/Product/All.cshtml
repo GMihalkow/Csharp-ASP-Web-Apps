@@ -156,15 +156,16 @@
 
              @:            $.ajax({
              @:                url: "/api/CategoryApi/Get/" + categoryId,
-             @:                method: "GET"
-             @:            }).then(function (category) {
-             @:                modalButtons[0].Name = "Edit";
-             @:                modalFunctions.openModal("Create Category", template, modalButtons);
-
-             @:                $(".custom-modal .modal-form").attr("action", "@this.Url.Action("Edit", "Category")");
-             @:                $(".custom-modal .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
-             @:                $(".custom-modal #Name").attr("value", category.Name);
-             @:                $(".custom-modal #CoverUrl").attr("value", category.CoverUrl);
+             @:                method: "GET",
+             @:                success: function (category) {
+             @:                     modalButtons[0].Name = "Edit";
+             @:                     modalFunctions.openModal("Create Category", template, modalButtons);
+             @:
+             @:                     $(".custom-modal .modal-form").attr("action", "@this.Url.Action("Edit", "Category")");
+             @:                     $(".custom-modal .modal-form").append("<input id='Id' name='Id' type='hidden' value='" + category.Id + "'/>")
+             @:                     $(".custom-modal #Name").attr("value", category.Name);
+             @:                     $(".custom-modal #CoverUrl").attr("value", category.CoverUrl); modalButtons[0].Name = "Edit";
+             @:               }
              @:            });
 
              @:        } else {
@@ -179,7 +180,7 @@
             {
                 @:   var editProductFunctionality = function() {
                 @:   var template = $("#add-product-form-template").html();
-                     
+
                 @:   var $modal = $(this).closest(".custom-modal");
                 @:   var productId = $modal.find("[shop-product-id]").attr("shop-product-id");
                 @:   var productName = $modal.find("[shop-product-name]").attr("shop-product-name");
@@ -187,7 +188,7 @@
                 @:   var productCoverURL = $modal.find("[shop-product-cover-url]").attr("src");
                 @:   var productCategoryId = $modal.find("[shop-product-category-id]").attr("shop-product-category-id");
                 @:   var productDescription = $modal.find("[shop-product-description]").text().trim();
-                     
+
                 @:   var selectWrapper = $("<div><label for='CategoryId'>Choose a category</label></div>");
                 @:   var categoriesList = $("<select id='CategoryId' name='CategoryId' class='shop-select w-100'></select>");
                 @:   var categories = $(".categories-list [shop-role-id]").each(function (index, element) {
@@ -195,7 +196,7 @@
                 @:   var option = $("<option></option>");
                 @:   option.attr("value", $(element).attr("shop-role-id"));
                 @:   option.text($(element).text());
-                     
+
                 @:   if (productCategoryId === $(element).attr("shop-role-id")) {
                 @:     option.attr("selected", "selected");
                 @:   }
@@ -278,14 +279,15 @@
                 @: var callback = function (productId) {
                 @:     $.ajax({
                 @:         url: "/Product/Delete/" + productId,
-                @:         method: "GET"
-                @:     }).then(function () {
-                @:         productContainer.fadeOut(1000);
-                @:         setTimeout(function () {
-                @:             productContainer.remove();
-                @:         }, 1000);
-
-                @:         window.location.reload();
+                @:         method: "GET",
+                @:         success: function () {
+                @:              productContainer.fadeOut(1000);
+                @:              setTimeout(function () {
+                @:                  productContainer.remove();
+                @:              }, 1000);
+                @:
+                @:              window.location.reload();
+                @:          }
                 @:     });
                 @: };
 
