@@ -2,6 +2,7 @@
     <h1 class="text-center w-100 p-1">Products</h1>
 
     <div id="products-table-toolbar" class="w-100 table-toolbar">
+        <button id="collapse-groups-btn" class="shop-btn shop-btn-green float-right">Collapse all</button>
         <input id="products-search" type="text" placeholder="Search by name..." />
         <input id="products-search-submit" class="shop-btn" type="submit" value="Search" />
     </div>
@@ -19,9 +20,14 @@
                 url: "/api/ProductApi/GetProductAdministrationModels",
                 contentType: "application/json",
                 success: function (products) {
-                    
+
+                     // collapse all groups functionality
+                    $("#collapse-groups-btn").on("click", function () {
+                        table.getGroups().forEach(function (gr) { gr.hide(); });
+                    });
+
                     var categoriesObj = products.reduce(function (acm, pr) {
-                        acm[pr.CategoryName.toLowerCase()] = pr.CategoryName;
+                        acm[pr.CategoryName] = pr.CategoryName;
 
                         return acm;
                     }, {});
@@ -50,12 +56,13 @@
                             }
                         },
                         groupBy: "CategoryName",
+                        groupToggleElement:"header",
                         cellClick: function (e, cell) {
                             // show product details modal functionality
                             var productId = cell.getData().Id;
 
-                            var columnType = cell._cell.column.contentElement.innerText;
-                            if (columnType.toLowerCase() === "name") {
+                            var columnType = cell.getElement();
+                            if ($(columnType).attr("tabulator-field").toLowerCase() === "name") {
                                 modalFunctions.openProductDetailsDialog(productId)
                             }
                         },
@@ -76,7 +83,18 @@
                                 }
                             },
                             // filtering by category name
-                            { title: "Category", field: "CategoryName", sorter: "string", width: 200, editor: "select", editorParams: { values: categoriesObj }, headerFilter: true, headerFilterParams: categoriesObj },
+                            {
+                                title: "Category",
+                                field: "CategoryName",
+                                sorter: "string",
+                                width: 200,
+                                editable: false,
+                                editor: "select",
+                                editorParams: { values: categoriesObj },
+                                headerFilter: true,
+                                headerFilterParams: categoriesObj,
+                                headerFilterFunc:"="
+                            },
                             { title: "Stock Count", field: "StockCount", sorter: "number", width: 150, editor: true }
                         ]
                     });

@@ -15,7 +15,6 @@
 
     <script type="text/javascript">
         $(function () {
-            // TODO [GM]: Extract model to CategoryApi?
 
             $.ajax({
                 type: "GET",
@@ -24,15 +23,14 @@
                 success: function (orders) {
 
                     var statusTypesObj = orders.reduce(function (acm, or) {
-                        acm[or.Status.toLowerCase()] = or.Status;
+                        acm[or.Status] = or.Status;
 
                         return acm;
                     }, {});
 
                     // collapse all groups functionality
                     $("#collapse-groups-btn").on("click", function () {
-                        // TODO [GM]: A better way?
-                        $(".tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-odd .tabulator-arrow, .tabulator-row.tabulator-group.tabulator-group-level-0.tabulator-group-visible.tabulator-row-even .tabulator-arrow").click();
+                        table.getGroups().forEach(function (gr) { gr.hide(); });
                     });
 
                     // send order
@@ -81,12 +79,13 @@
                         pagination: "local",
                         paginationSize: 10,
                         groupBy: "Status",
+                        groupToggleElement:"header",
                         cellClick: function (e, cell) {
                             // show product details modal functionality
                             var productId = cell.getData().Product.Id;
 
-                            var columnType = cell._cell.column.contentElement.innerText;
-                            if (columnType.toLowerCase() === "product") {
+                            var columnType = cell.getElement();
+                            if ($(columnType).attr("tabulator-field").toLowerCase() === "product.name") {
                                 modalFunctions.openProductDetailsDialog(productId)
                             }
                         },
@@ -118,7 +117,18 @@
                             { title: "Quantity", field: "Quantity", sorter: "number", width: 150 },
                             { title: "Total Price", field: "TotalPrice", sorter: "number", width: 150 },
                             // filtering by status
-                            { title: "Status", field: "Status", sorter: "string", width: 180, editor: "select", editorParams: { values: statusTypesObj }, headerFilter: true, headerFilterParams: statusTypesObj },
+                            {
+                                title: "Status",
+                                field: "Status",
+                                sorter: "string",
+                                width: 180,
+                                editable: false,
+                                editor: "select",
+                                editorParams: { values: statusTypesObj },
+                                headerFilter: true,
+                                headerFilterParams: statusTypesObj,
+                                headerFilterFunc:"="
+                            },
                             {
                                 formatter: "buttonCross",
                                 width: 30,
