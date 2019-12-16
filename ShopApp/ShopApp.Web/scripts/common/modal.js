@@ -90,12 +90,13 @@ var modalFunctions = {
     openProductDetailsDialog: function openProductDetailsDialog(productId, buttons) {
         $.ajax({
             method: "GET",
-            url: "/api/ProductApi/Get/" + productId
-        }).then(function (product) {
-            var template = $("#product-details-template").html();
-            var rendered = Mustache.render(template, product);
+            url: "/api/ProductApi/Get/" + productId,
+            success: function (product) {
+                var template = $("#product-details-template").html();
+                var rendered = Mustache.render(template, product);
 
-            _this.modalFunctions.openModal("Product Details", rendered, footerBtns = buttons, headerClass = "modal-default-bg");
+                _this.modalFunctions.openModal("Product Details", rendered, footerBtns = buttons, headerClass = "modal-default-bg");
+            }
         });
     }
 };
