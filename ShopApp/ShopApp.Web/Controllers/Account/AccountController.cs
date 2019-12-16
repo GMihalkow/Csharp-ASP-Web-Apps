@@ -1,4 +1,6 @@
-﻿using ShopApp.Web.Models;
+﻿using ShopApp.Dal;
+using ShopApp.Dal.Services.User.Contracts;
+using ShopApp.Web.Models;
 using ShopApp.Web.Services.Account.Contracts;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -8,10 +10,12 @@ namespace ShopApp.Web.Controllers
     public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
+        private readonly IUserService userService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IUserService userService)
         {
             this.accountService = accountService;
+            this.userService = userService;
         }
 
         public ActionResult Login()
@@ -80,9 +84,9 @@ namespace ShopApp.Web.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> MyProfile()
+        public ActionResult MyProfile()
         {
-            ProfileViewModel profileModel = await this.accountService.GetProfileInfo(this.User.Identity.Name);
+            ProfileViewModel profileModel = this.userService.GetProfileInfo(this.User.Identity.Name);
 
             return this.View(profileModel);
         }
