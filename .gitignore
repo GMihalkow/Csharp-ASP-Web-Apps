@@ -332,3 +332,5 @@ ASALocalRun/
 /ShopApp/ShopApp.Web/scripts/jquery
 /ShopApp/ShopApp.Web/scripts/flatpickr/flatpickr.min.js
 /ShopApp/ShopApp.Data/Migrations
+/ShopApp/ShopApp.Web/Content/flatpickr
+/ShopApp/ShopApp.Web/Content/font-awesome/webfonts
