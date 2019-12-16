@@ -1,12 +1,12 @@
-﻿using ShopApp.Data;
-using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
+﻿using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Data;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApp.Web.Repositories
+namespace ShopApp.Dal.Repositories
 {
     public class ProductRepository : IRepository<ProductViewModel, ProductBaseInputModel>
     {
@@ -95,7 +95,21 @@ namespace ShopApp.Web.Repositories
 
         public IEnumerable<ProductViewModel> GetAll()
         {
-            throw new System.NotImplementedException();
+            return this.dbContext.Products
+                .Include(pr => pr.Category)
+                .Select(pr => new ProductViewModel
+                {
+                    Id = pr.Id,
+                    Name = pr.Name,
+                    AddedOn = pr.AddedOn,
+                    CategoryId = pr.CategoryId,
+                    CategoryName = pr.Category.Name,
+                    Price = pr.Price,
+                    CoverUrl = pr.CoverUrl,
+                    Description = pr.Description,
+                    StockCount = pr.StockCount
+                })
+                .ToList();
         }
     }
 }

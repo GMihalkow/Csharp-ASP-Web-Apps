@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShopApp.Web.Repositories.Contracts
+namespace ShopApp.Dal.Repositories.Contracts
 {
     public interface IRepository<TViewModel, TInputModel>
         where TViewModel : class

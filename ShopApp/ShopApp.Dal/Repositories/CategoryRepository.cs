@@ -1,23 +1,22 @@
-﻿using ShopApp.Data;
-using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
-using ShopApp.Web.Services.Account.Contracts;
+﻿using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.User.Contracts;
+using ShopApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApp.Web.Repositories
+namespace ShopApp.Dal.Repositories
 {
     public class CategoryRepository : IRepository<CategoryViewModel, CategoryInputModel>
     {
         private readonly ShopAppDbContext dbContext;
-        private readonly IAccountService accountService;
+        private readonly IUserService userService;
 
-        public CategoryRepository(ShopAppDbContext dbContext, IAccountService accountService)
+        public CategoryRepository(ShopAppDbContext dbContext, IUserService userService)
         {
             this.dbContext = dbContext;
-            this.accountService = accountService;
+            this.userService = userService;
         }
 
         public async Task<CategoryInputModel> Create(CategoryInputModel model)
@@ -27,7 +26,7 @@ namespace ShopApp.Web.Repositories
                 throw new InvalidOperationException("Category already exists!");
             }
 
-            ShopApp.Models.ShopUser user = await this.accountService.GetUserById(model.CreatorId);
+            ShopApp.Models.ShopUser user = this.userService.GetUserById(model.CreatorId);
 
             ShopApp.Models.Category categoryEntity = new ShopApp.Models.Category
             {
@@ -69,13 +68,9 @@ namespace ShopApp.Web.Repositories
 
         public CategoryViewModel Get(string id)
         {
-            CategoryViewModel category = this.GetAll()
-              .FirstOrDefault(c => c.Id == id);
+            CategoryViewModel category = this.GetAll().FirstOrDefault(c => c.Id == id);
 
-            if (category == null)
-            {
-                throw new InvalidOperationException("Category doesn't exist.");
-            }
+            if (category == null) { throw new InvalidOperationException("Category doesn't exist."); }
 
             return category;
         }
