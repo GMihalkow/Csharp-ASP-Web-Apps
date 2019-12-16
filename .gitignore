@@ -334,3 +334,4 @@ ASALocalRun/
 /ShopApp/ShopApp.Data/Migrations
 /ShopApp/ShopApp.Web/Content/flatpickr
 /ShopApp/ShopApp.Web/Content/font-awesome/webfonts
+/ShopApp/ShopApp.Web/scripts/moment.js
