@@ -1,21 +1,20 @@
-﻿using ShopApp.Models;
-using ShopApp.Web.Models;
+﻿using ShopApp.Web.Models;
 using System.Threading.Tasks;
 
 namespace ShopApp.Web.Services.Account.Contracts
 {
     public interface IAccountService
-	{
-        Task<ShopUser> GetUser(string username);
+    {
+        //Task<ShopUser> GetUser(string username);
 
-        Task<ShopUser> GetUserById(string id);
+        //Task<ShopUser> GetUserById(string id);
 
-		Task Register(RegisterInputModel model);
+        Task Register(RegisterInputModel model);
 
-		Task Login(LoginInputModel model);
+        Task Login(LoginInputModel model);
 
-		void Logout();
+        void Logout();
 
-        Task<ProfileViewModel> GetProfileInfo(string username);
-	}
+        //Task<ProfileViewModel> GetProfileInfo(string username);
+    }
 }

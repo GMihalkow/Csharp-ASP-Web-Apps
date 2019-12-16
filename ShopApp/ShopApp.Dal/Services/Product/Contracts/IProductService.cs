@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShopApp.Web.Services.Product.Contracts
+namespace ShopApp.Dal.Services.Product.Contracts
 {
     public interface IProductService
     {

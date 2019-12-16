@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Utilities;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -17,8 +15,7 @@ namespace ShopApp.Web.Services.Account
 {
     public class AccountService : IAccountService
     {
-        private readonly ShopAppDbContext dbContext;
-
+        // TODO [GM]: Remove not used packages from web project
         private ShopUserManager userManager
         {
             get { return HttpContext.Current.GetOwinContext().GetUserManager<ShopUserManager>(); }
@@ -32,11 +29,6 @@ namespace ShopApp.Web.Services.Account
         private ShopRoleManager roleManager
         {
             get { return HttpContext.Current.GetOwinContext().Get<ShopRoleManager>(); }
-        }
-
-        public AccountService(ShopAppDbContext dbContext)
-        {
-            this.dbContext = dbContext;
         }
 
         public async Task Register(RegisterInputModel model)
@@ -66,16 +58,28 @@ namespace ShopApp.Web.Services.Account
             }
 
             // the first registered user is the administrator
-            if (this.dbContext.Users.Count() == 1)
-            {
-                await this.userManager.AddToRoleAsync(user.Id, RolesConstants.Administrator);
-            }
-            else if (this.dbContext.Users.Count() > 1)
-            {
-                await this.userManager.AddToRoleAsync(user.Id, RolesConstants.User);
-            }
+            //if (this.dbContext.Users.Count() == 1)
+            //{
+            //    await this.userManager.AddToRoleAsync(user.Id, RolesConstants.Administrator);
+            //}
+            //else if (this.dbContext.Users.Count() > 1)
+            //{
+            //    await this.userManager.AddToRoleAsync(user.Id, RolesConstants.User);
+            //}
 
             await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
+        }
+
+        public async Task Login(LoginInputModel model)
+        {
+            SignInStatus signInResult = await this.signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+
+            if (signInResult == SignInStatus.Failure) { throw new InvalidOperationException("Incorrect username or password."); }
+        }
+
+        public void Logout()
+        {
+            this.signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
         private async Task SeedRoles()
@@ -91,54 +95,6 @@ namespace ShopApp.Web.Services.Account
             {
                 await this.roleManager.CreateAsync(new IdentityRole { Name = RolesConstants.Administrator });
             }
-        }
-
-        public async Task Login(LoginInputModel model)
-        {
-            SignInStatus signInResult = await this.signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
-
-            if (signInResult == SignInStatus.Failure) { throw new InvalidOperationException("Incorrect username or password."); }
-        }
-
-        public void Logout()
-        {
-            this.signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-        }
-
-        public async Task<ShopUser> GetUser(string username)
-        {
-            return await Task<ShopUser>.Run(() =>
-            {
-                return this.dbContext.Users.Include(u => u.Orders).Include(o => o.Categories).FirstOrDefault(u => u.UserName == username);
-            });
-        }
-
-        public async Task<ProfileViewModel> GetProfileInfo(string username)
-        {
-            ShopUser userEntity = await this.GetUser(username);
-
-            if (userEntity == null) { throw new InvalidOperationException("Invalid user!"); }
-
-            ProfileViewModel profileModel = new ProfileViewModel
-            {
-                FirstName = userEntity.FirstName,
-                LastName = userEntity.LastName,
-                BirthDate = userEntity.BirthDate,
-                EmailAddress = userEntity.Email,
-                Orders = userEntity.Orders.Take(5),
-                PhoneNumber = userEntity.PhoneNumber,
-                RegisteredOn = userEntity.RegisteredOn
-            };
-
-            return profileModel;
-        }
-
-        public async Task<ShopUser> GetUserById(string id)
-        {
-            return await Task.Run(() =>
-            {
-                return this.dbContext.Users.FirstOrDefault(user => user.Id == id);
-            });
         }
     }
 }

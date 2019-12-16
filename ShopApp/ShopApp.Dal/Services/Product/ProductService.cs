@@ -1,14 +1,13 @@
-﻿using ShopApp.Data;
-using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
-using ShopApp.Web.Services.Category.Contracts;
-using ShopApp.Web.Services.Product.Contracts;
+﻿using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Category.Contracts;
+using ShopApp.Dal.Services.Product.Contracts;
+using ShopApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApp.Web.Services.Product
+namespace ShopApp.Dal.Services.Product
 {
     public class ProductService : IProductService
     {
@@ -57,14 +56,13 @@ namespace ShopApp.Web.Services.Product
 
         public IEnumerable<ProductTableViewModel> GetAdminViewProducts()
         {
-            var products = this.dbContext.Products
-                .Include(p => p.Category)
+            var products = this.productRepository.GetAll()
                 .Select(p => new ProductTableViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     AddedOn = p.AddedOn,
-                    CategoryName = p.Category.Name,
+                    CategoryName = p.CategoryName,
                     StockCount = p.StockCount
                 })
                 .ToList();

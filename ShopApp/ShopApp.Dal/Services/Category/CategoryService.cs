@@ -1,25 +1,24 @@
-﻿using ShopApp.Data;
-using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
-using ShopApp.Web.Services.Account.Contracts;
-using ShopApp.Web.Services.Category.Contracts;
+﻿using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Category.Contracts;
+using ShopApp.Data;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
-namespace ShopApp.Web.Services.Category
+namespace ShopApp.Dal.Services.Category
 {
     public class CategoryService : ICategoryService
     {
         private readonly string[] allowedSortColumns = new string[] { "AddedOn", "Name", "Price" };
 
-        private readonly IAccountService accountService;
+        //private readonly IUserService userService;
         private readonly ShopAppDbContext dbContext;
         private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
-        public CategoryService(IAccountService accountService, ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
+        public CategoryService(/*IUserService userService,*/ ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
         {
-            this.accountService = accountService;
+            //this.userService = userService;
             this.dbContext = dbContext;
             this.categoryRepository = categoryRepository;
         }
@@ -59,8 +58,8 @@ namespace ShopApp.Web.Services.Category
                     AddedOn = p.AddedOn,
                     StockCount = p.StockCount
                 })
-                .Skip(page * GlobalConstants.PageSize)
-                .Take(GlobalConstants.PageSize)
+                .Skip(page * DalConstants.PageSize)
+                .Take(DalConstants.PageSize)
                 .ToList();
 
             if (!string.IsNullOrEmpty(sortBy) && this.allowedSortColumns.Contains(sortBy))
@@ -112,8 +111,6 @@ namespace ShopApp.Web.Services.Category
 
         public string GetDefaultCategory()
         {
-            // TODO [GM]: make async?
-            // TODO [GM]: don't pull all categories?
             ShopApp.Models.Category defaultCategory = this.dbContext.Categories.FirstOrDefault();
 
             if (defaultCategory == null) { return string.Empty; }

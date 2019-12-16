@@ -1,40 +1,35 @@
 ﻿using Newtonsoft.Json;
+using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Order.Contracts;
+using ShopApp.Dal.Services.Product.Contracts;
+using ShopApp.Dal.Services.User.Contracts;
 using ShopApp.Data;
 using ShopApp.Models;
-using ShopApp.Web.Constants;
-using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
-using ShopApp.Web.Services.Account.Contracts;
-using ShopApp.Web.Services.Order.Contracts;
-using ShopApp.Web.Services.Product.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace ShopApp.Web.Services.Order
+namespace ShopApp.Dal.Services.Order
 {
     public class OrderService : IOrderService
     {
-        public readonly IAccountService accountService;
+        public readonly IUserService userService;
         private readonly ShopAppDbContext dbContext;
         private readonly IProductService productService;
         private readonly IRepository<ProductViewModel, ProductBaseInputModel> productRepository;
 
-        public OrderService(IAccountService accountService, ShopAppDbContext dbContext, IProductService productService, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
+        public OrderService(IUserService accountService, ShopAppDbContext dbContext, IProductService productService, IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
         {
-            this.accountService = accountService;
+            this.userService = accountService;
             this.dbContext = dbContext;
             this.productService = productService;
             this.productRepository = productRepository;
         }
 
-        public async Task<string> Checkout(string ordersJson)
+        public async Task<string> Checkout(string ordersJson, string loggedInUserId)
         {
-            // getting the logged in user's id
-            var user = await this.accountService.GetUser(HttpContext.Current.User.Identity.Name);
-
             // deserializing the json object to order entities
             ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(ordersJson);
 
@@ -58,7 +53,7 @@ namespace ShopApp.Web.Services.Order
                 order.Status = OrderStatus.New;
 
                 // setting the UserId property for every order
-                order.UserId = user.Id;
+                order.UserId = loggedInUserId;
 
                 // setting the ordered on to utc now
                 order.OrderedOn = DateTime.UtcNow;
@@ -98,10 +93,7 @@ namespace ShopApp.Web.Services.Order
         {
             ShopApp.Models.Order order = this.dbContext.Orders.Include(o => o.User).FirstOrDefault(o => o.Id == orderId);
 
-            if (order == null || (order.User.UserName != HttpContext.Current.User.Identity.Name && HttpContext.Current.User.IsInRole(RolesConstants.Administrator)))
-            {
-                throw new InvalidOperationException("Invalid Order ID.");
-            }
+            if (order == null) { throw new InvalidOperationException("Invalid Order ID."); }
 
             this.dbContext.Orders.Remove(order);
 
@@ -122,7 +114,7 @@ namespace ShopApp.Web.Services.Order
                     Status = order.Status.ToString(),
                     User = order.User.UserName,
                     UserId = order.UserId,
-                    Product = new Models.ProductViewModel
+                    Product = new ProductViewModel
                     {
                         Id = order.Product.Id,
                         Description = order.Product.Description,
@@ -140,7 +132,7 @@ namespace ShopApp.Web.Services.Order
 
         public async Task SendOrder(string orderId)
         {
-            ShopApp.Models.Order order = await this.Get(orderId);
+            ShopApp.Models.Order order = this.Get(orderId);
 
             order.Status = OrderStatus.Sent;
 
@@ -149,24 +141,20 @@ namespace ShopApp.Web.Services.Order
 
         public async Task CompleteOrder(string orderId)
         {
-            ShopApp.Models.Order order = await this.Get(orderId);
+            ShopApp.Models.Order order = this.Get(orderId);
 
             order.Status = OrderStatus.Completed;
 
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<ShopApp.Models.Order> Get(string id)
+        public ShopApp.Models.Order Get(string id)
         {
-            // TODO [GM]: Avoid using Task.Run when having no asynchronous work to do
-            return await Task.Run(() =>
-            {
-                ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
+            ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
 
-                if (order == null) { throw new InvalidOperationException("Invalid order ID."); }
+            if (order == null) { throw new InvalidOperationException("Invalid order ID."); }
 
-                return order;
-            });
+            return order;
         }
     }
 }
