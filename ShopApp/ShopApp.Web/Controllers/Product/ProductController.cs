@@ -1,8 +1,8 @@
-﻿using ShopApp.Web.Constants;
-using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
-using ShopApp.Web.Services.Category.Contracts;
-using ShopApp.Web.Services.Product.Contracts;
+﻿using ShopApp.Dal;
+using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Category.Contracts;
+using ShopApp.Dal.Services.Product.Contracts;
+using ShopApp.Web.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,6 @@ namespace ShopApp.Web.Controllers
             this.productService = productService;
         }
 
-        // TODO [GM]: Make async?
         [AllowAnonymous]
         public ActionResult All(string category, string keywords = "", int page = 0, string sortBy = "", bool sortDesc = false)
         {

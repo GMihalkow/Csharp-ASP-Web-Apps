@@ -191,17 +191,17 @@
 
                 @:   var selectWrapper = $("<div><label for='CategoryId'>Choose a category</label></div>");
                 @:   var categoriesList = $("<select id='CategoryId' name='CategoryId' class='shop-select w-100'></select>");
-                @:   var categories = $(".categories-list [shop-role-id]").each(function (index, element) {
+                @:   $(".categories-list [shop-role-id]").each(function (index, element) {
 
-                @:   var option = $("<option></option>");
-                @:   option.attr("value", $(element).attr("shop-role-id"));
-                @:   option.text($(element).text());
+                @:      var option = $("<option></option>");
+                @:      option.attr("value", $(element).attr("shop-role-id"));
+                @:      option.text($(element).text());
 
-                @:   if (productCategoryId === $(element).attr("shop-role-id")) {
-                @:     option.attr("selected", "selected");
-                @:   }
+                @:      if (productCategoryId === $(element).attr("shop-role-id")) {
+                @:        option.attr("selected", "selected");
+                @:      }
 
-                @:      categoriesList.append(option);
+                @:         categoriesList.append(option);
                 @:   });
                 @:
                 @:   selectWrapper.append(categoriesList);

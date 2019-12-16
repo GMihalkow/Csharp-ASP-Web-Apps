@@ -1,6 +1,6 @@
-﻿using ShopApp.Web.Models;
-using ShopApp.Web.Repositories.Contracts;
-using ShopApp.Web.Services.Category.Contracts;
+﻿using ShopApp.Dal;
+using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Category.Contracts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;

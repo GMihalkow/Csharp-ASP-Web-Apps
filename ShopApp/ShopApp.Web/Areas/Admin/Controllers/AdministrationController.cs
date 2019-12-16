@@ -1,6 +1,6 @@
-﻿using ShopApp.Web.Constants;
+﻿using ShopApp.Dal.Services.Order.Contracts;
+using ShopApp.Web.Constants;
 using ShopApp.Web.Controllers;
-using ShopApp.Web.Services.Order.Contracts;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
