@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShopApp.Web.Models
+namespace ShopApp.Dal
 {
 	public class ProductViewModel
 	{

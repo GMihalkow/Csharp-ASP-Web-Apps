@@ -1,10 +1,8 @@
-﻿using ShopApp.Models;
-using ShopApp.Web.Models;
+﻿using ShopApp.Dal;
 using System;
 
-namespace ShopApp.Web
+namespace ShopApp
 {
-    // TODO [GM]: Move to Areas/Admin/Models?
     public class OrderViewModel
     {
         public string Id { get; set; }

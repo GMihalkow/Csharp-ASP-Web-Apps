@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopApp.Web.Models
+namespace ShopApp.Dal
 {
     public class ProductBaseInputModel
     {
@@ -14,7 +14,7 @@ namespace ShopApp.Web.Models
         public decimal Price { get; set; }
 
         [Required]
-        [RegularExpression(pattern: GlobalConstants.UrlRegex, ErrorMessage = "You must provide a valid URL via HTTP or HTTPS.")]
+        [RegularExpression(pattern: DalConstants.UrlRegex, ErrorMessage = "You must provide a valid URL via HTTP or HTTPS.")]
         [DataType(DataType.ImageUrl)]
         [Display(Name = "Cover Url")]
         public string CoverUrl { get; set; }

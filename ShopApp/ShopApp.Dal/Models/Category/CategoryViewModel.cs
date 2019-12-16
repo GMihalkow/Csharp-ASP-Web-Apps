@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ShopApp.Web.Models
+namespace ShopApp.Dal
 {
     public class CategoryViewModel
     { 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ShopApp.Web.Models
+namespace ShopApp.Dal
 {
     public class CategoryInputModel
     {
@@ -11,7 +11,7 @@ namespace ShopApp.Web.Models
         public string CreatorId { get; set; }
 
         [Required]
-        [RegularExpression(pattern: GlobalConstants.UrlRegex, ErrorMessage = "You must provide a valid URL via HTTP or HTTPS.")]
+        [RegularExpression(pattern: DalConstants.UrlRegex, ErrorMessage = "You must provide a valid URL via HTTP or HTTPS.")]
         [DataType(DataType.ImageUrl)]
         public string CoverUrl { get; set; }
 

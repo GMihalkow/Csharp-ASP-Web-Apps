@@ -2,7 +2,7 @@
 using ShopApp.Models;
 using System.Collections.Generic;
 
-namespace ShopApp.Web
+namespace ShopApp.Dal
 {
     public class ProfileViewModel
     {
