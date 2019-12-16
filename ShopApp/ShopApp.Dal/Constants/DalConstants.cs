@@ -1,6 +1,6 @@
-﻿namespace ShopApp.Web
+﻿namespace ShopApp.Dal
 {
-    public class GlobalConstants
+    public class DalConstants
     {
         public const int PageSize = 9;
 
