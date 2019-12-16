@@ -1,4 +1,6 @@
-﻿using ShopApp.Web.Services.Order.Contracts;
+﻿using ShopApp.Dal.Services.Order.Contracts;
+using ShopApp.Web.Constants;
+using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -16,7 +18,22 @@ namespace ShopApp.Web.Controllers
 
         public async Task Cancel(string id)
         {
+            var orderUserId = this.orderService.Get(id).UserId;
+
+            if (this.User.IsInRole(RolesConstants.Administrator) || orderUserId != this.LoggedUserId)
+            {
+                throw new InvalidOperationException("Invalid Order ID.");
+            }
+
             await this.orderService.CancelOrder(id);
+        }
+
+        // TODO [GM]: Test out checkout
+        [Authorize]
+        [HttpPost]
+        public async Task<JsonResult> Checkout(string products)
+        {
+            return this.Json(await this.orderService.Checkout(products, this.LoggedUserId));
         }
     }
 } 

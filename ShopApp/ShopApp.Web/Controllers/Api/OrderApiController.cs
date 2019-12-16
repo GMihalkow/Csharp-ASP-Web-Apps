@@ -1,9 +1,7 @@
-﻿using ShopApp.Web.Constants;
-using ShopApp.Web.Services.Order.Contracts;
+﻿using ShopApp.Dal.Services.Order.Contracts;
+using ShopApp.Web.Constants;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 
@@ -25,16 +23,6 @@ namespace ShopApp.Web.Controllers.Api
             List<OrderViewModel> orders = this.orderService.GetOrders().ToList();
 
             return this.Json(orders);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route(template: "api/OrderApi/Checkout")]
-        public async Task<JsonResult<string>> Checkout()
-        {
-            var products = HttpContext.Current.Request.Form["products"];
-
-            return this.Json(await this.orderService.Checkout(products));
         }
     }
 }
