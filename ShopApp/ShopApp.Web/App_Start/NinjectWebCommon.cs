@@ -9,17 +9,17 @@ namespace ShopApp.Web.App_Start
     using Ninject.Web.WebApi;
     using Services.Account;
     using Services.Account.Contracts;
-    using Services.Category;
-    using Services.Category.Contracts;
-    using ShopApp.Data;
-    using ShopApp.Models;
-    using ShopApp.Web.Models;
-    using ShopApp.Web.Repositories;
-    using ShopApp.Web.Repositories.Contracts;
-    using ShopApp.Web.Services.Order;
-    using ShopApp.Web.Services.Order.Contracts;
-    using ShopApp.Web.Services.Product;
-    using ShopApp.Web.Services.Product.Contracts;
+    using ShopApp.Dal;
+    using ShopApp.Dal.Repositories;
+    using ShopApp.Dal.Repositories.Contracts;
+    using ShopApp.Dal.Services.Category;
+    using ShopApp.Dal.Services.Category.Contracts;
+    using ShopApp.Dal.Services.Order;
+    using ShopApp.Dal.Services.Order.Contracts;
+    using ShopApp.Dal.Services.Product;
+    using ShopApp.Dal.Services.Product.Contracts;
+    using ShopApp.Dal.Services.User;
+    using ShopApp.Dal.Services.User.Contracts;
     using System;
     using System.Web;
     using System.Web.Http;
@@ -82,9 +82,10 @@ namespace ShopApp.Web.App_Start
             kernel.Bind<IRepository<ProductViewModel, ProductBaseInputModel>>().To<ProductRepository>().InRequestScope();
 
             // injecting the db context
-            kernel.Bind<ShopAppDbContext>().To<ShopAppDbContext>().InRequestScope();
+            //kernel.Bind<ShopAppDbContext>().To<ShopAppDbContext>().InRequestScope();
 
             // injecting the services
+            kernel.Bind<IUserService>().To<UserService>().InRequestScope();
             kernel.Bind<IAccountService>().To<AccountService>().InRequestScope();
             kernel.Bind<ICategoryService>().To<CategoryService>().InRequestScope();
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
