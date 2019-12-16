@@ -9,23 +9,25 @@ namespace ShopApp.Data
 {
 	public class ShopAppDbContext : IdentityDbContext<ShopUser>
 	{
-		public ShopAppDbContext() 
+		public ShopAppDbContext()
 			: base("DbConnection")
 		{
-            this.Configuration.LazyLoadingEnabled = false;
-        }
+			this.Configuration.LazyLoadingEnabled = false;
+		}
 
-        public DbSet<Order> Orders { get; set; }
+		public override IDbSet<ShopUser> Users { get; set; }
 
-		public DbSet<Category> Categories { get; set; }
+		public IDbSet<Order> Orders { get; set; }
 
-		public DbSet<Product> Products { get; set; }
+		public IDbSet<Category> Categories { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		public IDbSet<Product> Products { get; set; }
+
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Configurations.Add(new OrderConfiguration());
+			modelBuilder.Configurations.Add(new OrderConfiguration());
 			modelBuilder.Configurations.Add(new ProductConfiguration());
 			modelBuilder.Configurations.Add(new ShopUserConfiguration());
 		}
