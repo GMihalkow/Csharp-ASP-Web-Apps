@@ -11,16 +11,6 @@
       "destination": "scripts/jquery/"
     },
     {
-      "library": "flatpickr@4.6.3",
-      "destination": "scripts/flatpickr/",
-      "files": [
-        "flatpickr.min.js",
-        "themes/dark.css",
-        "flatpickr.min.css",
-        "ie.css"
-      ]
-    },
-    {
       "library": "moment.js@2.24.0",
       "destination": "scripts/moment.js/",
       "files": [
@@ -48,6 +38,16 @@
         "webfonts/fa-solid-900.ttf",
         "webfonts/fa-solid-900.woff",
         "webfonts/fa-solid-900.woff2"
+      ]
+    },
+    {
+      "library": "flatpickr@4.6.3",
+      "destination": "Content/flatpickr/",
+      "files": [
+        "flatpickr.min.js",
+        "flatpickr.min.css",
+        "ie.css",
+        "themes/dark.css"
       ]
     }
   ]
