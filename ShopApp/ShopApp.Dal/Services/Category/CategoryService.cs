@@ -12,13 +12,12 @@ namespace ShopApp.Dal.Services.Category
     {
         private readonly string[] allowedSortColumns = new string[] { "AddedOn", "Name", "Price" };
 
-        //private readonly IUserService userService;
         private readonly ShopAppDbContext dbContext;
         private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
-        public CategoryService(/*IUserService userService,*/ ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
+        // TODO [GM]: dbContext not needed here? use categoryRepository.GetAll() ?
+        public CategoryService(ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
         {
-            //this.userService = userService;
             this.dbContext = dbContext;
             this.categoryRepository = categoryRepository;
         }

@@ -9,7 +9,7 @@ using System;
 [assembly: OwinStartup(typeof(ShopApp.Web.Startup))]
 namespace ShopApp.Web
 {
-    public partial class Startup
+	public partial class Startup
 	{
 		public void Configuration(IAppBuilder app)
 		{
@@ -36,6 +36,7 @@ namespace ShopApp.Web
 			app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
 			// Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
+			// TODO [GM]: Two factor authentication
 			app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
 
 			// Enables the application to remember the second login verification factor such as phone or email.
