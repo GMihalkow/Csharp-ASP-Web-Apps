@@ -109,8 +109,7 @@
 
                 $.ajax({
                     method: "POST",
-                    //url: "@this.Url.Action("Checkout", "OrderApi")",
-                    url: "/api/OrderApi/Checkout",
+                    url: "/Order/Checkout",
                     dataType: "json",
                     data: {
                         products: JSON.stringify(Object.keys(window.sessionStorage)
