@@ -2,7 +2,5 @@
 
 namespace ShopApp.Api.Controllers
 {
-    public abstract class BaseApiController : ApiController
-    {
-    }
+    public abstract class BaseApiController : ApiController { }
 }
