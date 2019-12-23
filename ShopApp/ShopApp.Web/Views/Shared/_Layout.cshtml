@@ -39,6 +39,13 @@
 
     @this.Html.Partial("_FooterPartial")
 
+    <!-- TODO [GM]: Best practices about apiConfig? -->
+    <script type="text/javascript">
+        var apiConfig = {
+            entryPoint: "@ConfigurationManager.AppSettings["ShopApp.Api.EntryPoint"]"
+        };
+    </script>
+
     <script type="text/javascript" src="~/Content/flatpickr/flatpickr.min.js"></script>
     @this.RenderSection("scripts", required: false)
     @this.RenderSection("templates", required: false)
@@ -63,7 +70,7 @@
 
     @Scripts.Render("~/bundles/modal")
     <script type="text/javascript" src="~/scripts/utils.js"></script>
-
+    <!-- TODO [GM]: Lazy load tabulator, moment.js only when needed & other libraries-->
     <script type="text/javascript">
 
         $(function () {

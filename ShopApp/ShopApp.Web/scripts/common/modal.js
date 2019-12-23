@@ -1,6 +1,6 @@
 ﻿$(function () {
     var modals = $(".modal-wrapper");
-
+    
     modals.on("click", function (e) {
         if ($(e.target).attr("class") === "modal-wrapper") {
             modals.fadeOut(200);
@@ -14,7 +14,6 @@ var _this = this;
 
 var modalFunctions = {
     openModal: function openModal(heading, body, footerBtns = [], headerClass = "modal-default-bg") {
-
         var closeModalBtnExists = footerBtns.some(function (btn) {
             return btn.Name === "Cancel";
         });
@@ -90,7 +89,7 @@ var modalFunctions = {
     openProductDetailsDialog: function openProductDetailsDialog(productId, buttons) {
         $.ajax({
             method: "GET",
-            url: "/api/ProductApi/Get/" + productId,
+            url: apiConfig.entryPoint + "/product/get/" + productId,
             success: function (product) {
                 var template = $("#product-details-template").html();
                 var rendered = Mustache.render(template, product);

@@ -19,9 +19,7 @@
         });
 
     // getting the category parameter
-    var myParam = Array.from(urlParams).find(function (p) {
-        return p.key === "category";
-    });
+    var myParam = Array.from(urlParams).find(function (p) { return p.key === "category"; });
 
     myParam = myParam ? myParam : { value: "" };
 
@@ -29,7 +27,7 @@
         // fetching the products count for this category
         $.ajax({
             method: "GET",
-            url: "/api/" + "@this.Html.CurrentController()" + "Api/Count?category=" + myParam.value,
+            url: apiConfig.entryPoint + "/@this.Html.CurrentController()" + "/Count?category=" + myParam.value,
             success: function (elementsCount) {
                 var $paggingWrapper = $("#pagging-container");
                 var pagesCount = Math.floor(elementsCount / 9) + 1;
@@ -53,9 +51,8 @@
                 }
             }
         });
-
     });
-    
+
     function incrementPage(currentPage) {
         var pages = $("#products-pagging-wrapper").find("li");
 

@@ -155,7 +155,7 @@
              @:            var categoryId = $(this).parent().find("[shop-role-id]").attr("shop-role-id");
 
              @:            $.ajax({
-             @:                url: "/api/CategoryApi/Get/" + categoryId,
+             @:                url: apiConfig.entryPoint + "/Category/Get/" + categoryId,
              @:                method: "GET",
              @:                success: function (category) {
              @:                     modalButtons[0].Name = "Edit";

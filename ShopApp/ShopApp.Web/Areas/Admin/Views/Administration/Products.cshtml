@@ -17,7 +17,7 @@
         $(function () {
             $.ajax({
                 type: "GET",
-                url: "/api/ProductApi/GetProductAdministrationModels",
+                url: apiConfig.entryPoint + "/Product/GetProductAdministrationModels",
                 contentType: "application/json",
                 success: function (products) {
 
