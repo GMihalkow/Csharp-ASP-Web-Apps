@@ -6,7 +6,6 @@ namespace ShopApp.Web.App_Start
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
-    using Ninject.Web.WebApi;
     using Services.Account;
     using Services.Account.Contracts;
     using ShopApp.Dal;
@@ -22,7 +21,6 @@ namespace ShopApp.Web.App_Start
     using ShopApp.Dal.Services.User.Contracts;
     using System;
     using System.Web;
-    using System.Web.Http;
 
     public static class NinjectWebCommon
     {
@@ -60,8 +58,6 @@ namespace ShopApp.Web.App_Start
 
                 RegisterServices(kernel);
 
-                GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
-
                 return kernel;
             }
             catch
@@ -80,10 +76,7 @@ namespace ShopApp.Web.App_Start
             // injecting the repositories
             kernel.Bind<IRepository<CategoryViewModel, CategoryInputModel>>().To<CategoryRepository>().InRequestScope();
             kernel.Bind<IRepository<ProductViewModel, ProductBaseInputModel>>().To<ProductRepository>().InRequestScope();
-
-            // injecting the db context
-            //kernel.Bind<ShopAppDbContext>().To<ShopAppDbContext>().InRequestScope();
-
+            
             // injecting the services
             kernel.Bind<IUserService>().To<UserService>().InRequestScope();
             kernel.Bind<IAccountService>().To<AccountService>().InRequestScope();
