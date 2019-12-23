@@ -1,6 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
-using System.Web;
 
 namespace ShopApp.Api
 {
