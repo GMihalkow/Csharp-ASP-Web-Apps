@@ -2,6 +2,7 @@
 using ShopApp.Dal.Repositories.Contracts;
 using ShopApp.Dal.Services.Category.Contracts;
 using ShopApp.Dal.Services.Product.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -22,6 +23,7 @@ namespace ShopApp.Api.Controllers
             this.productRepository = productRepository;
         }
 
+        [HttpGet]
         public JsonResult<ProductViewModel> Get(string id)
         {
             ProductViewModel productModel = this.productRepository.Get(id);

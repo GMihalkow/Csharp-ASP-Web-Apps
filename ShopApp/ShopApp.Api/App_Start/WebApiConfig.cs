@@ -1,4 +1,5 @@
 ﻿using ShopApp.Api.Infrastructure.ContentNegotiators;
+using ShopApp.Api.Infrastructure.Filters;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -9,11 +10,13 @@ namespace ShopApp.Api
     {
         public static void Register(HttpConfiguration config)
         {
+            // registrating filters
+            config.Filters.Add(new LogExceptionFilter());
+
             // Web API configuration and services
-            config.EnableCors(new EnableCorsAttribute("http://localhost:50614", "*", "*"));
+            config.EnableCors(new EnableCorsAttribute("https://localhost:44362", "*", "*"));
 
             // configuring the web api to return only json data
-
             var jsonFormatter = new JsonMediaTypeFormatter();
 
             config.Formatters.Clear();
