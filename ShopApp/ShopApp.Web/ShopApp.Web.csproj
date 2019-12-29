@@ -25,7 +25,7 @@
     <AssemblyName>ShopApp.Web</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44362</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -262,6 +262,7 @@
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.ttf" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.woff" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.woff2" />
+    <Content Include="logSettings.json" />
     <None Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
     <Content Include="scripts\mustache.js\mustache.js" />
     <Content Include="scripts\mustache.js\mustache.min.js" />
@@ -295,6 +296,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Filters\LogExceptionFilter.cs" />
     <Compile Include="Models\Account\LoginInputModel.cs" />
     <Compile Include="Models\Account\RegisterInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -340,6 +342,10 @@
     <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\source\repos\SimpleLogger\SimpleLogger\SimpleLogger.csproj">
+      <Project>{e650e4d9-b7e0-4c6b-a744-5deacb6f2e87}</Project>
+      <Name>SimpleLogger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Asp.Mvc.Web.Extensions\Asp.Mvc.Web.Extensions.csproj">
       <Project>{c8f7c726-4c15-40cf-a7c3-6dbfdb586296}</Project>
       <Name>Asp.Mvc.Web.Extensions</Name>
@@ -372,7 +378,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50727</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50614/</IISUrl>
+          <IISUrl>https://localhost:44362/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

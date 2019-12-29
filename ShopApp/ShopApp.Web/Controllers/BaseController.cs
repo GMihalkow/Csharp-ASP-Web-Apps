@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ShopApp.Web.Controllers
 {
+    [RequireHttps]
     public abstract class BaseController : Controller
     {
         public string LoggedUserId

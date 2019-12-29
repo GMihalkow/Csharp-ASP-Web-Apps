@@ -1,0 +1,19 @@
+{
+  "consoleLogger": {
+    "applicationName": "ShopApp.Web",
+    "isEnabled": "true",
+    "textColor": "red",
+    "level": "info"
+  },
+  "emailLogger": {
+    "applicationName": "ShopApp.Web",
+    "smtpHost": "smtp.gmail.com",
+    "smtpPort": "587",
+    "username": "you.gmail@gmail.com",
+    "password": "yourpassword",
+    "isEnabled": "true",
+    "from": "randomgmail@gmail.com",
+    "to": "reciever@abv.bg",
+    "level": "error"
+  }
+}

@@ -9,7 +9,7 @@ using System;
 [assembly: OwinStartup(typeof(ShopApp.Web.Startup))]
 namespace ShopApp.Web
 {
-	public partial class Startup
+    public partial class Startup
 	{
 		public void Configuration(IAppBuilder app)
 		{

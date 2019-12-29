@@ -19,6 +19,8 @@ namespace ShopApp.Web.App_Start
     using ShopApp.Dal.Services.Product.Contracts;
     using ShopApp.Dal.Services.User;
     using ShopApp.Dal.Services.User.Contracts;
+    using SimpleLogger;
+    using SimpleLogger.Contracts;
     using System;
     using System.Web;
 
@@ -83,6 +85,9 @@ namespace ShopApp.Web.App_Start
             kernel.Bind<ICategoryService>().To<CategoryService>().InRequestScope();
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
             kernel.Bind<IOrderService>().To<OrderService>().InRequestScope();
+
+            // injecting the custom logger
+            kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope();
         }
     }
 }
