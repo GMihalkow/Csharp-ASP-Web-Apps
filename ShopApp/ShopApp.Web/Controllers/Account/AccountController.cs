@@ -36,13 +36,9 @@ namespace ShopApp.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
 
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
+            if (!this.ModelState.IsValid) { return this.View(model); }
 
             await this.accountService.Login(model);
-
 
             return this.Redirect("/");
         }
@@ -65,10 +61,7 @@ namespace ShopApp.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
 
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
+            if (!this.ModelState.IsValid) { return this.View(model); }
 
             await this.accountService.Register(model);
 
