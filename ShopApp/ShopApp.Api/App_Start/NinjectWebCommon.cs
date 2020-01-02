@@ -17,6 +17,8 @@ namespace ShopApp.Api.App_Start
     using ShopApp.Dal.Services.Order.Contracts;
     using ShopApp.Dal.Services.Product;
     using ShopApp.Dal.Services.Product.Contracts;
+    using ShopApp.Dal.Services.Role;
+    using ShopApp.Dal.Services.Role.Contracts;
     using ShopApp.Dal.Services.User;
     using ShopApp.Dal.Services.User.Contracts;
     using SimpleLogger;
@@ -87,6 +89,7 @@ namespace ShopApp.Api.App_Start
             kernel.Bind<ICategoryService>().To<CategoryService>().InRequestScope();
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
             kernel.Bind<IOrderService>().To<OrderService>().InRequestScope();
+            kernel.Bind<IRoleService>().To<RoleService>().InRequestScope();
 
             // injecting the custom logger
             kernel.Bind<ILogManager>().To<LogManager>().InSingletonScope();
