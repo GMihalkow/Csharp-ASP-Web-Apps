@@ -161,6 +161,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -187,8 +188,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\source\repos\SimpleLogger\SimpleLogger\SimpleLogger.csproj">
-      <Project>{e650e4d9-b7e0-4c6b-a744-5deacb6f2e87}</Project>
+    <ProjectReference Include="..\..\..\SimpleLogger\SimpleLogger.csproj">
+      <Project>{157512bf-b2c1-492c-926c-90c7ab3ca078}</Project>
       <Name>SimpleLogger</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShopApp.Dal\ShopApp.Dal.csproj">
