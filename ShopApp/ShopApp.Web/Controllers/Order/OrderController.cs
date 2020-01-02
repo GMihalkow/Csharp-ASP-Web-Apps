@@ -28,8 +28,6 @@ namespace ShopApp.Web.Controllers
             await this.orderService.CancelOrder(id);
         }
 
-        // TODO [GM]: Test out checkout
-        [Authorize]
         [HttpPost]
         public async Task<JsonResult> Checkout(string products)
         {

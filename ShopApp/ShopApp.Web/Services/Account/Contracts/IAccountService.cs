@@ -5,16 +5,10 @@ namespace ShopApp.Web.Services.Account.Contracts
 {
     public interface IAccountService
     {
-        //Task<ShopUser> GetUser(string username);
-
-        //Task<ShopUser> GetUserById(string id);
-
         Task Register(RegisterInputModel model);
 
         Task Login(LoginInputModel model);
 
         void Logout();
-
-        //Task<ProfileViewModel> GetProfileInfo(string username);
     }
 }

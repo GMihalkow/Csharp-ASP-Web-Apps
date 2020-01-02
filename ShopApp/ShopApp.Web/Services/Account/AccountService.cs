@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Constants;
 using ShopApp.Web.Models;
@@ -15,6 +16,13 @@ namespace ShopApp.Web.Services.Account
 {
     public class AccountService : IAccountService
     {
+        private readonly ShopAppDbContext dbContext;
+
+        public AccountService(ShopAppDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         // TODO [GM]: Remove not used packages from web project
         private ShopUserManager userManager
         {
@@ -34,7 +42,7 @@ namespace ShopApp.Web.Services.Account
         public async Task Register(RegisterInputModel model)
         {
             await this.SeedRoles();
-
+            
             ShopUser user = new ShopUser
             {
                 Id = Guid.NewGuid().ToString(),
@@ -58,15 +66,15 @@ namespace ShopApp.Web.Services.Account
             }
 
             // the first registered user is the administrator
-            //if (this.dbContext.Users.Count() == 1)
-            //{
-            //    await this.userManager.AddToRoleAsync(user.Id, RolesConstants.Administrator);
-            //}
-            //else if (this.dbContext.Users.Count() > 1)
-            //{
-            //    await this.userManager.AddToRoleAsync(user.Id, RolesConstants.User);
-            //}
-
+            if (this.dbContext.Users.Count() == 1)
+            {
+                await this.userManager.AddToRoleAsync(user.Id, RolesConstants.Administrator);
+            }
+            else if (this.dbContext.Users.Count() > 1)
+            {
+                await this.userManager.AddToRoleAsync(user.Id, RolesConstants.User);
+            }
+            
             await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
         }
 
