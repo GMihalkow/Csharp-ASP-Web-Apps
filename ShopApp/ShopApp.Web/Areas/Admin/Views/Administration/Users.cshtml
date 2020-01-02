@@ -1,0 +1,97 @@
+﻿<div class="w-60r mx-auto p-1">
+    <h1 class="text-center w-100 p-1">Users</h1>
+    <div id="users-table-toolbar" class="w-100 table-toolbar">
+        <button id="collapse-groups-btn" class="shop-btn shop-btn-green">Collapse all</button>
+        <input id="users-search" type="text" placeholder="Search users..." />
+        <input id="users-search-submit" class="shop-btn" type="submit" value="Search" />
+    </div>
+    <div id="users-wrapper" class="w-100">
+        <table class="w-100 mx-auto"></table>
+    </div>
+</div>
+
+@section Scripts {
+    
+    <script type="text/javascript">
+        //TODO [GM]: Extract shared functionality between Users.cshtml, Products.cshtml & Orders.cshtml pages.
+
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: apiConfig.entryPoint + "/User/All",
+                contentType: "application/json",
+                success: function (users) {
+                    
+                    // collapse all groups functionality
+                    $("#collapse-groups-btn").on("click", function () {
+                        table.getGroups().forEach(function (gr) { gr.hide(); });
+                    });
+
+                    var rolesObj = users.reduce(function (acm, us) {
+                        acm[us.RoleName] = us.RoleName;
+                    
+                        return acm;
+                    }, {});
+
+                    var table = new Tabulator("#users-wrapper table", {
+                        layout: "fitDataFill",
+                        selectable: 1,
+                        resizableRows: false,
+                        resizableColumns: false,
+                        pagination: "local",
+                        paginationSize: 10,
+                        groupBy: "RoleName",
+                        groupToggleElement: "header",
+                        columns: [
+                            { title: "Id", field: "Id", sorter: "string", width: 50, visible: false },
+                            { title: "Username", field: "Username", sorter: "string", width: 150 },
+                            { title: "First Name", field: "FirstName", sorter: "string", width: 180 },
+                            { title: "Last Name", field: "LastName", sorter: "string", width: 180 },
+                            {
+                                title: "Registered On",
+                                field: "RegisteredOn",
+                                sorter: "datetime",
+                                sorterParams: { format: "YYYY-MM-DDTHH:mm:ss.sssZ" },
+                                width: 200,
+                                formatter: "datetime",
+                                formatterParams: {
+                                    inputFormat: "YYYY-MM-DD hh:mm:ss",
+                                    outputFormat: "DD/MM/YY hh:mm:ss",
+                                    invalidPlaceholder: "(invalid date)",
+                                }
+                            },
+                            // filtering by role name
+                            {
+                                title: "Role",
+                                field: "RoleName",
+                                sorter: "string",
+                                width: 200,
+                                editable: false,
+                                editor: "select",
+                                editorParams: { values: rolesObj },
+                                headerFilter: true,
+                                headerFilterParams: rolesObj,
+                                headerFilterFunc: "="
+                            },
+                        ]
+                    });
+
+                    // setting the table data
+                    table.setData(users);
+
+                    // filtering users
+                    var usersSearch = $("#users-search");
+                    usersSearch.on("change", function (e) {
+                        var inputText = $(e.currentTarget).val();
+
+                        table.setFilter([{ field: "Username", type: "like", value: inputText }]);
+                    });
+
+                    var usersSearchBtn = $("#products-search-submit");
+                    usersSearchBtn.on("click", function () { productsSearch.trigger("change"); });
+                }
+            });
+        });
+    </script>
+
+}

@@ -1,4 +1,6 @@
-﻿using ShopApp.Dal.Services.User.Contracts;
+﻿using ShopApp.Dal.Models.User;
+using ShopApp.Dal.Services.Role.Contracts;
+using ShopApp.Dal.Services.User.Contracts;
 using ShopApp.Data;
 using ShopApp.Models;
 using System;
@@ -10,20 +12,18 @@ namespace ShopApp.Dal.Services.User
     public class UserService : IUserService
     {
         private readonly ShopAppDbContext dbContext;
+        private readonly IRoleService roleService;
 
-        public UserService(ShopAppDbContext dbContext)
+        public UserService(ShopAppDbContext dbContext, IRoleService roleService)
         {
             this.dbContext = dbContext;
+            this.roleService = roleService;
         }
 
-        public IEnumerable<ShopUser> GetAll()
-        {
-            return this.dbContext.Users.ToList();
-        }
+        public IEnumerable<ShopUser> GetAll() => this.dbContext.Users.ToList();
 
         public ProfileViewModel GetProfileInfo(string username)
         {
-
             ShopUser userEntity = this.GetUserByName(username);
 
             if (userEntity == null) { throw new InvalidOperationException("Invalid user!"); }
@@ -34,7 +34,7 @@ namespace ShopApp.Dal.Services.User
                 LastName = userEntity.LastName,
                 BirthDate = userEntity.BirthDate,
                 EmailAddress = userEntity.Email,
-                Orders = userEntity.Orders.Take(5),
+                Orders = userEntity.Orders?.Take(5),
                 PhoneNumber = userEntity.PhoneNumber,
                 RegisteredOn = userEntity.RegisteredOn
             };
@@ -42,14 +42,28 @@ namespace ShopApp.Dal.Services.User
             return profileModel;
         }
 
-        public ShopUser GetUserByName(string username)
-        {
-            return this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
-        }
+        public ShopUser GetUserByName(string username) => this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
 
-        public ShopUser GetUserById(string id)
+        public ShopUser GetUserById(string id) => this.dbContext.Users.FirstOrDefault(u => u.Id == id);
+
+        public IEnumerable<UserViewModel> GetAllUsersViewModels()
         {
-            return this.dbContext.Users.FirstOrDefault(u => u.Id == id);
+            var users = this.dbContext.Users.ToList();
+
+            var outputModels = users
+            .Select(eu => new UserViewModel
+            {
+                Id = eu.Id,
+                Username = eu.UserName,
+                Email = eu.Email,
+                FirstName = eu.FirstName,
+                LastName = eu.LastName,
+                RegisteredOn = eu.RegisteredOn,
+                RoleName = this.roleService.GetUserRole(eu.Id).Name
+            })
+            .ToList();
+
+            return outputModels;
         }
     }
 }

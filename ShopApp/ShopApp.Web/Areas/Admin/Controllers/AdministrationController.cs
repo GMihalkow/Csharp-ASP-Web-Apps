@@ -23,5 +23,7 @@ namespace ShopApp.Web.Areas.Admin.Controllers
         public async Task Complete(string id) => await this.orderService.CompleteOrder(id);
 
         public ActionResult Products() => this.View();
+
+        public ActionResult Users() => this.View();
     }
 }

@@ -1,4 +1,5 @@
-﻿using ShopApp.Models;
+﻿using ShopApp.Dal.Models.User;
+using ShopApp.Models;
 using System.Collections.Generic;
 
 namespace ShopApp.Dal.Services.User.Contracts
@@ -11,7 +12,8 @@ namespace ShopApp.Dal.Services.User.Contracts
 
         ProfileViewModel GetProfileInfo(string username);
 
-        // TODO [GM]: Dedicated view model for GetUser/GetAll ?
         IEnumerable<ShopUser> GetAll();
+
+        IEnumerable<UserViewModel> GetAllUsersViewModels();
     }
 }
