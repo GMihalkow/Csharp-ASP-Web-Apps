@@ -63,10 +63,10 @@ namespace ShopApp.Web.Controllers
             return this.Redirect("/Product/All?category=" + categoryName);
         }
 
-        [HttpPut]
-        public async Task EditStockCount(string id, int stockCount)
+        [HttpPatch]
+        public async Task EditStockCount(string productId, int stockCount)
         {
-            await this.productService.EditStockCount(id, stockCount);
+            await this.productService.EditStockCount(productId, stockCount);
         }
 
         [HttpPost]

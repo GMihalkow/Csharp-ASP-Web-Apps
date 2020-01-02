@@ -1,6 +1,5 @@
 ﻿<div class="w-60r mx-auto p-1">
     <h1 class="text-center w-100 p-1">Products</h1>
-
     <div id="products-table-toolbar" class="w-100 table-toolbar">
         <button id="collapse-groups-btn" class="shop-btn shop-btn-green float-right">Collapse all</button>
         <input id="products-search" type="text" placeholder="Search by name..." />
@@ -21,7 +20,7 @@
                 contentType: "application/json",
                 success: function (products) {
 
-                     // collapse all groups functionality
+                    // collapse all groups functionality
                     $("#collapse-groups-btn").on("click", function () {
                         table.getGroups().forEach(function (gr) { gr.hide(); });
                     });
@@ -42,21 +41,26 @@
                         cellEdited: function (cell) {
                             if (cell.getData().StockCount >= 0) {
                                 cell.getElement().style.border = "none";
-
+                                
                                 $.ajax({
-                                    url: "/Product/EditStockCount/" + cell.getData().Id,
-                                    type: "PUT",
+                                    url: "/Product/EditStockCount",
+                                    method: "PATCH",
+                                    contentType: "application/json",
+                                    processData: false,
                                     error: function (res) {
                                         modalFunctions.openErrorModal("Something went wrong. Please contact the development team.");
                                     },
-                                    data: { stockCount: cell.getData().StockCount }
+                                    success: function (res) {
+                                        modalFunctions.openModal("Success", "Stock count edited successfully!")
+                                    },
+                                    data: JSON.stringify({ productId: cell.getData().Id, stockCount: cell.getData().StockCount })
                                 });
                             } else {
                                 cell.getElement().style.border = "solid 2px #f00";
                             }
                         },
                         groupBy: "CategoryName",
-                        groupToggleElement:"header",
+                        groupToggleElement: "header",
                         cellClick: function (e, cell) {
                             // show product details modal functionality
                             var productId = cell.getData().Id;
@@ -93,7 +97,7 @@
                                 editorParams: { values: categoriesObj },
                                 headerFilter: true,
                                 headerFilterParams: categoriesObj,
-                                headerFilterFunc:"="
+                                headerFilterFunc: "="
                             },
                             { title: "Stock Count", field: "StockCount", sorter: "number", width: 150, editor: true }
                         ]
