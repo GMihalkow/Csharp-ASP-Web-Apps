@@ -1,17 +1,17 @@
 ﻿using ShopApp.Api.Infrastructure.ContentNegotiators;
-using ShopApp.Api.Infrastructure.Filters;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
-namespace ShopApp.Api
+namespace ShopApp.Api.App_Start
 {
-    public static class WebApiConfig
+    public class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
         {
+            // TODO [GM]: Remove this?
             // registrating filters
-            config.Filters.Add(new LogExceptionFilter());
+            //config.Filters.Add(new LogExceptionFilter());
 
             // Web API configuration and services
             config.EnableCors(new EnableCorsAttribute("https://localhost:44362", "*", "*"));

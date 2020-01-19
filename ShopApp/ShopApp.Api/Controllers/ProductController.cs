@@ -26,6 +26,7 @@ namespace ShopApp.Api.Controllers
         [HttpGet]
         public JsonResult<ProductViewModel> Get(string id)
         {
+            throw new Exception("TEST");
             ProductViewModel productModel = this.productRepository.Get(id);
 
             return this.Json(productModel);

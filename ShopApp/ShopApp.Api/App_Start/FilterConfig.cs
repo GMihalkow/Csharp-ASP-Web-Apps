@@ -1,13 +1,15 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using ShopApp.Api.Infrastructure.Filters;
+using System.Web.Http.Filters;
 
-namespace ShopApp.Api
+namespace ShopApp.Api.App_Start
 {
     public class FilterConfig
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public static void RegisterFilters(HttpFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Clear();
+            filters.Add(new LogExceptionFilter());
+            filters.Add(new LogRequestFIlter());
         }
     }
 }

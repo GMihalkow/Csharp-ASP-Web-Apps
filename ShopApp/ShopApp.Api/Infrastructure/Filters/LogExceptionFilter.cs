@@ -17,7 +17,7 @@ namespace ShopApp.Api.Infrastructure.Filters
 
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            this.logManager.Log(actionExecutedContext.Exception);
+            this.logManager.GlobalExceptionLog(actionExecutedContext.Exception, $"Method: {actionExecutedContext.Request.Method} Route: {actionExecutedContext.Request.RequestUri.PathAndQuery}");
         }
     }
 }
