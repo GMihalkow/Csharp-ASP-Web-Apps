@@ -17,4 +17,5 @@
 @import url("./profile.css");
 @import url("./banner.css");
 @import url("./typography.css");
-@import url("./font-awesome/css/all.min.css");
+@import url("./responsive.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css");

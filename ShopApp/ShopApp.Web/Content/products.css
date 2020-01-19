@@ -56,6 +56,7 @@
 .categoreis-index-wrapper {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .category-index-partial {
