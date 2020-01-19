@@ -1,13 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-	  <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <TargetFramework>net452</TargetFramework>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\202001021304144_Initial.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Migrations\202001021304144_Initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
