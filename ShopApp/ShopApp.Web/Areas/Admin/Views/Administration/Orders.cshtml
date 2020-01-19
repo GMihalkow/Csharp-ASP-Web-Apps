@@ -1,6 +1,5 @@
 ﻿<div class="w-60r mx-auto p-1">
     <h1 class="text-center w-100 p-1">Orders</h1>
-
     <div id="orders-table-toolbar" class="w-100 table-toolbar">
         <button id="collapse-groups-btn" class="shop-btn shop-btn-green">Collapse all</button>
         <button id="send-order-btn" style="display: none;" class="shop-btn shop-btn-green">Send</button>
@@ -85,7 +84,8 @@
                             var productId = cell.getData().Product.Id;
 
                             var columnType = cell.getElement();
-                            if ($(columnType).attr("tabulator-field").toLowerCase() === "product.name") {
+
+                            if ($(columnType).attr("tabulator-field") && $(columnType).attr("tabulator-field").toLowerCase() === "product.name") {
                                 modalFunctions.openProductDetailsDialog(productId)
                             }
                         },
@@ -114,14 +114,27 @@
                             { title: "ProductId", field: "Product.Id", sorter: "string", visible: false },
                             { title: "Product", field: "Product.Name", sorter: "string", width: 200 },
                             { title: "User", field: "User", sorter: "string", width: 200 },
-                            { title: "Quantity", field: "Quantity", sorter: "number", width: 150 },
+                            { title: "Quantity", field: "Quantity", sorter: "number", width: 100 },
                             { title: "Total Price", field: "TotalPrice", sorter: "number", width: 150 },
+                            {
+                                title: "Ordered On",
+                                field: "OrderedOn",
+                                sorter: "datetime",
+                                sorterParams: { format: "YYYY-MM-DDTHH:mm:ss.sssZ" },
+                                width: 150,
+                                formatter: "datetime",
+                                formatterParams: {
+                                    inputFormat: "YYYY-MM-DD hh:mm:ss",
+                                    outputFormat: "DD/MM/YY hh:mm:ss",
+                                    invalidPlaceholder: "(invalid date)",
+                                }
+                            },
                             // filtering by status
                             {
                                 title: "Status",
                                 field: "Status",
                                 sorter: "string",
-                                width: 180,
+                                width: 100,
                                 editable: false,
                                 editor: "select",
                                 editorParams: { values: statusTypesObj },
