@@ -31,7 +31,7 @@ namespace ShopApp.Dal.Services.Order
         public async Task<string> Checkout(string ordersJson, string loggedInUserId)
         {
             // deserializing the json object to order entities
-            Models.Order[] orders = JsonConvert.DeserializeObject<Models.Order[]>(ordersJson);
+            ShopApp.Models.Order[] orders = JsonConvert.DeserializeObject<ShopApp.Models.Order[]>(ordersJson);
 
             // filtering the not valid quantity values
             orders = orders.Where(o => o.Quantity > 0).ToArray();
@@ -91,7 +91,7 @@ namespace ShopApp.Dal.Services.Order
 
         public async Task CancelOrder(string orderId)
         {
-            Models.Order order = this.dbContext.Orders.Include(o => o.User).FirstOrDefault(o => o.Id == orderId);
+            ShopApp.Models.Order order = this.dbContext.Orders.Include(o => o.User).FirstOrDefault(o => o.Id == orderId);
 
             if (order == null) { throw new InvalidOperationException("Invalid Order ID."); }
 
@@ -132,7 +132,7 @@ namespace ShopApp.Dal.Services.Order
 
         public async Task SendOrder(string orderId)
         {
-            Models.Order order = this.Get(orderId);
+            ShopApp.Models.Order order = this.Get(orderId);
 
             order.Status = OrderStatus.Sent;
 
@@ -141,16 +141,16 @@ namespace ShopApp.Dal.Services.Order
 
         public async Task CompleteOrder(string orderId)
         {
-            Models.Order order = this.Get(orderId);
+            ShopApp.Models.Order order = this.Get(orderId);
 
             order.Status = OrderStatus.Completed;
 
             await this.dbContext.SaveChangesAsync();
         }
 
-        public Models.Order Get(string id)
+        public ShopApp.Models.Order Get(string id)
         {
-            Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
+            ShopApp.Models.Order order = this.dbContext.Orders.FirstOrDefault(o => o.Id == id);
 
             if (order == null) { throw new InvalidOperationException("Invalid order ID."); }
 

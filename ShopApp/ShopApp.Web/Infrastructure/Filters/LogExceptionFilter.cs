@@ -15,7 +15,7 @@ namespace ShopApp.Web.Infrastructure.Filters
 
         public void OnException(ExceptionContext filterContext)
         {
-            this.logManager.Log(filterContext.Exception);
+            this.logManager.GlobalExceptionLog(filterContext.Exception);
         }
     }
 }

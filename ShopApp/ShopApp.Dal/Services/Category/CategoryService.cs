@@ -15,7 +15,6 @@ namespace ShopApp.Dal.Services.Category
         private readonly ShopAppDbContext dbContext;
         private readonly IRepository<CategoryViewModel, CategoryInputModel> categoryRepository;
 
-        // TODO [GM]: dbContext not needed here? use categoryRepository.GetAll() ?
         public CategoryService(ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryInputModel> categoryRepository)
         {
             this.dbContext = dbContext;

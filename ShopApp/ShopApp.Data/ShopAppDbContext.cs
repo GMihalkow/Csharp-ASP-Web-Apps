@@ -7,34 +7,29 @@ using System.Data.Entity;
 
 namespace ShopApp.Data
 {
-	public class ShopAppDbContext : IdentityDbContext<ShopUser>
-	{
-		public ShopAppDbContext()
-			: base("DbConnection")
-		{
-			this.Configuration.LazyLoadingEnabled = false;
-		}
+    public class ShopAppDbContext : IdentityDbContext<ShopUser>
+    {
+        public ShopAppDbContext()
+            : base("DbConnection")
+        {
+            this.Configuration.LazyLoadingEnabled = false;
+        }
 
-		public override IDbSet<ShopUser> Users { get; set; }
+        public IDbSet<Order> Orders { get; set; }
 
-		public IDbSet<Order> Orders { get; set; }
+        public IDbSet<Category> Categories { get; set; }
 
-		public IDbSet<Category> Categories { get; set; }
+        public IDbSet<Product> Products { get; set; }
 
-		public IDbSet<Product> Products { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
+            modelBuilder.Configurations.Add(new OrderConfiguration());
+            modelBuilder.Configurations.Add(new ProductConfiguration());
+            modelBuilder.Configurations.Add(new ShopUserConfiguration());
+        }
 
-			modelBuilder.Configurations.Add(new OrderConfiguration());
-			modelBuilder.Configurations.Add(new ProductConfiguration());
-			modelBuilder.Configurations.Add(new ShopUserConfiguration());
-		}
-
-		public static ShopAppDbContext Create()
-		{
-			return new ShopAppDbContext();
-		}
-	}
+        public static ShopAppDbContext Create() => new ShopAppDbContext();
+    }
 }
