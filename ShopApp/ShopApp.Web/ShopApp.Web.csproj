@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.props" Condition="Exists('..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -144,6 +145,10 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Threading.Thread" />
+    <Reference Include="System.ValueTuple" />
     <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
@@ -208,6 +213,8 @@
     <Content Include="Content\flatpickr\ie.css" />
     <Content Include="Content\flatpickr\themes\dark.css" />
     <Content Include="Content\font-awesome\css\all.min.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.svg" />
@@ -222,6 +229,7 @@
     <Content Include="Content\products.css" />
     <Content Include="Content\profile.css" />
     <Content Include="Content\reset.css" />
+    <Content Include="Content\responsive.css" />
     <Content Include="Content\select.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\table.css" />
@@ -239,6 +247,8 @@
     <Content Include="scripts\jquery\jquery.slim.min.js" />
     <Content Include="scripts\moment.js\moment-with-locales.min.js" />
     <Content Include="scripts\moment.js\moment.min.js" />
+    <Content Include="scripts\mustache.js\mustache.js" />
+    <Content Include="scripts\mustache.js\mustache.min.js" />
     <Content Include="scripts\utils.js" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
@@ -248,8 +258,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Admin\Views\Administration\Products.cshtml" />
-    <Content Include="scripts\jquery\jquery.min.map" />
-    <Content Include="scripts\jquery\jquery.slim.min.map" />
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.eot" />
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.ttf" />
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.woff" />
@@ -263,9 +271,15 @@
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.woff" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.woff2" />
     <Content Include="logSettings.json" />
+    <Content Include="scripts\jquery\jquery.min.map" />
+    <Content Include="scripts\jquery\jquery.slim.min.map" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Areas\Admin\Views\Administration\Users.cshtml" />
     <None Include="Views\Shared\_ProductDetailsPartialTemplate.cshtml" />
-    <Content Include="scripts\mustache.js\mustache.js" />
-    <Content Include="scripts\mustache.js\mustache.min.js" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Areas\Admin\Views\Administration\Orders.cshtml" />
     <None Include="Views\Product\_ProductPartialTemplate.cshtml" />
@@ -287,6 +301,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdministrationController.cs" />
     <Compile Include="Constants\RolesConstants.cs" />
+    <Compile Include="Constants\RolesEnum.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Category\CategoryController.cs" />
@@ -342,8 +357,8 @@
     <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\source\repos\SimpleLogger\SimpleLogger\SimpleLogger.csproj">
-      <Project>{e650e4d9-b7e0-4c6b-a744-5deacb6f2e87}</Project>
+    <ProjectReference Include="..\..\..\SimpleLogger\SimpleLogger.csproj">
+      <Project>{157512bf-b2c1-492c-926c-90c7ab3ca078}</Project>
       <Name>SimpleLogger</Name>
     </ProjectReference>
     <ProjectReference Include="..\Asp.Mvc.Web.Extensions\Asp.Mvc.Web.Extensions.csproj">
@@ -386,6 +401,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties libman_1json__JsonSchema="http://json.schemastore.org/mtad" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -394,9 +410,12 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.targets'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.targets" Condition="Exists('..\packages\Microsoft.Web.LibraryManager.Build.2.0.96\build\Microsoft.Web.LibraryManager.Build.targets')" />
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
