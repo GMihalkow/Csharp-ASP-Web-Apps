@@ -12,6 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopApp.Data;
+using ShopApp.Models;
+using ShopApp.Web.Services.Account;
+using ShopApp.Web.Services.Account.Contracts;
 
 namespace ShopApp.Web
 {
@@ -32,10 +35,27 @@ namespace ShopApp.Web
                 optionsBuilder.UseMySql(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services
+                .AddIdentity<ShopUser, IdentityRole>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredUniqueChars = 0;
+                    options.Password.RequireNonAlphanumeric = false;
+
+                    options.User.RequireUniqueEmail = true;
+                })
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddEntityFrameworkStores<ShopAppDbContext>();
+
             services.AddAuthorization();
             services.AddAuthentication();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
             services.AddAntiforgery();
+
+            this.RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,15 +81,13 @@ namespace ShopApp.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
         }
 
         private void RegisterServices(IServiceCollection services)
         {
-            
+            services.AddScoped<ShopAppDbContext>();
+            services.AddScoped<IAccountService, AccountService>();
         }
     }
 }
