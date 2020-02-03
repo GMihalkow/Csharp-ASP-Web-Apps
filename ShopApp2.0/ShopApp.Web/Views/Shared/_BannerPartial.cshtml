@@ -1,0 +1,16 @@
+<div class="main-banner">
+    <div class="main-banner-content">
+        <div>Contact Us: +359888888888</div>
+        <div class="main-banner-content-right">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Account" asp-action="Register">Register</a>
+                <a asp-controller="Account" asp-action="Login">Login</a>
+            }
+            else
+            {
+                <a href="#">Logout</a>
+            }
+        </div>
+    </div>
+</div>    

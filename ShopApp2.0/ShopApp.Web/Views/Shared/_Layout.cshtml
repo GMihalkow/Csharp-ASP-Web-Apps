@@ -1,25 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Shop App 2.0</title>
-    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/lib/fontawesome/all.min.css">
 </head>
 <body>
 
 <header>
-    <div class="banner">
-        
-    </div>
+    <partial name="_BannerPartial"/>
+    <partial name="_BannerSearchPartial"/>
     <partial name="_MenuPartial"/>
 </header>
 
 <main>
-    @RenderBody()
+    <div class="main">
+        @RenderBody()
+    </div>
 </main>
 
-<footer></footer>
+<footer>
+    
+</footer>
 
-<script src="./lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 </body>
 </html>
