@@ -1,0 +1,26 @@
+﻿@model LoginInputModel
+
+<div class="form-wrapper">
+    <h2 class="w-50 mx-auto">Login</h2>
+    <form class="custom-form" asp-controller="Account" asp-action="Login" method="@FormMethod.Post.ToString()">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="custom-input-wrapper">
+            <input asp-for="UserName" placeholder="Enter Username...">
+            <span class="d-block text-danger" asp-validation-for="UserName"></span>
+        </div>
+        <div class="custom-input-wrapper">
+            <input asp-for="Password" placeholder="Enter Password...">
+            <span class="d-block text-danger" asp-validation-for="Password"></span>
+        </div>
+        <div class="custom-input-wrapper">
+            <input type="submit" value="Login"/>
+        </div>
+        <p class="text-center">Don't have an account? You can create one <a href="@Url.Action("Register", "Account")">here</a>.</p>
+    </form>
+
+    <p class="text-center">or Connect with Social Media</p>
+    <div class="social-media-btns-wrapper w-50 mx-auto">
+        <button class="custom-btn w-100 mx-auto d-block"><i class="fab fa-facebook-f"></i> Facebook</button>
+        <button class="custom-btn w-100 mx-auto d-block twitter-btn"><i class="fab fa-twitter"></i> Twitter</button>
+    </div>
+</div>
