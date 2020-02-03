@@ -1,0 +1,32 @@
+.d-block {
+    display: block;
+}
+
+.text-danger {
+    color: #f00;
+}
+
+.p-1 {
+    padding: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-100 {
+    width: 100%
+}
+
+.mx-auto {
+    margin: 0 auto;
+}
+
+.mx-1-auto {
+    margin: 1rem auto;
+}
+

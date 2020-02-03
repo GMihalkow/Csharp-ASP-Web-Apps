@@ -1,0 +1,24 @@
+.custom-btn {
+    color: #fff;
+    background: #1c3f95;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.twitter-btn {
+    background: #1da1f2;
+}
+
+.social-media-btns-wrapper {
+    margin: 2rem 0;
+}
+
+.custom-btn:hover {
+    cursor: pointer;
+}
+
+.social-media-btns-wrapper .custom-btn {
+    margin-bottom: 2rem;
+}

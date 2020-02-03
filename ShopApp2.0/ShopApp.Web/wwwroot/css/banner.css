@@ -1,0 +1,50 @@
+.main-banner {
+    width: 100%;
+    padding: 1rem 0;
+    background-color: #1c3f95;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-banner-content {
+    display: flex;
+    flex-wrap: wrap;
+    color: #fff;
+    font-weight: bold;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.search-wrapper {
+    width: 60%;
+    margin: 0 auto;
+    padding: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-banner-content-right {
+    margin-left: auto;
+}
+
+.search-wrapper div {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.search-wrapper div:first-child {
+    margin-left: 0;
+}
+
+.main-banner-content-right a {
+    padding-right: 0.5rem;
+    border-right: #fff solid 1px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.main-banner-content-right a:first-child {
+    padding-left: 0.5rem;
+    border-left: #fff solid 1px;
+}

@@ -1,0 +1,52 @@
+.form-wrapper {
+    margin-top: 4rem;
+    padding: 1rem;
+}
+
+.custom-form {
+    width: 50%;
+    padding: 2rem 0;
+    margin: 0 auto;
+}
+
+.custom-form > .custom-input-wrapper {
+    margin-bottom: 2rem;
+}
+
+.custom-form label, input {
+    font-size: 18px;
+    width: 100%;
+    display: block;
+    padding: 0.5rem;
+}
+
+.form-wrapper p {
+    color: #777;
+}
+
+.form-wrapper > h2 {
+    font-size: 36px;
+}
+
+.custom-form label {
+    color: #777;
+    font-weight: bold;
+}
+
+.custom-form input[type='submit'] {
+    color: #fff;
+    background: #1c3f95;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.custom-form input[type='text'], input[type='password'], input[type='email'] {
+    border: none;
+    border-bottom: 0.2rem solid #1c3f95;
+}
+
+.custom-form input[type='submit']:hover {
+    cursor: pointer;
+}
