@@ -9,6 +9,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
     </ItemGroup>
@@ -23,10 +24,19 @@
       <_ContentIncludedByDefault Remove="Pages\_ViewImports.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-brands-400.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-brands-400.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-regular-400.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-solid-900.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-solid-900.woff" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ShopApp.Data\ShopApp.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
     </ItemGroup>
 
 </Project>
