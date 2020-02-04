@@ -26,6 +26,7 @@ namespace ShopApp.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -33,14 +34,17 @@ namespace ShopApp.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
 
-            if (!this.ModelState.IsValid) { return this.View(model); }
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
 
             await this._accountService.Login(model);
 
             return this.Redirect("/");
         }
 
-        public ActionResult Register()
+        public IActionResult Register()
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -51,14 +55,18 @@ namespace ShopApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterInputModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterInputModel model)
         {
             if (this.User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Index", "Home");
             }
 
-            if (!this.ModelState.IsValid) { return this.View(model); }
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
 
             await this._accountService.Register(model);
 
@@ -66,20 +74,29 @@ namespace ShopApp.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            this._accountService.Logout();
+            await this._accountService.Logout();
 
             return this.Redirect(this.Url.Action("Index", "Home"));
         }
 
-        // TODO [GM]: Decide what the my profile functionality will be.
-        // [Authorize]
-        // public IActionResult MyProfile()
-        // {
-        //     ProfileViewModel profileModel = this.userService.GetProfileInfo(this.User.Identity.Name);
-        //
-        //     return this.View(profileModel);
-        // }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = this.Url.Action("ExternalLoginCallback", "Account");
+
+            var properties = this._accountService.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return this.Challenge(properties, provider);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            await this._accountService.ExternalLogin();
+
+            return this.Redirect("/");
+        }
     }
 }

@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +9,8 @@ using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Services.Account;
 using ShopApp.Web.Services.Account.Contracts;
+using ShopApp.Web.Services.Role;
+using ShopApp.Web.Services.Role.Contracts;
 
 namespace ShopApp.Web
 {
@@ -49,10 +45,18 @@ namespace ShopApp.Web
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ShopAppDbContext>();
 
+            services.AddAuthentication()
+                .AddFacebook(opts =>
+                {
+                    opts.AppId = Configuration["FacebookAppId"];
+                    opts.AppSecret = Configuration["FacebookAppSecret"];
+                });
+
             services.AddAuthorization();
-            services.AddAuthentication();
+
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
+
             services.AddAntiforgery();
 
             this.RegisterServices(services);
@@ -88,6 +92,7 @@ namespace ShopApp.Web
         {
             services.AddScoped<ShopAppDbContext>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IRoleService, RoleService>();
         }
     }
 }
