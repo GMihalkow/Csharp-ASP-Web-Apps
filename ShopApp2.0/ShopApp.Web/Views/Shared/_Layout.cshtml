@@ -4,6 +4,12 @@
     <title>Shop App 2.0</title>
     <link rel="stylesheet" href="~/css/site.css">
     <link rel="stylesheet" href="~/lib/fontawesome/all.min.css">
+    @if (ViewBag.RegisterFlatpickr == true)
+    {
+        <link rel="stylesheet" href="~/lib/flatpickr/flatpickr.min.css">
+        <link rel="stylesheet" href="~/lib/flatpickr/theme.css">
+        <link rel="stylesheet" href="~/lib/flatpickr/ie.css">
+    }
 </head>
 <body>
 
@@ -20,10 +26,23 @@
 </main>
 
 <footer>
-    
+
 </footer>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+@if (ViewBag.RegisterFlatpickr == true)
+{
+    <script type="text/javascript" src="~/lib/flatpickr/flatpickr.min.js"></script>
+}
+
+@if (ViewBag.RegisterValidationScripts == true)
+{
+    <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@RenderSection("scripts", required: false)
 
 </body>
 </html>
