@@ -30,9 +30,11 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-regular-400.woff" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-solid-900.eot" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\fontawesome\webfonts\fa-solid-900.woff" />
+      <_ContentIncludedByDefault Remove="Pages\Category\Create.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ShopApp.Dal\ShopApp.Dal.csproj" />
       <ProjectReference Include="..\ShopApp.Data\ShopApp.Data.csproj" />
     </ItemGroup>
 
