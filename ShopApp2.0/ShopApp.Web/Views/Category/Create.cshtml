@@ -1,0 +1,23 @@
+@model CategoryBaseInputModel
+
+@{
+    ViewBag.RegisterValidationScripts = true;
+}
+
+<div class="form-wrapper">
+    <h2 class="w-50 mx-auto">Create Category</h2>
+    <form class="custom-form" asp-controller="Category" asp-action="Create" method="@FormMethod.Post.ToString()">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="custom-input-wrapper">
+            <input asp-for="Name" placeholder="Enter Category Name...">
+            <span class="d-block text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="custom-input-wrapper">
+            <input asp-for="CoverUrl" placeholder="Enter Cateogory Cover URL...">
+            <span class="d-block text-danger" asp-validation-for="CoverUrl"></span>
+        </div>
+        <div class="custom-input-wrapper">
+            <input type="submit" value="Create"/>
+        </div>
+    </form>
+</div>
