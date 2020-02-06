@@ -3,6 +3,15 @@
     box-shadow: 1px 0px 1px 1px #ccc;
 }
 
+.admin-menu-btn {
+    margin-left: auto;
+}
+
+.admin-menu-btn > a {
+    color: #fff !important;
+    background-color: #990033;
+}
+
 .main-nav > ul {
     list-style: none;
     width: 60%;
@@ -20,7 +29,7 @@
     font-weight: bold;
 }
 
-.main-nav > ul li:first-child a:first-child {
+.main-nav > ul > li:first-child a:first-child {
     color: #fff;
     background-color: #990033;
 }
