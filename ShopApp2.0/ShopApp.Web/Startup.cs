@@ -5,6 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShopApp.Dal;
+using ShopApp.Dal.Repositories;
+using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Category;
+using ShopApp.Dal.Services.Category.Contracts;
+using ShopApp.Dal.Services.User;
+using ShopApp.Dal.Services.User.Contracts;
 using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Web.Services.Account;
@@ -93,6 +100,9 @@ namespace ShopApp.Web
             services.AddScoped<ShopAppDbContext>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRepository<CategoryViewModel, CategoryBaseInputModel>, CategoryRepository>();
         }
     }
 }
