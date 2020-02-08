@@ -14,4 +14,14 @@ $(function () {
             dropdown.fadeIn(500);
         }
     });
+    
+    window.onclick = function(e) {
+      var $target = $(e.target);
+      
+      var targetClasses = $target.attr('class') || '';
+         
+      if(!targetClasses.includes('dropdown')) {
+          $('.dropdown').fadeOut(200);
+      }
+    };
 });
