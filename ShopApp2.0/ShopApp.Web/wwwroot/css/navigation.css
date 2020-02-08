@@ -29,7 +29,7 @@
     font-weight: bold;
 }
 
-.main-nav > ul > li:first-child a:first-child {
+.main-nav > ul > li:first-child > a:first-child {
     color: #fff;
     background-color: #990033;
 }
