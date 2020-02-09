@@ -1,0 +1,27 @@
+@model CategoryBaseInputModel
+@{
+    var isEdit = Model is CategoryEditInputModel;
+}
+
+<div class="form-wrapper">
+    <h2 class="w-50 mx-auto text-center">Create a Category</h2>
+    <form class="custom-form" asp-controller="Category" asp-action="@(isEdit ? "Edit" : "Create")" method="@FormMethod.Post.ToString()">
+        @if (isEdit)
+        {
+            // TODO [GM]: Research a better way?
+            @Html.HiddenFor(model => ((CategoryEditInputModel) model).Id)
+        }
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="custom-input-wrapper">
+            <input asp-for="Name" placeholder="Enter Name..."/>
+            <span class="d-block text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="custom-input-wrapper">
+            <input asp-for="CoverUrl" placeholder="Enter Cover URL..."/>
+            <span class="d-block text-danger" asp-validation-for="CoverUrl"></span>
+        </div>
+        <div class="custom-input-wrapper">
+            <input type="submit" value="@(isEdit ? "Edit" : "Create")"/>
+        </div>
+    </form>
+</div>

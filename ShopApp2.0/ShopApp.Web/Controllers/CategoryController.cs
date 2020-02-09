@@ -16,7 +16,7 @@ namespace ShopApp.Web.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        
+
         [Authorize(Roles = RolesConstants.Administrator)]
         public IActionResult Create()
         {
@@ -25,25 +25,71 @@ namespace ShopApp.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
-        public async Task<IActionResult> Create(CategoryBaseInputModel categoryInputModel)
+        public async Task<IActionResult> Create(CategoryBaseInputModel inputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(categoryInputModel);
+                return this.View(inputModel);
             }
-            
+
             try
             {
-                categoryInputModel.CreatorId = this.LoggedUserId; 
-                
-                await this._categoryRepository.Create(categoryInputModel);
-                
+                inputModel.CreatorId = this.LoggedUserId;
+
+                await this._categoryRepository.Create(inputModel);
+
+                // TODO [GM]: Return what?
                 return this.Redirect("/");
             }
-            catch (InvalidOperationException e)
+            catch (Exception e)
             {
                 // TODO [GM]: Add alerts?
-                return this.View(categoryInputModel);
+                return this.View(inputModel);
+            }
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public IActionResult Edit(string id)
+        {
+            try
+            {
+                var categoryModel = this._categoryRepository.Get(id);
+
+                var categoryEditModel = new CategoryEditInputModel
+                {
+                    Id = categoryModel.Id,
+                    Name = categoryModel.Name,
+                    CoverUrl = categoryModel.CoverUrl
+                };
+
+                return this.View(categoryEditModel);
+            }
+            catch (Exception e)
+            {
+                return this.NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<IActionResult> Edit(CategoryEditInputModel inputModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(inputModel);
+            }
+
+            try
+            {
+                await this._categoryRepository.Edit(inputModel);
+                
+                // TODO [GM]: Return what?
+                return this.Redirect("/");
+            }
+            catch (Exception e)
+            {
+                // TODO [GM]: Add alerts?
+                return this.View(inputModel);
             }
         }
     }
