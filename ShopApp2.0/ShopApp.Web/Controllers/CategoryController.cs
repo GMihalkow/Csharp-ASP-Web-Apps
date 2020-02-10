@@ -71,6 +71,7 @@ namespace ShopApp.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = RolesConstants.Administrator)]
         public async Task<IActionResult> Edit(CategoryEditInputModel inputModel)
         {
