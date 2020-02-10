@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ShopApp.Dal
 {
@@ -21,6 +23,16 @@ namespace ShopApp.Dal
             where T : new()
         {
             return collection.OrderByDescending(x => x.GetType().GetProperty(property)?.GetValue(x, null));
+        }
+        
+        public static List<SelectListItem> ToSelectList<T>(this IEnumerable<T> collection, Func<T, object> textFunc,
+            Func<T, object> valueFunc)
+        {
+            return collection.Select(t => new SelectListItem
+            {
+                Text = textFunc(t).ToString(),
+                Value = valueFunc(t).ToString()
+            }).ToList();
         }
     }
 }
