@@ -4,7 +4,7 @@
 }
 
 <div class="form-wrapper">
-    <h2 class="w-50 mx-auto text-center">Create a Category</h2>
+    <h2 class="w-50 mx-auto text-center">@(isEdit ? "Edit" : "Create a") Category</h2>
     <form class="custom-form" asp-controller="Category" asp-action="@(isEdit ? "Edit" : "Create")" method="@FormMethod.Post.ToString()">
         @if (isEdit)
         {
