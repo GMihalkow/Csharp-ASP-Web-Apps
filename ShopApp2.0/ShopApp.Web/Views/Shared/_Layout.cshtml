@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="~/lib/flatpickr/theme.css">
         <link rel="stylesheet" href="~/lib/flatpickr/ie.css">
     }
+    <link href="https://unpkg.com/tabulator-tables@4.5.3/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/semantic-ui/tabulator_semantic-ui.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -32,6 +34,14 @@
 <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <script type="text/javascript" src="~/js/custom/dropdown.js"></script>
+
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.5.3/dist/js/tabulator.min.js"></script>
+
+@if (ViewBag.RegisterMomentJs == true)
+{
+    <script type="text/javascript" src="~/lib/moment/moment.min.js"></script>
+    <script type="text/javascript" src="~/lib/moment/moment-with-locales.min.js"></script>
+}
 
 @if (ViewBag.RegisterFlatpickr == true)
 {
