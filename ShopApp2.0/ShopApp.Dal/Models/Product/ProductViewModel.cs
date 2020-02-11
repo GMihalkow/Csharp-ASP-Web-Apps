@@ -1,6 +1,7 @@
 ﻿﻿using System;
+ using System.ComponentModel.DataAnnotations;
 
-namespace ShopApp.Dal
+ namespace ShopApp.Dal
 {
 	public class ProductViewModel
 	{
@@ -10,11 +11,10 @@ namespace ShopApp.Dal
 
         public string Description { get; set; }
 
+        [Range(minimum: 0.01, maximum: double.MaxValue)]
         public decimal Price { get; set; }
 
         public string CategoryId { get; set; }
-
-        public string CategoryName { get; set; }
 
         public string CoverUrl { get; set; }
 
