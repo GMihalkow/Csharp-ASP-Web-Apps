@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShopApp.Models;
 
 namespace ShopApp.Dal.Repositories
 {
@@ -23,9 +24,9 @@ namespace ShopApp.Dal.Repositories
         {
             if (this._dbContext.Categories.Any(c => c.Name == model.Name))
             {
-                throw new InvalidOperationException("Category already exists!");
+                throw new ArgumentException("Category already exists!");
             }
-            
+
             var categoryEntity = new ShopApp.Models.Category
             {
                 Id = Guid.NewGuid().ToString(),
@@ -36,7 +37,7 @@ namespace ShopApp.Dal.Repositories
             };
 
             this._dbContext.Categories.Add(categoryEntity);
-            
+
             await this._dbContext.SaveChangesAsync();
 
             return model;
@@ -49,30 +50,32 @@ namespace ShopApp.Dal.Repositories
             var categoryEntity = this._dbContext.Categories.FirstOrDefault(c => c.Id == categoryModel.Id);
 
             this._dbContext.Categories.Remove(categoryEntity);
-            
+
             await this._dbContext.SaveChangesAsync();
         }
 
         public async Task Edit(CategoryBaseInputModel model)
         {
-            var categoryEntity = this._dbContext.Categories.FirstOrDefault(c => c.Id == ((CategoryEditInputModel)model).Id);
+            var categoryEntity = this.GetCategoryAsDbEntity(((CategoryEditInputModel)model).Id);
 
-            if (categoryEntity != null)
-            {
-                categoryEntity.Name = model.Name;
-                categoryEntity.CoverUrl = model.CoverUrl;
+            categoryEntity.Name = model.Name;
+            categoryEntity.CoverUrl = model.CoverUrl;
 
-                await this._dbContext.SaveChangesAsync();
-            }
+            await this._dbContext.SaveChangesAsync();
         }
 
         public CategoryViewModel Get(string id)
         {
-            var category = this.GetAll().FirstOrDefault(c => c.Id == id);
+            var category = this.GetCategoryAsDbEntity(id);
 
-            if (category == null) { throw new InvalidOperationException("Category doesn't exist."); }
+            var categoryViewModel = new CategoryViewModel
+            {
+                Id = category.Id,
+                Name = category.Name,
+                CoverUrl = category.CoverUrl
+            };
 
-            return category;
+            return categoryViewModel;
         }
 
         public IEnumerable<CategoryViewModel> GetAll()
@@ -87,6 +90,19 @@ namespace ShopApp.Dal.Repositories
                 .ToList();
 
             return categories;
+        }
+
+        private Category GetCategoryAsDbEntity(string id)
+        {
+            var categoryEntity =
+                this._dbContext.Categories.FirstOrDefault(c => c.Id == id);
+
+            if (categoryEntity == null)
+            {
+                throw new ArgumentException("Invalid category id.");
+            }
+
+            return categoryEntity;
         }
     }
 }
