@@ -18,10 +18,7 @@ namespace ShopApp.Web.Controllers
         }
 
         [Authorize(Roles = RolesConstants.Administrator)]
-        public IActionResult Create()
-        {
-            return this.View();
-        }
+        public IActionResult Create() => this.View();
 
         [HttpPost]
         [Authorize(Roles = RolesConstants.Administrator)]
@@ -41,9 +38,10 @@ namespace ShopApp.Web.Controllers
                 // TODO [GM]: Return what?
                 return this.Redirect("/");
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
-                // TODO [GM]: Add alerts?
+                this.ModelState.AddModelError(string.Empty, e.Message);
+
                 return this.View(inputModel);
             }
         }
@@ -64,7 +62,7 @@ namespace ShopApp.Web.Controllers
 
                 return this.View(categoryEditModel);
             }
-            catch (Exception e)
+            catch (ArgumentException)
             {
                 return this.NotFound();
             }
@@ -83,13 +81,14 @@ namespace ShopApp.Web.Controllers
             try
             {
                 await this._categoryRepository.Edit(inputModel);
-                
+
                 // TODO [GM]: Return what?
                 return this.Redirect("/");
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
-                // TODO [GM]: Add alerts?
+                this.ModelState.AddModelError(string.Empty, e.Message);
+
                 return this.View(inputModel);
             }
         }
