@@ -2,6 +2,10 @@
     display: block;
 }
 
+.d-none {
+    display: none;
+}
+
 .text-danger {
     color: #f00;
 }
@@ -24,8 +28,4 @@
 
 .mx-auto {
     margin: 0 auto;
-}
-
-.mx-1-auto {
-    margin: 1rem auto;
 }

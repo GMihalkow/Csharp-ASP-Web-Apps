@@ -2,3 +2,13 @@
     width: 60%;
     margin: 0 auto;
 }
+
+.content-wrapper { 
+    margin-top: 4rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+.content-wrapper > h2 {
+    font-size: 36px;
+}
