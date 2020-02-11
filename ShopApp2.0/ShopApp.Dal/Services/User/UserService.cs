@@ -6,13 +6,10 @@ using System.Linq;
 
 namespace ShopApp.Dal.Services.User
 {
-    public class UserService : IUserService
+    public class UserService : BaseService, IUserService
     {
-        private readonly ShopAppDbContext _dbContext;
-
-        public UserService(ShopAppDbContext dbContext)
+        public UserService(ShopAppDbContext dbContext) : base(dbContext)
         {
-            this._dbContext = dbContext;
         }
 
         public IEnumerable<ShopUser> GetAll() => this._dbContext.Users.ToList();

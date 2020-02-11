@@ -4,44 +4,51 @@ using ShopApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ShopApp.Dal.Services.Category
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService, ICategoryService
     {
-        private readonly string[] allowedSortColumns = new string[] { "AddedOn", "Name", "Price" };
+        private readonly string[] _allowedSortColumns = new string[] {"AddedOn", "Name", "Price"};
 
-        private readonly ShopAppDbContext dbContext;
-        private readonly IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository;
+        private readonly IRepository<CategoryViewModel, CategoryBaseInputModel> _categoryRepository;
 
-        public CategoryService(ShopAppDbContext dbContext, IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository)
+        public CategoryService(ShopAppDbContext dbContext,
+            IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository):base(dbContext)
         {
-            this.dbContext = dbContext;
-            this.categoryRepository = categoryRepository;
+            this._categoryRepository = categoryRepository;
         }
 
-        public IEnumerable<CategoryViewModel> GetCategoriesWithProductsForSelectedCategory(string categoryName, int page, string keywords, string sortBy = "", bool sortDesc = false)
+        public IEnumerable<CategoryViewModel> GetCategoriesWithProductsForSelectedCategory(string categoryName,
+            int page, string keywords, string sortBy = "", bool sortDesc = false)
         {
             // filtering invalid negative inputs
-            if (page < 0) { page = 0; }
+            if (page < 0)
+            {
+                page = 0;
+            }
 
-            List<CategoryViewModel> categories = this.dbContext
-                    .Categories
-                    .Include(c => c.Products)
-                    .Select(c => new CategoryViewModel
-                    {
-                        Id = c.Id,
-                        Name = c.Name,
-                        CoverUrl = c.CoverUrl
-                    })
-                    .ToList();
+            var categories = this._dbContext
+                .Categories
+                .Include(c => c.Products)
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CoverUrl = c.CoverUrl
+                })
+                .ToList();
 
-            CategoryViewModel selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
+            var selectedCategory = categories.FirstOrDefault(c => c.Name == categoryName);
 
-            if (selectedCategory == null) { throw new InvalidOperationException("Category not found."); }
+            if (selectedCategory == null)
+            {
+                throw new InvalidOperationException("Category not found.");
+            }
 
-            selectedCategory.Products = this.dbContext.Products
+            selectedCategory.Products = this._dbContext.Products
                 .Where(p => p.CategoryId == selectedCategory.Id)
                 .Where(p => p.Name.Contains(keywords) || p.Description.Contains(keywords))
                 .OrderBy(p => p.AddedOn)
@@ -60,7 +67,7 @@ namespace ShopApp.Dal.Services.Category
                 .Take(DalConstants.PageSize)
                 .ToList();
 
-            if (!string.IsNullOrEmpty(sortBy) && this.allowedSortColumns.Contains(sortBy))
+            if (!string.IsNullOrEmpty(sortBy) && this._allowedSortColumns.Contains(sortBy))
             {
                 if (sortDesc)
                 {
@@ -82,7 +89,7 @@ namespace ShopApp.Dal.Services.Category
 
         public CategoryViewModel GetCategoryByName(string name)
         {
-            CategoryViewModel categoryModel = this.dbContext.Categories
+            var categoryModel = this._dbContext.Categories
                 .Where(c => c.Name == name)
                 .Select(c => new CategoryViewModel
                 {
@@ -102,18 +109,35 @@ namespace ShopApp.Dal.Services.Category
                 })?
                 .FirstOrDefault();
 
-            if (categoryModel == null) { throw new InvalidOperationException("Invalid category name."); }
+            if (categoryModel == null)
+            {
+                throw new InvalidOperationException("Invalid category name.");
+            }
 
             return categoryModel;
         }
 
         public string GetDefaultCategory()
         {
-            ShopApp.Models.Category defaultCategory = this.dbContext.Categories.FirstOrDefault();
+            ShopApp.Models.Category defaultCategory = this._dbContext.Categories.FirstOrDefault();
 
-            if (defaultCategory == null) { return string.Empty; }
+            if (defaultCategory == null)
+            {
+                return string.Empty;
+            }
 
             return defaultCategory.Name;
+        }
+
+        public async Task<IEnumerable<CategoryNavBarViewModel>> GetCategoriesForDropdown()
+        {
+            return await this._dbContext.Categories
+                .Select((category) => new CategoryNavBarViewModel
+                {
+                    Id = category.Id,
+                    Name = category.Name
+                })
+                .ToListAsync();
         }
     }
 }
