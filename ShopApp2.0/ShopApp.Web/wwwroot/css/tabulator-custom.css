@@ -1,0 +1,19 @@
+.table-tools {
+    width: 100%;
+    display: flex;
+}
+
+.tabulator-custom-btn {
+    text-decoration: none;
+    color: #fff;
+    background: #990033;
+    font-size: 18px;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.tabulator-custom-btn:hover {
+    cursor: pointer;
+}
