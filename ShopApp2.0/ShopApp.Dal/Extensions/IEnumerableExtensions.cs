@@ -7,11 +7,8 @@ namespace ShopApp.Dal
 {
     public static class IEnumerableExtensions
     {
-
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> collection)
-        {
-            return collection == null || collection?.Count() == 0;
-        }
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> collection) =>
+            collection == null || collection?.Count() == 0;
 
         public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> collection, string property)
             where T : new()
@@ -24,7 +21,7 @@ namespace ShopApp.Dal
         {
             return collection.OrderByDescending(x => x.GetType().GetProperty(property)?.GetValue(x, null));
         }
-        
+
         public static List<SelectListItem> ToSelectList<T>(this IEnumerable<T> collection, Func<T, object> textFunc,
             Func<T, object> valueFunc)
         {
