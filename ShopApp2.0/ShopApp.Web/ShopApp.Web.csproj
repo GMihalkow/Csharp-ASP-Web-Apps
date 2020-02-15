@@ -39,7 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models" />
+      <Content Remove="wwwroot\css\banner.css" />
     </ItemGroup>
 
 </Project>
