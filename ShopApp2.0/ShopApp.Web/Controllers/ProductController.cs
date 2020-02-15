@@ -1,10 +1,13 @@
 using System;
+using ShopApp.Web.Extensions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.Dal;
 using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Product.Contracts;
 using ShopApp.Web.Constants;
+using ShopApp.Web.Models;
 
 namespace ShopApp.Web.Controllers
 {
@@ -12,12 +15,15 @@ namespace ShopApp.Web.Controllers
     {
         private readonly IRepository<CategoryViewModel, CategoryBaseInputModel> _categoryRepository;
         private readonly IRepository<ProductViewModel, ProductBaseInputModel> _productRepository;
+        private readonly IProductService _productService;
 
         public ProductController(IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository,
-            IRepository<ProductViewModel, ProductBaseInputModel> productRepository)
+            IRepository<ProductViewModel, ProductBaseInputModel> productRepository,
+            IProductService productService)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
+            _productService = productService;
         }
 
         // TODO [GM]: Implement
@@ -55,14 +61,89 @@ namespace ShopApp.Web.Controllers
             {
                 await this._productRepository.Create(inputModel);
 
-                // TODO [GM]: Return what?
-                return this.Redirect("/");
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully created a new product."));
+
+                return this.RedirectToAction(nameof(this.All));
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
-                // TODO [GM]: Add alerts?
+                this.ModelState.AddModelError(string.Empty, e.Message);
+
                 return this.View(inputModel);
             }
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public IActionResult All()
+        {
+            var products = this._productService.GetProductsAsTableModels();
+
+            return this.View(products);
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public IActionResult Edit(string id)
+        {
+            try
+            {
+                var productViewModel = this._productRepository.Get(id);
+
+                var productEditModel = new ProductEditInputModel()
+                {
+                    Id = productViewModel.Id,
+                    Description = productViewModel.Description,
+                    Name = productViewModel.Name,
+                    Price = productViewModel.Price,
+                    CategoryId = productViewModel.CategoryId,
+                    CoverUrl = productViewModel.CoverUrl,
+                    Categories = this._categoryRepository.GetAll()
+                        .ToSelectList(category => category.Name, category => category.Id)
+                };
+
+                return this.View(productEditModel);
+            }
+            catch (ArgumentException)
+            {
+                return this.NotFound();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<IActionResult> Edit(ProductEditInputModel inputModel)
+        {
+            try
+            {
+                await this._productRepository.Edit(inputModel);
+
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully edited product."));
+                
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (ArgumentException e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+
+                return this.View(inputModel);
+            }
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                await this._productRepository.Delete(id);
+
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Product successfully deleted."));
+            }
+            catch (ArgumentException e)
+            {
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Error, e.Message));
+            }
+
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }
