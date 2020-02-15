@@ -1,11 +1,24 @@
-@using ShopApp.Web.Constants
+@{
+    var categories = this.Context.Items["categories"] as IEnumerable<CategoryNavBarViewModel>;
+}
+
 <nav class="main-nav">
     <ul>
-        <li>
-            <a href="#">Categories <i class="fas fa-bars"></i></a>
+        <li class="dropdown-container">
+            <a href="javascript:void(0)" class="dropdown-btn">Categories <i class="fas fa-bars"></i></a>
+            <div class="dropdown">
+                <ul>
+                    @foreach (var category in categories)
+                    {
+                        <li>
+                            <a href="javascript:void(0)">@category.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
         </li>
         <li>
-            <a href="#">Home</a>
+            <a asp-action="Index" asp-controller="Home">Home</a>
         </li>
         <li>
             <a href="#">Shop</a>
@@ -22,10 +35,15 @@
                 <a href="javascript:void(0)" class="dropdown-btn">Administration <i class="fas fa-users-cog"></i></a>
                 <div class="dropdown">
                     <ul>
-                        <li><a asp-action="Create" asp-controller="Category">Create Category</a></li>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Home</a></li>
+                        <li>
+                            <a asp-action="Create" asp-controller="Category">Create Category</a>
+                        </li>
+                        <li>
+                            <a href="#">Categories</a>
+                        </li>
+                        <li>
+                            <a asp-action="All" asp-controller="Product">Products</a>
+                        </li>
                     </ul>
                 </div>
             </li>

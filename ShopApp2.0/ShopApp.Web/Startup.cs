@@ -10,10 +10,13 @@ using ShopApp.Dal.Repositories;
 using ShopApp.Dal.Repositories.Contracts;
 using ShopApp.Dal.Services.Category;
 using ShopApp.Dal.Services.Category.Contracts;
+using ShopApp.Dal.Services.Product;
+using ShopApp.Dal.Services.Product.Contracts;
 using ShopApp.Dal.Services.User;
 using ShopApp.Dal.Services.User.Contracts;
 using ShopApp.Data;
 using ShopApp.Models;
+using ShopApp.Web.Filters.Result;
 using ShopApp.Web.Services.Account;
 using ShopApp.Web.Services.Account.Contracts;
 using ShopApp.Web.Services.Role;
@@ -61,7 +64,10 @@ namespace ShopApp.Web
 
             services.AddAuthorization();
 
-            services.AddControllersWithViews()
+            services.AddControllersWithViews(options =>
+                {
+                    options.Filters.Add(typeof(ProvideCategoriesResultFilterAttribute));
+                })
                 .AddRazorRuntimeCompilation();
 
             services.AddAntiforgery();
@@ -102,7 +108,9 @@ namespace ShopApp.Web
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IRepository<CategoryViewModel, CategoryBaseInputModel>, CategoryRepository>();
+            services.AddScoped<IRepository<ProductViewModel, ProductBaseInputModel>, ProductRepository>();
         }
     }
 }
