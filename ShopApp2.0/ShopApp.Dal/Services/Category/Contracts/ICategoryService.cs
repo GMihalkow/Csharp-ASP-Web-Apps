@@ -12,5 +12,7 @@ namespace ShopApp.Dal.Services.Category.Contracts
         string GetDefaultCategory();
 
         Task<IEnumerable<CategoryNavBarViewModel>> GetCategoriesForDropdown();
+
+        Task<IEnumerable<CategoryTableViewModel>> GetCategoriesForTable();
     }
 }

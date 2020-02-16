@@ -16,7 +16,7 @@ namespace ShopApp.Dal.Services.Category
         private readonly IRepository<CategoryViewModel, CategoryBaseInputModel> _categoryRepository;
 
         public CategoryService(ShopAppDbContext dbContext,
-            IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository):base(dbContext)
+            IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository) : base(dbContext)
         {
             this._categoryRepository = categoryRepository;
         }
@@ -24,7 +24,6 @@ namespace ShopApp.Dal.Services.Category
         public IEnumerable<CategoryViewModel> GetCategoriesWithProductsForSelectedCategory(string categoryName,
             int page, string keywords, string sortBy = "", bool sortDesc = false)
         {
-            // filtering invalid negative inputs
             if (page < 0)
             {
                 page = 0;
@@ -138,6 +137,21 @@ namespace ShopApp.Dal.Services.Category
                     Name = category.Name
                 })
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<CategoryTableViewModel>> GetCategoriesForTable()
+        {
+            var categories = await this._dbContext.Categories.Include(category => category.Creator)
+                .Select(category => new CategoryTableViewModel
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    CreatedOn = category.CreatedOn,
+                    CreatorName = category.Creator.UserName
+                })
+                .ToListAsync();
+
+            return categories;
         }
     }
 }
