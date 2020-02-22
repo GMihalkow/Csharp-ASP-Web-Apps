@@ -4,17 +4,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.Dal;
 using ShopApp.Dal.Repositories.Contracts;
+using ShopApp.Dal.Services.Category.Contracts;
 using ShopApp.Web.Constants;
+using ShopApp.Web.Extensions;
+using ShopApp.Web.Models;
 
 namespace ShopApp.Web.Controllers
 {
     public class CategoryController : BaseController
     {
         private readonly IRepository<CategoryViewModel, CategoryBaseInputModel> _categoryRepository;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository)
+        public CategoryController(IRepository<CategoryViewModel, CategoryBaseInputModel> categoryRepository, ICategoryService categoryService)
         {
             _categoryRepository = categoryRepository;
+            _categoryService = categoryService;
         }
 
         [Authorize(Roles = RolesConstants.Administrator)]
@@ -35,8 +40,9 @@ namespace ShopApp.Web.Controllers
 
                 await this._categoryRepository.Create(inputModel);
 
-                // TODO [GM]: Return what?
-                return this.Redirect("/");
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully created category."));
+                
+                return this.RedirectToAction(nameof(this.All));
             }
             catch (ArgumentException e)
             {
@@ -82,8 +88,9 @@ namespace ShopApp.Web.Controllers
             {
                 await this._categoryRepository.Edit(inputModel);
 
-                // TODO [GM]: Return what?
-                return this.Redirect("/");
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully edited category."));
+                
+                return this.RedirectToAction(nameof(this.All));
             }
             catch (ArgumentException e)
             {
@@ -91,6 +98,29 @@ namespace ShopApp.Web.Controllers
 
                 return this.View(inputModel);
             }
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<IActionResult> All()
+        {
+            var categories = await this._categoryService.GetCategoriesForTable();
+
+            if (categories.IsNullOrEmpty())
+            {
+                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Info, "No categories found."));
+            }
+            
+            return this.View(categories);
+        }
+
+        [Authorize(Roles = RolesConstants.Administrator)]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await this._categoryRepository.Delete(id);
+            
+            this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully deleted category."));
+
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

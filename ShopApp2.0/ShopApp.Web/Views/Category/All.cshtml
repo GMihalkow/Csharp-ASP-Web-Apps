@@ -1,0 +1,99 @@
+@model IEnumerable<CategoryTableViewModel>
+@using ShopApp.Web.Extensions
+@{
+    ViewBag.RegisterTabulator = true;
+    ViewBag.RegisterMomentJs = true;
+    ViewBag.RegisterModal = true;
+}
+
+<div class="content-wrapper">
+    <h2 class="w-50 mx-auto text-center">Categories</h2>
+    <div class="table-tools">
+        <input id="categories-search-bar" type="text" class="table-tools-input-field" placeholder="Search categories...">
+        <a asp-action="Create" asp-controller="Category" class="tabulator-custom-btn">Create</a>
+        <a id="edit-category-btn" href="javascript:void(0)" class="tabulator-custom-btn d-none">Edit</a>
+        <a id="delete-category-btn" href="javascript:void(0)" class="tabulator-custom-btn d-none">
+            <i class="fas fa-trash-alt"></i>
+        </a>
+    </div>
+    @if (Model.IsNullOrEmpty())
+    {
+        <partial name="_AlertPartial" model="@(TempData.GetValues<Alert>("Alerts"))"/>
+        return;
+    } 
+    <partial name="_AlertPartial" model="@(TempData.GetValues<Alert>("Alerts"))"/>
+    <div id="categories-table"></div>
+</div>
+
+@section scripts {
+    
+    <script type="text/javascript">
+        $(function() {
+            var categoriesSearchBar = $('#categories-search-bar');
+            
+            categoriesSearchBar.on('keyup', function(e) {
+                table.setFilter([ { field: 'name', type: 'like', value: e.currentTarget.value } ]);
+            });
+            
+            // TODO [GM]: Create a separate module for the tabulator grids? And extract shared logic somewhere. 
+            
+            var deleteProductBtn = $('#delete-category-btn');
+                        
+            deleteProductBtn.on('click', function(e) {
+                e.preventDefault();
+                
+                var href = $(e.currentTarget).attr('href');
+                
+                modalFunctions.openConfirmationModal(function() {
+                    window.location.href = href;
+                });
+            });
+            
+           var categoriesAsJson = @Json.Serialize(Model);
+           
+           var table = new Tabulator("#categories-table", {
+                data: categoriesAsJson,
+               layout:"fitColumns",
+               selectable: 1,
+               initialFilter: [ { field:"name", type:"like", value: categoriesSearchBar.val() } ],
+               rowSelected: function(row) {                    
+                   var editProductBtn = $("#edit-category-btn");
+                   var deleteProductBtn = $("#delete-category-btn");
+                   
+                   editProductBtn.attr("href", "@Url.Action("Edit", "Category")/" + row.getData().id);
+                   deleteProductBtn.attr("href", "@Url.Action("Delete", "Category")/" + row.getData().id);
+
+                   editProductBtn.fadeIn(300);
+                   deleteProductBtn.fadeIn(300);
+               },
+               rowDeselected: function(rwo){
+                   var editProductBtn = $("#edit-category-btn");
+                   var deleteProductBtn = $("#delete-category-btn");
+                   
+                   editProductBtn.fadeOut(200);
+                   deleteProductBtn.fadeOut(200);
+               },
+               columns: [
+                   { title: "Id", field: "id", sorter: "string", visible: false },
+                   { title: "Name", field: "name", sorter: "string" },
+                   { title: "Creator", field: "creatorName", sorter: "string" },
+                   {
+                       title: "Added On",
+                       field: "createdOn",
+                       sorter: "datetime",
+                       sorterParams: { format: "YYYY-MM-DDTHH:mm:ss.sssZ" },
+                       formatter: "datetime",
+                       formatterParams: {
+                           inputFormat: "YYYY-MM-DD hh:mm:ss",
+                           outputFormat: "DD/MM/YY hh:mm:ss",
+                           invalidPlaceholder: "(invalid date)",
+                       }
+                   },
+               ],
+               pagination: "local",
+               paginationSize: 10
+           });
+        });
+    </script>
+    
+}
