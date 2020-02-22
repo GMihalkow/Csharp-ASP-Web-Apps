@@ -1,6 +1,7 @@
 @model IEnumerable<ProductTableViewModel>
 @using ShopApp.Web.Extensions
 @{
+    ViewBag.RegisterTabulator = true;
     ViewBag.RegisterMomentJs = true;
     ViewBag.RegisterModal = true;
 }
@@ -8,23 +9,37 @@
 <div class="content-wrapper">
     <h2 class="w-50 mx-auto text-center">Products</h2>
     <div class="table-tools">
+        <input id="products-search-bar" type="text" class="table-tools-input-field" placeholder="Search products...">
         <a asp-action="Create" asp-controller="Product" class="tabulator-custom-btn">Create</a>
         <a id="edit-product-btn" href="javascript:void(0)" class="tabulator-custom-btn d-none">Edit</a>
-        <a id="delete-product-btn" href="javascript:void(0)" class="tabulator-custom-btn d-none"><i class="fas fa-trash-alt"></i></a>
+        <a id="delete-product-btn" href="javascript:void(0)" class="tabulator-custom-btn d-none">
+            <i class="fas fa-trash-alt"></i>
+        </a>
     </div>
-    <partial name="_AlertPartial" model="@(TempData.GetValues<Alert>("Alerts"))" />
+    @if (Model.IsNullOrEmpty())
+    {
+        <partial name="_AlertPartial" model="@(TempData.GetValues<Alert>("Alerts"))"/>
+        return;
+    }
+    <partial name="_AlertPartial" model="@(TempData.GetValues<Alert>("Alerts"))"/>
     <div id="products-table"></div>
 </div>
 
 @section scripts
 {
-    
+
     <script type="text/javascript">
         $(function() {
+            var productsSearchBar = $('#products-search-bar');
+                        
+            productsSearchBar.on('keyup', function(e) {
+                table.setFilter([ { field: 'name', type: 'like', value: e.currentTarget.value } ]);
+            });
+            
             // TODO [GM]: Finish implementing the old StockCount functionality.
             
             var deleteProductBtn = $('#delete-product-btn');
-            console.log(deleteProductBtn);
+            
             deleteProductBtn.on('click', function(e) {
                 e.preventDefault();
                 
@@ -45,6 +60,7 @@
                 data: productsAsJson,
                 layout:"fitColumns",
                 selectable: 1,
+                initialFilter: [ { field:"name", type:"like", value: productsSearchBar.val() } ],
                 rowSelected: function(row) {                    
                     var editProductBtn = $("#edit-product-btn");
                     var deleteProductBtn = $("#delete-product-btn");
