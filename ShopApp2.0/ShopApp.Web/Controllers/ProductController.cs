@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ShopApp.Web.Extensions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -61,7 +62,8 @@ namespace ShopApp.Web.Controllers
             {
                 await this._productRepository.Create(inputModel);
 
-                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully created a new product."));
+                this.TempData.AddSerialized<Alert>("Alerts",
+                    new Alert(AlertType.Success, "Successfully created a new product."));
 
                 return this.RedirectToAction(nameof(this.All));
             }
@@ -77,6 +79,12 @@ namespace ShopApp.Web.Controllers
         public IActionResult All()
         {
             var products = this._productService.GetProductsAsTableModels();
+
+            if (products.IsNullOrEmpty())
+            {
+                this.TempData.AddSerialized<Alert>("Alerts",
+                    new Alert(AlertType.Info, "No products found."));
+            }
 
             return this.View(products);
         }
@@ -117,8 +125,9 @@ namespace ShopApp.Web.Controllers
             {
                 await this._productRepository.Edit(inputModel);
 
-                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Successfully edited product."));
-                
+                this.TempData.AddSerialized<Alert>("Alerts",
+                    new Alert(AlertType.Success, "Successfully edited product."));
+
                 return this.RedirectToAction(nameof(this.All));
             }
             catch (ArgumentException e)
@@ -136,7 +145,8 @@ namespace ShopApp.Web.Controllers
             {
                 await this._productRepository.Delete(id);
 
-                this.TempData.AddSerialized<Alert>("Alerts", new Alert(AlertType.Success, "Product successfully deleted."));
+                this.TempData.AddSerialized<Alert>("Alerts",
+                    new Alert(AlertType.Success, "Product successfully deleted."));
             }
             catch (ArgumentException e)
             {
