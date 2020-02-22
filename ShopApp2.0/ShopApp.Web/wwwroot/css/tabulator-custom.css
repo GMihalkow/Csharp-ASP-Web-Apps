@@ -1,6 +1,7 @@
 .table-tools {
     width: 100%;
     display: flex;
+    margin: 1rem 0;
 }
 
 .tabulator-custom-btn {
@@ -11,9 +12,16 @@
     border: none;
     padding: 0.5rem 1rem;
     font-weight: bold;
-    margin-right: 0.5rem;
 }
 
 .tabulator-custom-btn:hover {
     cursor: pointer;
+}
+
+.table-tools-input-field {
+    width: 20%;
+}
+
+.table-tools > * {
+    margin-right: 0.5rem;
 }
