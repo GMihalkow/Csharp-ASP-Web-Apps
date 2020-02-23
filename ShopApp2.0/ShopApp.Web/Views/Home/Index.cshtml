@@ -1,2 +1,24 @@
+@model IEnumerable<ProductViewModel>
 
-<h1>Hello World!</h1>
+<div class="index-banner">
+    <img src="~/img/banner-happy-shopping.png" alt="">
+</div>
+<div class="index-bottom-wrapper">
+    <div class="featured-products-wrapper">
+        <div class="featured-products-wrapper-header">
+            <h3>Featured Products</h3>
+        </div>
+        <div class="featured-products-container">
+            <!-- TODO [GM]: .Take(8)? -->
+            @foreach (var product in Model.Take(8))
+            {
+                <div class="featured-product" style="background-position: center; background-size: cover; background-image: url('@product.CoverUrl');">
+                    <div class="featured-product-info-footer">
+                        <p class="text-center font-weight-bold">@product.Name</p>
+                        <p class="text-center">$@product.Price.ToString("F2")</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
